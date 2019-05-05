@@ -9,29 +9,29 @@ namespace GenealogyTree
     class Node<T>
     {
         public T Value { get; set; }
-        private List<Node<T>> children;
+        public List<Node<T>> Children { get; private set; }
         private Node<T> Parent { get; set; }
 
         public Node(T value, Node<T> parent)
         {
             Value = value;
-            children = new List<Node<T>>();
+            Children = new List<Node<T>>();
             Parent = parent;
         }
 
         public void AddChild(T value, Node<T> parent)
         {
-            children.Add(new Node<T>(value, parent));
+            Children.Add(new Node<T>(value, parent));
         }
 
         public void InsertChild(Node<T> node, int index)
         {
-            children.Insert(index, node);
+            Children.Insert(index, node);
         }
 
         public void Remove(Node<T> node)
         {
-            children.Remove(node);
+            Children.Remove(node);
         }
     }
 }
