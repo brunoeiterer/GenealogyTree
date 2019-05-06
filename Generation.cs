@@ -11,7 +11,9 @@ namespace GenealogyTree
     class Generation
     {
         public Grid GenerationGrid { get; set; }
-        private List<TextBox> TextBoxList { get; set; }
+        private List<TextBox> textboxlist;
+        private List<Label> birthDateLabelList;
+        private List<Label> deathDateLabelList;
 
         public Generation()
         {
@@ -19,12 +21,15 @@ namespace GenealogyTree
             panelWidthBinding.Source = Application.Current.MainWindow;
             panelWidthBinding.Path = new PropertyPath(Window.ActualWidthProperty);
 
-            GenerationGrid = new Grid();
-            GenerationGrid.Height = System.Windows.SystemFonts.MessageFontSize * 2;
-            GenerationGrid.VerticalAlignment = VerticalAlignment.Top;
-            GenerationGrid.HorizontalAlignment = HorizontalAlignment.Center;
+            GenerationGrid = new Grid()
+            {
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
 
-            TextBoxList = new List<TextBox>();
+            textboxlist = new List<TextBox>();
+            birthDateLabelList = new List<Label>();
+            deathDateLabelList = new List<Label>();
         }
 
         public void AddPerson(Node<Person> person)
@@ -32,10 +37,34 @@ namespace GenealogyTree
             AddTextBox(person.Value.Name);
             GenerationGrid.ColumnDefinitions.Add(new ColumnDefinition());
             GenerationGrid.ColumnDefinitions[GenerationGrid.ColumnDefinitions.Count - 1].Width = GridLength.Auto;
-            GenerationGrid.Children.Add(TextBoxList[TextBoxList.Count - 1]);
-            Grid.SetColumn(TextBoxList[TextBoxList.Count - 1], GenerationGrid.ColumnDefinitions.Count - 1);
+            GenerationGrid.Children.Add(textboxlist[textboxlist.Count - 1]);
+            Grid.SetColumn(textboxlist[textboxlist.Count - 1], GenerationGrid.ColumnDefinitions.Count - 1);
+            Grid.SetRow(textboxlist[textboxlist.Count - 1], GenerationGrid.RowDefinitions.Count);
 
-            if(person.Value.Partner != string.Empty)
+            if (person.Value.BirthDate.HasValue)
+            {
+                GenerationGrid.RowDefinitions.Add(new RowDefinition());
+                GenerationGrid.RowDefinitions[GenerationGrid.RowDefinitions.Count - 1].Height = new GridLength(25);
+
+                AddBirthDateLabel(person.Value.BirthDate);
+                GenerationGrid.RowDefinitions.Add(new RowDefinition());
+                Grid.SetRow(birthDateLabelList[birthDateLabelList.Count - 1], GenerationGrid.RowDefinitions.Count);
+                GenerationGrid.Children.Add(birthDateLabelList[birthDateLabelList.Count - 1]);
+            }
+
+            if(person.Value.DeathDate.HasValue)
+            {
+                GenerationGrid.RowDefinitions.Add(new RowDefinition());
+                GenerationGrid.RowDefinitions[GenerationGrid.RowDefinitions.Count - 1].Height = new GridLength(23);
+
+                AddDeathDateLabel(person.Value.DeathDate);
+                GenerationGrid.RowDefinitions.Add(new RowDefinition());
+                Grid.SetRow(deathDateLabelList[deathDateLabelList.Count - 1], GenerationGrid.RowDefinitions.Count);
+                GenerationGrid.Children.Add(deathDateLabelList[deathDateLabelList.Count - 1]);
+            }
+
+
+            if (person.Value.Partner != string.Empty)
             {
                 Line line = new Line();
                 line.Stroke = Brushes.Black;
@@ -54,50 +83,43 @@ namespace GenealogyTree
                 AddTextBox(person.Value.Partner);
                 GenerationGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 GenerationGrid.ColumnDefinitions[GenerationGrid.ColumnDefinitions.Count - 1].Width = GridLength.Auto;
-                GenerationGrid.Children.Add(TextBoxList[TextBoxList.Count - 1]);
-                Grid.SetColumn(TextBoxList[TextBoxList.Count - 1], GenerationGrid.ColumnDefinitions.Count - 1);
+                GenerationGrid.Children.Add(textboxlist[textboxlist.Count - 1]);
+                Grid.SetColumn(textboxlist[textboxlist.Count - 1], GenerationGrid.ColumnDefinitions.Count - 1);
             }
         }
 
         private void AddTextBox(string value)
         {
-            TextBoxList.Add(new TextBox());
+            textboxlist.Add(new TextBox());
 
-            TextBoxList[TextBoxList.Count - 1].Text = value;
-            TextBoxList[TextBoxList.Count - 1].HorizontalAlignment = HorizontalAlignment.Center;
-            TextBoxList[TextBoxList.Count - 1].VerticalAlignment = VerticalAlignment.Center;
-            TextBoxList[TextBoxList.Count - 1].HorizontalContentAlignment = HorizontalAlignment.Center;
-            TextBoxList[TextBoxList.Count - 1].Width = 250;
-            TextBoxList[TextBoxList.Count - 1].GotFocus += GotFocus;
-            TextBoxList[TextBoxList.Count - 1].LostFocus += LostFocus;
-            TextBoxList[TextBoxList.Count - 1].Name = value;
+            textboxlist[textboxlist.Count - 1].Text = value;
+            textboxlist[textboxlist.Count - 1].HorizontalAlignment = HorizontalAlignment.Center;
+            textboxlist[textboxlist.Count - 1].VerticalAlignment = VerticalAlignment.Center;
+            textboxlist[textboxlist.Count - 1].HorizontalContentAlignment = HorizontalAlignment.Center;
+            textboxlist[textboxlist.Count - 1].Width = 250;
+            textboxlist[textboxlist.Count - 1].Name = value;
         }
 
-        private void GotFocus(object sender, RoutedEventArgs e)
+        private void AddBirthDateLabel(Nullable<DateTime> date)
         {
-            PersonGotFocusEventArgs eventArgs = new PersonGotFocusEventArgs();
-            eventArgs.personName = ((TextBox)sender).Name;
-            PersonGotFocus?.Invoke(sender, eventArgs);
+            Label newLabel = new Label()
+            {
+                Content = "☆" + date.Value.ToShortDateString(),
+                BorderBrush = Brushes.Transparent
+            };
+
+            birthDateLabelList.Add(newLabel);
         }
 
-        public event PersonGotFocusEventHandler PersonGotFocus;
-
-        public void SubscribeToGotFocus(PersonGotFocusEventHandler handler)
+        private void AddDeathDateLabel(Nullable<DateTime> date)
         {
-            PersonGotFocus += handler;
-        }
+            Label newLabel = new Label()
+            {
+                Content = "✞" + date.Value.ToShortDateString(),
+                BorderBrush = Brushes.Transparent
+            };
 
-        private void LostFocus(object sender, RoutedEventArgs e)
-        {
-            PersonLostFocusEventArgs eventArgs = new PersonLostFocusEventArgs();
-            PersonLostFocus?.Invoke(sender, eventArgs);
-        }
-
-        public event PersonLostFocusEventHandler PersonLostFocus;
-
-        public void SubscribeToLostFocus(PersonLostFocusEventHandler handler)
-        {
-            PersonLostFocus += handler;
+            deathDateLabelList.Add(newLabel);
         }
     }
 }
