@@ -30,7 +30,9 @@ namespace GenealogyTree
         {
             InitializeComponent();
 
-            personTree = new PersonTree();          
+            personTree = new PersonTree();
+            PersonTree.Tree.Value.Name = "test";
+            PersonTree.Tree.Value.Partner = "test2";
 
             menu = new Menu();
 
