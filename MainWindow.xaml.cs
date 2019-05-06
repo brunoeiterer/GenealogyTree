@@ -57,7 +57,7 @@ namespace GenealogyTree
                 Orientation = Orientation.Vertical
             };
             basePanel.SetBinding(StackPanel.WidthProperty, panelWidthBinding);
-            basePanel.Children.Add(menu.Panel);
+            basePanel.Children.Add(menu.BasePanel);
             basePanel.Children.Add(treePanel);
 
             this.AddChild(basePanel);
