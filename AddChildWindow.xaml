@@ -1,0 +1,23 @@
+﻿<Window x:Class="GenealogyTree.AddChildWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GenealogyTree"
+        mc:Ignorable="d"
+        Title="{DynamicResource AddChildWindowTitle}" Height="450" Width="800">
+
+    <StackPanel>
+        <Label Content="{DynamicResource AddChildWindowParentLabel}" Width="250" />
+        <ComboBox x:Name="ParentCombobox" HorizontalContentAlignment="Center" Width="250" />
+        <Label Content="{DynamicResource AddChildWindowNameLabel}" Width="250" />
+        <TextBox x:Name="NewPersonName" Width="250"/>
+        <Label Content="{DynamicResource AddChildWindowPartnerLabel}" Width="250"/>
+        <TextBox x:Name="NewPersonPartnerName" Width="250"/>
+        <Label Content="{DynamicResource AddChildWindowBirthDateLabel}" Width="250"></Label>
+        <TextBox x:Name="NewPersonBirthDate" Width="250"/>
+        <Label Content="{DynamicResource AddChildWindowDeathDateLabel}" Width="250"></Label>
+        <TextBox x:Name="NewPersonDeathDate" Width="250" Margin="0,0,0,25"/>
+        <Button Content="{DynamicResource AddChildWindowButton}" Click="AddButton_Click" Width="250"/>
+    </StackPanel>
+</Window>

@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace GenealogyTree
 {
-    class Person
+    public class Person
     {
         public string Name { get; set; }
         public string Partner { get; set; }
         public Nullable<DateTime> BirthDate { get; set; }
         public Nullable<DateTime> DeathDate { get; set; }
+        public Guid GenerationID {get; set;}
 
         public Person() : this(string.Empty, string.Empty, null, null)
         {

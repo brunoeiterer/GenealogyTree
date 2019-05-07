@@ -5,5 +5,14 @@
 
     <System:String x:Key="AddChildButtonToolTip">Novo filho</System:String>
     <System:String x:Key="AddPartnerButtonToolTip">Adicionar companheiro</System:String>
+    <System:String x:Key="AddChildWindowTitle">Novo filho</System:String>
+    <System:String x:Key="EmptyNewNameErrorMessage">Nome da pessoa não pode ficar vazio.</System:String>
+    <System:String x:Key="EmptyNewNameErroMessageBoxTitle">Erro - nome vazio</System:String>
+    <System:String x:Key="AddChildWindowParentLabel">Pai ou Mãe</System:String>
+    <System:String x:Key="AddChildWindowNameLabel">Nome</System:String>
+    <System:String x:Key="AddChildWindowPartnerLabel">Companheiro</System:String>
+    <System:String x:Key="AddChildWindowBirthDateLabel">Data de Nascimento</System:String>
+    <System:String x:Key="AddChildWindowDeathDateLabel">Data de Óbito</System:String>
+    <System:String x:Key="AddChildWindowButton">Adicionar</System:String>
 
 </ResourceDictionary>

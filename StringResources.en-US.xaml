@@ -5,5 +5,14 @@
 
     <System:String x:Key="AddChildButtonToolTip">Add child</System:String>
     <System:String x:Key="AddPartnerButtonToolTip">Add partner</System:String>
-    
+    <System:String x:Key="AddChildWindowTitle">Add child</System:String>
+    <System:String x:Key="EmptyNewNameErrorMessage">Person name can't be empty.</System:String>
+    <System:String x:Key="EmptyNewNameErroMessageBoxTitle">Error - empty name</System:String>
+    <System:String x:Key="AddChildWindowParentLabel">Parent</System:String>
+    <System:String x:Key="AddChildWindowNameLabel">Name</System:String>
+    <System:String x:Key="AddChildWindowPartnerLabel">Partner</System:String>
+    <System:String x:Key="AddChildWindowBirthDateLabel">BirthDate</System:String>
+    <System:String x:Key="AddChildWindowDeathDateLabel">DeathDate</System:String>
+    <System:String x:Key="AddChildWindowButton">Add</System:String>
+
 </ResourceDictionary>

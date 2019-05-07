@@ -28,8 +28,7 @@ namespace GenealogyTree
 
             AddChildButton = new Button()
             {
-                Content = "👶",
-                Visibility = Visibility.Visible
+                Content = "👶"
             };
             AddChildButton.SetResourceReference(Button.ToolTipProperty, "AddChildButtonToolTip");
             AddChildButton.Click += AddChildButton_Click;
@@ -37,8 +36,7 @@ namespace GenealogyTree
 
             AddPartnerButton = new Button()
             {
-                Content = "⚭",
-                Visibility = Visibility.Visible
+                Content = "⚭"
             };
             AddPartnerButton.SetResourceReference(Button.ToolTipProperty, "AddPartnerButtonToolTip");
             AddPartnerButton.Click += AddPartnerButton_Click;
@@ -66,38 +64,21 @@ namespace GenealogyTree
                 LastChildFill = false
             };
             BasePanel.SetBinding(StackPanel.WidthProperty, basePanelWidthBinding);
+            BasePanel.Children.Add(AddChildButton);
+            BasePanel.Children.Add(AddPartnerButton);
             BasePanel.Children.Add(LanguageComboBox);
+            DockPanel.SetDock(BasePanel, Dock.Top);
         }
 
         private void AddChildButton_Click(object sender, RoutedEventArgs e)
         {
-
+            AddChildWindow addChildWindow = new AddChildWindow();
+            addChildWindow.Show();
         }
 
         private void AddPartnerButton_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        public void PersonGotFocus(object sender, PersonGotFocusEventArgs e)
-        {
-            BasePanel.Children.Remove(LanguageComboBox);
-
-            Node<Person> person;
-            person = PersonTree.GetNodeByName(PersonTree.Tree, e.personName);
-            if(person.Value.Partner == string.Empty)
-            {
-                BasePanel.Children.Add(AddPartnerButton);
-            }
-
-            BasePanel.Children.Add(AddChildButton);
-            BasePanel.Children.Add(LanguageComboBox);
-        }
-
-        public void PersonLostFocus(object sender, PersonLostFocusEventArgs e)
-        {
-            BasePanel.Children.Remove(AddPartnerButton);
-            BasePanel.Children.Remove(AddChildButton);
         }
 
         private void LanguageChanged(object sender, SelectionChangedEventArgs e)
