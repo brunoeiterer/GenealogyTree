@@ -42,14 +42,14 @@ namespace GenealogyTree
 
             if (generationList.IndexOf(GetGenerationByID(ParentID)) == generationList.Count - 1)
             {
-                AddGeneration(new Generation());
+                AddGeneration(new Generation(generationList[generationList.Count - 1].GenerationGridList));
                 child.Value.GenerationID = generationList[generationList.Count - 1].GenerationID;
-                generationList[generationList.Count - 1].AddPerson(child, false);
+                generationList[generationList.Count - 1].AddPerson(child);
             }
             else
             {
                 child.Value.GenerationID = generationList[generationList.IndexOf(GetGenerationByID(ParentID)) + 1].GenerationID;
-                generationList[generationList.IndexOf(GetGenerationByID(ParentID)) + 1].AddPerson(child, false);
+                generationList[generationList.IndexOf(GetGenerationByID(ParentID)) + 1].AddPerson(child);
             }
         }
     }

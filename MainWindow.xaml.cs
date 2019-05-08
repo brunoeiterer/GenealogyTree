@@ -33,7 +33,7 @@ namespace GenealogyTree
             menu = new Menu();
 
             generationManager = new GenerationManager();
-            generationManager.AddGeneration(new Generation());
+            generationManager.AddGeneration(new Generation(null));
 
             personTree = new PersonTree();
             PersonTree.Tree.Value.Name = "test";
@@ -43,7 +43,7 @@ namespace GenealogyTree
             PersonTree.Tree.Value.GenerationID = generationManager.generationList[0].GenerationID;
             PersonTree.NewChildAddedEvent += NewChildAdded;
 
-            generationManager.generationList[generationManager.generationList.Count - 1].AddPerson(PersonTree.Tree, true);
+            generationManager.generationList[generationManager.generationList.Count - 1].AddPerson(PersonTree.Tree);
             generationManager.NewGenerationAdded += AddNewGenerationToTreePanel;
 
 
@@ -59,7 +59,7 @@ namespace GenealogyTree
                 Orientation = Orientation.Vertical
             };
             treePanel.SetBinding(StackPanel.WidthProperty, panelWidthBinding);
-            treePanel.Children.Add(generationManager.generationList[generationManager.generationList.Count - 1].GenerationGrid);
+            treePanel.Children.Add(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid);
             DockPanel.SetDock(treePanel, Dock.Top);
 
             basePanel = new DockPanel();
@@ -72,7 +72,7 @@ namespace GenealogyTree
 
         public void AddNewGenerationToTreePanel(object sender, NewGenerationAddedEventArgs e)
         {
-            treePanel.Children.Add(e.generation.GenerationGrid);
+            treePanel.Children.Add(e.generation.BaseGrid);
         }
 
         private void NewChildAdded(object sender, NewChildAddedEventArgs<Person> e)
