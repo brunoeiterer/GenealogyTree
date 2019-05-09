@@ -4,8 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenealogyTree"
+        xmlns:math="http://hexinnovation.com/math"
         mc:Ignorable="d"
         Title="GenealogyTree" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen">
-
+        WindowStartupLocation="CenterScreen"
+        x:Name="MainWindowInstance">
+    <Window.Resources>
+        <math:MathConverter x:Key="math" />
+    </Window.Resources>
+    <Grid x:Name="BaseGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+    <ScrollViewer x:Name="MainWindowScrollViewer" HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Left" 
+                  Height="{Binding Height, Source=MainWindowInstance, Converter={StaticResource math}, ConverterParameter=x-30}" 
+                  Width="{Binding Width, Source=MainWindowInstance, Converter={StaticResource math}, ConverterParameter=x-6}"
+                  VerticalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="1"/>
+    </Grid>
 </Window>

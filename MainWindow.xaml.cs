@@ -64,10 +64,11 @@ namespace GenealogyTree
 
             basePanel = new DockPanel();
             basePanel.SetBinding(DockPanel.WidthProperty, panelWidthBinding);
-            basePanel.Children.Add(menu.BasePanel);
+            this.BaseGrid.Children.Add(menu.BasePanel);
+            Grid.SetRow(menu.BasePanel, 0);
             basePanel.Children.Add(treePanel);
 
-            this.AddChild(basePanel);
+            this.MainWindowScrollViewer.Content = basePanel;
         }
 
         public void AddNewGenerationToTreePanel(object sender, NewGenerationAddedEventArgs e)
