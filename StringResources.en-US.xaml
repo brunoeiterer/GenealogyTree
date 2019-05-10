@@ -11,10 +11,10 @@
     <System:String x:Key="AddChildWindowParentLabel">Parent</System:String>
     <System:String x:Key="AddChildWindowNameLabel">Name</System:String>
     <System:String x:Key="AddChildWindowPartnerLabel">Partner</System:String>
-    <System:String x:Key="AddChildWindowBirthDateLabel">BirthDate</System:String>
-    <System:String x:Key="AddChildWindowDeathDateLabel">DeathDate</System:String>
-    <System:String x:Key="AddChildWindowPartnerBirthDateLabel">PartnerBirthDate</System:String>
-    <System:String x:Key="AddChildWindowPartnerDeathDateLabel">PartnerDeathDate</System:String>
+    <System:String x:Key="AddChildWindowBirthDateLabel">Birth Date</System:String>
+    <System:String x:Key="AddChildWindowDeathDateLabel">Death Date</System:String>
+    <System:String x:Key="AddChildWindowPartnerBirthDateLabel">Partner Birth Date</System:String>
+    <System:String x:Key="AddChildWindowPartnerDeathDateLabel">Partner Death Date</System:String>
     <System:String x:Key="AddChildWindowButton">Add</System:String>
 
 </ResourceDictionary>
