@@ -50,6 +50,28 @@ namespace GenealogyTree
                 if (this.NewPersonPartnerName.Text.ToString() != string.Empty)
                 {
                     newPerson = new Person(this.NewPersonName.Text.ToString(), this.NewPersonPartnerName.Text.ToString());
+
+                    DateTime partnerBirthDate;
+                    DateTime partnerDeathDate;
+                    if (DateTime.TryParseExact(this.NewPersonPartnerBirthDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None, 
+                        out partnerBirthDate))
+                    {
+                        newPerson.PartnerBirthDate = (Nullable<DateTime>)partnerBirthDate;
+                    }
+                    else
+                    {
+                        newPerson.PartnerBirthDate = null;
+                    }
+
+                    if (DateTime.TryParseExact(this.NewPersonPartnerDeathDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None,
+                        out partnerDeathDate))
+                    {
+                        newPerson.PartnerDeathDate = (Nullable<DateTime>)partnerDeathDate;
+                    }
+                    else
+                    {
+                        newPerson.PartnerDeathDate = null;
+                    }
                 }
                 else
                 {

@@ -17,7 +17,11 @@
         <Label Content="{DynamicResource AddChildWindowBirthDateLabel}" Width="250"></Label>
         <TextBox x:Name="NewPersonBirthDate" Width="250"/>
         <Label Content="{DynamicResource AddChildWindowDeathDateLabel}" Width="250"></Label>
-        <TextBox x:Name="NewPersonDeathDate" Width="250" Margin="0,0,0,25"/>
+        <TextBox x:Name="NewPersonDeathDate" Width="250"/>
+        <Label Content="{DynamicResource AddChildWindowPartnerBirthDateLabel}" Width="250"></Label>
+        <TextBox x:Name="NewPersonPartnerBirthDate" Width="250"/>
+        <Label Content="{DynamicResource AddChildWindowPartnerDeathDateLabel}" Width="250"></Label>
+        <TextBox x:Name="NewPersonPartnerDeathDate" Width="250" Margin="0,0,0,25"/>
         <Button Content="{DynamicResource AddChildWindowButton}" Click="AddButton_Click" Width="250"/>
     </StackPanel>
 </Window>

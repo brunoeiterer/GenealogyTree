@@ -13,6 +13,8 @@
     <System:String x:Key="AddChildWindowPartnerLabel">Companheiro</System:String>
     <System:String x:Key="AddChildWindowBirthDateLabel">Data de Nascimento</System:String>
     <System:String x:Key="AddChildWindowDeathDateLabel">Data de Óbito</System:String>
+    <System:String x:Key="AddChildWindowPartnerBirthDateLabel">Data de Nascimento do Companheiro</System:String>
+    <System:String x:Key="AddChildWindowPartnerDeathDateLabel">Data de Óbito do Companheiro</System:String>
     <System:String x:Key="AddChildWindowButton">Adicionar</System:String>
 
 </ResourceDictionary>
