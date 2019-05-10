@@ -22,7 +22,7 @@ namespace GenealogyTree
     {
         private DockPanel basePanel;
         private Menu menu;
-        private StackPanel treePanel;
+        private Grid treeGrid;
         private PersonTree personTree;
         private GenerationManager generationManager;
 
@@ -54,26 +54,34 @@ namespace GenealogyTree
                 Path = new PropertyPath(MainWindow.ActualWidthProperty)
             };
 
-            treePanel = new StackPanel()
-            {
-                Orientation = Orientation.Vertical
-            };
-            treePanel.SetBinding(StackPanel.WidthProperty, panelWidthBinding);
-            treePanel.Children.Add(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid);
-            DockPanel.SetDock(treePanel, Dock.Top);
+            treeGrid = new Grid();
+            //treeGrid.SetBinding(StackPanel.WidthProperty, panelWidthBinding);
+            treeGrid.Children.Add(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid);
+            treeGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            treeGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
+            treeGrid.RowDefinitions.Add(new RowDefinition());
+            treeGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Auto);
+            Grid.SetRow(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid, 0);
+            Grid.SetColumn(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid, 0);
+            DockPanel.SetDock(treeGrid, Dock.Top);
 
             basePanel = new DockPanel();
             basePanel.SetBinding(DockPanel.WidthProperty, panelWidthBinding);
             this.BaseGrid.Children.Add(menu.BasePanel);
             Grid.SetRow(menu.BasePanel, 0);
-            basePanel.Children.Add(treePanel);
+            //basePanel.Children.Add(treeGrid);
 
-            this.MainWindowScrollViewer.Content = basePanel;
+            this.MainWindowScrollViewer.Content = treeGrid;
         }
 
         public void AddNewGenerationToTreePanel(object sender, NewGenerationAddedEventArgs e)
         {
-            treePanel.Children.Add(e.generation.BaseGrid);
+            treeGrid.Children.Add(e.generation.BaseGrid);
+            treeGrid.RowDefinitions.Add(new RowDefinition());
+            treeGrid.RowDefinitions[treeGrid.RowDefinitions.Count - 1].Height = new GridLength(1, GridUnitType.Auto);
+            Grid.SetRow(e.generation.BaseGrid, 1);
+
+            Grid.SetColumn(e.generation.BaseGrid, 0);
         }
 
         private void NewChildAdded(object sender, NewChildAddedEventArgs<Person> e)
