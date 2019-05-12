@@ -16,5 +16,10 @@
     <System:String x:Key="AddChildWindowPartnerBirthDateLabel">Partner Birth Date</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateLabel">Partner Death Date</System:String>
     <System:String x:Key="AddChildWindowButton">Add</System:String>
+    <System:String x:Key="AddChildWindowBirthDateFormatError">The birth date is invalid.</System:String>
+    <System:String x:Key="AddChildWindowDeathDateFormatError">The death date is invalid.</System:String>
+    <System:String x:Key="AddChildWindowPartnerBirthDateFormatError">The partner birth date is invalid.</System:String>
+    <System:String x:Key="AddChildWindowPartnerDeathDateFormatError">The partner death date is invalid.</System:String>
+    <System:String x:Key="DateFormatErrorMessageBoxTitle">Error - invalid date format</System:String>
 
 </ResourceDictionary>

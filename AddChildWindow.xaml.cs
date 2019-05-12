@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace GenealogyTree
 {
@@ -46,62 +47,98 @@ namespace GenealogyTree
                 Node<Person> parent;
                 parent = PersonTree.GetNodeByName(PersonTree.Tree, this.ParentCombobox.SelectedItem.ToString());
 
-                Person newPerson;
-                if (this.NewPersonPartnerName.Text.ToString() != string.Empty)
-                {
-                    newPerson = new Person(this.NewPersonName.Text.ToString(), this.NewPersonPartnerName.Text.ToString());
-
-                    DateTime partnerBirthDate;
-                    DateTime partnerDeathDate;
-                    if (DateTime.TryParseExact(this.NewPersonPartnerBirthDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None, 
-                        out partnerBirthDate))
-                    {
-                        newPerson.PartnerBirthDate = (Nullable<DateTime>)partnerBirthDate;
-                    }
-                    else
-                    {
-                        newPerson.PartnerBirthDate = null;
-                    }
-
-                    if (DateTime.TryParseExact(this.NewPersonPartnerDeathDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None,
-                        out partnerDeathDate))
-                    {
-                        newPerson.PartnerDeathDate = (Nullable<DateTime>)partnerDeathDate;
-                    }
-                    else
-                    {
-                        newPerson.PartnerDeathDate = null;
-                    }
-                }
-                else
-                {
-                    newPerson = new Person(this.NewPersonName.Text.ToString());
-                }
+                Person newPerson = new Person(this.NewPersonName.Text);
+                string errorMessage = string.Empty;
 
                 DateTime birthDate;
                 DateTime deathDate;
 
-                if(DateTime.TryParseExact(this.NewPersonBirthDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None, out birthDate))
+                try
                 {
-                    newPerson.BirthDate = (Nullable<DateTime>)birthDate;
+                    birthDate = DateTime.ParseExact(this.NewPersonBirthDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None);
+                    newPerson.BirthDate = (Nullable<DateTime>) birthDate;
                 }
-                else
+                catch(FormatException)
                 {
-                    newPerson.BirthDate = null;
+                    if(this.NewPersonBirthDate.Text.ToString() == string.Empty)
+                    {
+                        newPerson.BirthDate = null;
+                    }
+                    else
+                    {
+                        errorMessage += (string)FindResource("AddChildWindowBirthDateFormatError");
+                    }
                 }
 
-                if(DateTime.TryParseExact(this.NewPersonDeathDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None, out deathDate))
+                try
                 {
+                    deathDate = DateTime.ParseExact(this.NewPersonDeathDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None);
                     newPerson.DeathDate = (Nullable<DateTime>)deathDate;
                 }
-                else
+                catch (FormatException)
                 {
-                    newPerson.DeathDate = null;
+                    if (this.NewPersonDeathDate.Text.ToString() == string.Empty)
+                    {
+                        newPerson.BirthDate = null;
+                    }
+                    else
+                    {
+                        errorMessage += "\n" + (string)FindResource("AddChildWindowDeathDateFormatError");
+                    }
                 }
 
-                parent.AddChild(newPerson, parent);
-                parent.Children[parent.Children.Count - 1].SubscribeToNewChildAdded(PersonTree.NewChildAdded);
-                this.Close();
+                if (this.NewPersonPartnerName.Text.ToString() != string.Empty)
+                {
+                    newPerson.Partner = this.NewPersonPartnerName.Text;
+
+                    DateTime partnerBirthDate;
+                    DateTime partnerDeathDate;
+
+                    try
+                    {
+                        partnerBirthDate = DateTime.ParseExact(this.NewPersonPartnerBirthDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None);
+                        newPerson.PartnerBirthDate = (Nullable<DateTime>)partnerBirthDate;
+                    }
+                    catch (FormatException)
+                    {
+                        if (this.NewPersonPartnerBirthDate.Text.ToString() == string.Empty)
+                        {
+                            newPerson.PartnerBirthDate = null;
+                        }
+                        else
+                        {
+                            errorMessage += "\n" + (string)FindResource("AddChildWindowPartnerBirthDateFormatError");
+                        }
+                    }
+                    try
+                    {
+                        partnerDeathDate = DateTime.ParseExact(this.NewPersonPartnerDeathDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None);
+                        newPerson.PartnerDeathDate = (Nullable<DateTime>)partnerDeathDate;
+                    }
+                    catch (FormatException)
+                    {
+                        if (this.NewPersonPartnerDeathDate.Text.ToString() == string.Empty)
+                        {
+                            newPerson.PartnerDeathDate = null;
+                        }
+                        else
+                        {
+                            errorMessage += "\n" + (string)FindResource("AddChildWindowPartnerDeathDateFormatError");
+                        }
+                    }
+                }
+
+                if (errorMessage == string.Empty)
+                {
+                    parent.AddChild(newPerson, parent);
+                    parent.Children[parent.Children.Count - 1].SubscribeToNewChildAdded(PersonTree.NewChildAdded);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(errorMessage, (string)FindResource("DateFormatErrorMessageBoxTitle"));
+                }
+
             }
         }
 
