@@ -56,7 +56,6 @@ namespace GenealogyTree
             };
 
             treeGrid = new Grid();
-            //treeGrid.SetBinding(StackPanel.WidthProperty, panelWidthBinding);
             treeGrid.Children.Add(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid);
             treeGrid.ColumnDefinitions.Add(new ColumnDefinition());
             treeGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
@@ -70,7 +69,6 @@ namespace GenealogyTree
             basePanel.SetBinding(DockPanel.WidthProperty, panelWidthBinding);
             this.BaseGrid.Children.Add(menu.BasePanel);
             Grid.SetRow(menu.BasePanel, 0);
-            //basePanel.Children.Add(treeGrid);
 
             this.MainWindowScrollViewer.Content = treeGrid;
         }
