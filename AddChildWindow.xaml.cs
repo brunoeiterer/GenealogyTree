@@ -39,8 +39,8 @@ namespace GenealogyTree
         {
             if(this.NewPersonName.Text == string.Empty)
             {
-                MessageBox.Show(Application.Current.Resources["EmptyNewNameErrorMessage"].ToString(),
-                    Application.Current.Resources["EmptyNewNameErroMessageBoxTitle"].ToString());
+                MessageBox.Show(Application.Current.Resources["AddChildWindowEmptyNewNameErrorMessage"].ToString(),
+                    Application.Current.Resources["AddChildWindowEmptyNewNameErroMessageBoxTitle"].ToString());
             }
             else
             {
@@ -136,7 +136,7 @@ namespace GenealogyTree
                 }
                 else
                 {
-                    MessageBox.Show(errorMessage, (string)FindResource("DateFormatErrorMessageBoxTitle"));
+                    MessageBox.Show(errorMessage, (string)FindResource("AddChildWindowDateFormatErrorMessageBoxTitle"));
                 }
 
             }

@@ -78,6 +78,17 @@ namespace GenealogyTree
 
         private void AddPartnerButton_Click(object sender, RoutedEventArgs e)
         {
+            AddPartnerWindow addPartnerWindow = new AddPartnerWindow();
+            addPartnerWindow.PartnerAdded += Partner_Added;
+            if(addPartnerWindow.ChildList.Count > 0)
+            {
+                addPartnerWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show((string)Application.Current.Resources["MenuEmptyChildListError"],
+                    (string)Application.Current.Resources["MenuEmptyChildListErrorMessageBoxTile"]);
+            }
 
         }
 
@@ -95,5 +106,12 @@ namespace GenealogyTree
                     break;
             }
         }
+
+        public void Partner_Added(object sender, PartnerAddedEventArgs e)
+        {
+            PartnerAdded?.Invoke(sender, e);
+        }
+
+        public event PartnerAddedEventHandler PartnerAdded;
     }
 }

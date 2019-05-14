@@ -4,10 +4,9 @@
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
     <System:String x:Key="AddChildButtonToolTip">Add child</System:String>
-    <System:String x:Key="AddPartnerButtonToolTip">Add partner</System:String>
     <System:String x:Key="AddChildWindowTitle">Add child</System:String>
-    <System:String x:Key="EmptyNewNameErrorMessage">Person name can't be empty.</System:String>
-    <System:String x:Key="EmptyNewNameErroMessageBoxTitle">Error - empty name</System:String>
+    <System:String x:Key="AddChildWindowEmptyNewNameErrorMessage">Person name can't be empty.</System:String>
+    <System:String x:Key="AddChildWindowEmptyNewNameErroMessageBoxTitle">Error - empty name</System:String>
     <System:String x:Key="AddChildWindowParentLabel">Parent</System:String>
     <System:String x:Key="AddChildWindowNameLabel">Name</System:String>
     <System:String x:Key="AddChildWindowPartnerLabel">Partner</System:String>
@@ -20,6 +19,22 @@
     <System:String x:Key="AddChildWindowDeathDateFormatError">The death date is invalid.</System:String>
     <System:String x:Key="AddChildWindowPartnerBirthDateFormatError">The partner birth date is invalid.</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateFormatError">The partner death date is invalid.</System:String>
-    <System:String x:Key="DateFormatErrorMessageBoxTitle">Error - invalid date format</System:String>
+    <System:String x:Key="AddChildWindowDateFormatErrorMessageBoxTitle">Error - invalid date format</System:String>
+    <System:String x:Key="AddPartnerButtonToolTip">Add partner</System:String>
+    <System:String x:Key="AddPartnerWindowTitle">Add partner</System:String>
+    <System:String x:Key="AddPartnerWindowEmptyPartnerErrorMessage">Partner name can't be empty.</System:String>
+    <System:String x:Key="AddPartnerWindowEmptyPartnerErroMessageBoxTitle">Error - empty name</System:String>
+    <System:String x:Key="AddPartnerWindowChildName">Family Member Name</System:String>
+    <System:String x:Key="AddPartnerWindowPartnerNameLabel">Partner Name</System:String>
+    <System:String x:Key="AddPartnerWindowPartnerBirthDateLabel">Partner Birth Date</System:String>
+    <System:String x:Key="AddPartnerWindowPartnerDeathDateLabel">Partner Death Datet</System:String>
+    <System:String x:Key="AddPartnerWindowButton">Add</System:String>
+    <System:String x:Key="AddPartnerWindowPartnerBirthDateFormatError">The partner birth date is invalid.</System:String>
+    <System:String x:Key="AddPartnerdWindowPartnerDeathDateFormatError">The partner death date is invalid.</System:String>
+    <System:String x:Key="AddPartnerWindowDateFormatErrorMessageBoxTitle">Error - invalid date format</System:String>
+    <System:String x:Key="MenuEmptyChildListError">Error - all family members already have partners</System:String>
+    <System:String x:Key="MenuEmptyChildListErrorMessageBoxTile">Error - no family members available</System:String>
+    
+
 
 </ResourceDictionary>

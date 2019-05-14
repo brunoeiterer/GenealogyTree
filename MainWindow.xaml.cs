@@ -31,6 +31,7 @@ namespace GenealogyTree
             InitializeComponent();
 
             menu = new Menu();
+            menu.PartnerAdded += PartnerAdded;
 
             generationManager = new GenerationManager();
             generationManager.AddGeneration(new Generation(null));
@@ -87,6 +88,11 @@ namespace GenealogyTree
         private void NewChildAdded(object sender, NewChildAddedEventArgs<Person> e)
         {
             generationManager.AddChild(PersonTree.GetNodeByName(PersonTree.Tree, e.child.Name));
+        }
+
+        private void PartnerAdded(object sender, PartnerAddedEventArgs e)
+        {
+            generationManager.AddPartner(e.childName, e.partnerName, e.birthDate, e.deathDate);
         }
     }
 }

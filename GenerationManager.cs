@@ -52,5 +52,11 @@ namespace GenealogyTree
                 generationList[generationList.IndexOf(GetGenerationByID(ParentID)) + 1].AddPerson(child);
             }
         }
+
+        public void AddPartner(string childName, string partnerName, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate)
+        {
+            Node<Person> child = PersonTree.GetNodeByName(PersonTree.Tree, childName);
+            GetGenerationByID(child.Value.GenerationID).AddPartner(childName, partnerName, birthDate, deathDate);
+        }
     }
 }
