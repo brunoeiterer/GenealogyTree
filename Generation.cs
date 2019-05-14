@@ -870,6 +870,7 @@ namespace GenealogyTree
             else if(textBox.Name.Substring(0, 7) == "partner")
             {
                 person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(7, textBox.Name.Length - 7));
+                textBox.Name = "partner" + textBox.Text;
                 person.Value.Name = textBox.Text;
             }
         }
