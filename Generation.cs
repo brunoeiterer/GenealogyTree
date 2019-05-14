@@ -262,6 +262,7 @@ namespace GenealogyTree
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Width = 250;
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Name = "partner" + partnerName;
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Margin = new Thickness(0, 0, 0, 0);
+            textboxlist[textboxlist.IndexOf(childTextBox) + 1].TextChanged += NameChanged;
             GenerationGridList[gridIndex].Children.Add(textboxlist[textboxlist.IndexOf(childTextBox) + 1]);
             Grid.SetColumn(textboxlist[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
 
@@ -309,6 +310,7 @@ namespace GenealogyTree
             textboxlist[textboxlist.Count - 1].Width = 250;
             textboxlist[textboxlist.Count - 1].Name = type + value;
             textboxlist[textboxlist.Count - 1].Margin = new Thickness(0, 0, 0, 0);
+            textboxlist[textboxlist.Count - 1].TextChanged += NameChanged;
         }
 
         private void AddBirthDateLabel(Nullable<DateTime> date)
@@ -852,6 +854,23 @@ namespace GenealogyTree
                         }
                     }
                 }
+            }
+        }
+
+        private void NameChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            Node<Person> person = null;
+            if(textBox.Name.Substring(0, 5) == "child")
+            {
+                person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(5, textBox.Name.Length - 5));
+                textBox.Name = "child" + textBox.Text;
+                person.Value.Name = textBox.Text;
+            }
+            else if(textBox.Name.Substring(0, 7) == "partner")
+            {
+                person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(7, textBox.Name.Length - 7));
+                person.Value.Name = textBox.Text;
             }
         }
     }
