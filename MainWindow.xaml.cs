@@ -78,7 +78,7 @@ namespace GenealogyTree
             treeGrid.Children.Add(e.generation.BaseGrid);
             treeGrid.RowDefinitions.Add(new RowDefinition());
             treeGrid.RowDefinitions[treeGrid.RowDefinitions.Count - 1].Height = new GridLength(1, GridUnitType.Auto);
-            Grid.SetRow(e.generation.BaseGrid, 1);
+            Grid.SetRow(e.generation.BaseGrid, treeGrid.RowDefinitions.Count - 1);
 
             Grid.SetColumn(e.generation.BaseGrid, 0);
         }
