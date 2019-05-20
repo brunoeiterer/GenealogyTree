@@ -20,6 +20,8 @@
     <System:String x:Key="AddChildWindowPartnerBirthDateFormatError">A data de nascimento do companheiro não é válida.</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateFormatError">A data de óbito do companheiro não é válida.</System:String>
     <System:String x:Key="AddChildWindowDateFormatErrorMessageBoxTitle">Erro - data inválida</System:String>
+    <System:String x:Key="AddChildWindowEmptyParentPartnerError">Pai ou mãe deve ter um companheiro</System:String>
+    <System:String x:Key="AddChildWindowEmptyParentPartnerErrorMessageBoxTitle">Erro - Pai ou mãe não tem companheiro</System:String>
     <System:String x:Key="AddPartnerButtonToolTip">Adicionar companheiro</System:String>
     <System:String x:Key="AddPartnerWindowTitle">Adicionar companheiro</System:String>
     <System:String x:Key="AddPartnerWindowEmptyNewNameErrorMessage">Nome do companheiro não pode ficar vazio.</System:String>

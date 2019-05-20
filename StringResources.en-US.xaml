@@ -20,6 +20,8 @@
     <System:String x:Key="AddChildWindowPartnerBirthDateFormatError">The partner birth date is invalid.</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateFormatError">The partner death date is invalid.</System:String>
     <System:String x:Key="AddChildWindowDateFormatErrorMessageBoxTitle">Error - invalid date format</System:String>
+    <System:String x:Key="AddChildWindowEmptyParentPartnerError">Parent must have a partner</System:String>
+    <System:String x:Key="AddChildWindowEmptyParentPartnerErrorMessageBoxTitle">Error - parent has no partner</System:String>
     <System:String x:Key="AddPartnerButtonToolTip">Add partner</System:String>
     <System:String x:Key="AddPartnerWindowTitle">Add partner</System:String>
     <System:String x:Key="AddPartnerWindowEmptyPartnerErrorMessage">Partner name can't be empty.</System:String>
