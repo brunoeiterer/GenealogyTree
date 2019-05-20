@@ -20,6 +20,7 @@ namespace GenealogyTree
     /// </summary>
     public partial class MainWindow : Window
     {
+        //private Canvas ConnectionsCanvas { get; set; }
         private DockPanel basePanel;
         private Menu menu;
         private Grid treeGrid;
@@ -35,6 +36,7 @@ namespace GenealogyTree
 
             generationManager = new GenerationManager();
             generationManager.AddGeneration(new Generation(null));
+            generationManager.GenerationChanged += ConnectChildrenToParents;
 
             personTree = new PersonTree();
             PersonTree.Tree.Value.Name = "test";
@@ -54,7 +56,7 @@ namespace GenealogyTree
                 Source = Application.Current.MainWindow,
                 Path = new PropertyPath(MainWindow.ActualWidthProperty)
             };
-
+            
             treeGrid = new Grid();
             treeGrid.Children.Add(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid);
             treeGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -64,6 +66,15 @@ namespace GenealogyTree
             Grid.SetRow(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid, 0);
             Grid.SetColumn(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid, 0);
             DockPanel.SetDock(treeGrid, Dock.Top);
+
+
+            //ConnectionsCanvas = new Canvas();
+            //DockPanel.SetDock(ConnectionsGrid, Dock.Top);
+            //ConnectionsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            //ConnectionsGrid.RowDefinitions.Add(new RowDefinition());
+            //ConnectionsGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
+            //ConnectionsGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
+            //ConnectionsCanvas.Children.Add(treeGrid);
 
             basePanel = new DockPanel();
             basePanel.SetBinding(DockPanel.WidthProperty, panelWidthBinding);
@@ -91,6 +102,286 @@ namespace GenealogyTree
         private void PartnerAdded(object sender, PartnerAddedEventArgs e)
         {
             generationManager.AddPartner(e.childName, e.partnerName, e.birthDate, e.deathDate);
+        }
+
+        private void ConnectChildrenToParents(object sender, GenerationChangedEventArgs e)
+        {
+            Generation generation = (Generation)sender;
+            List<Node<Person>> personList = new List<Node<Person>>();
+
+            foreach(Grid grid in generation.GenerationGridList)
+            {
+                foreach (TextBox textBox in grid.Children.OfType<TextBox>())
+                {
+                    Node<Person> nextPerson = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text);
+                    if (nextPerson.Value.GenerationID == generation.GenerationID)
+                    {
+                        if(!personList.Any(item => item.Value.Name == nextPerson.Value.Name))
+                        {
+                            personList.Add(nextPerson);
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < treeGrid.Children.Count; i++)
+            {
+                if (treeGrid.Children[i].GetType() == typeof(Line))
+                {
+                    treeGrid.Children.Remove(treeGrid.Children[i]);
+                    i--;
+                }
+            }
+
+            foreach (Node<Person> person in personList)
+            {
+                int parentIndex = 0;
+                int parentColumnIndex = 0;
+                bool found = false;
+                for (int i = 0; i < generation.ParentsGridList.Count; i++)
+                {
+                    for (int j = 0; j < generation.ParentsGridList[i].Children.Count && !found; j++)
+                    {
+                        if (generation.ParentsGridList[i].Children[j].GetType() == typeof(TextBox))
+                        {
+                            if ((string)generation.ParentsGridList[i].Children[j].GetValue(TextBox.TextProperty) == person.Parent.Value.Name)
+                            {
+                                parentIndex = i;
+                                parentColumnIndex = Grid.GetColumn(generation.ParentsGridList[i].Children[j]);
+                                found = true;
+                            }
+                        }
+                    }
+                }
+
+                if (person.Parent.Value.Partner != string.Empty)
+                {
+                    Line verticalLine1 = new Line()
+                    {
+                        Stroke = Brushes.Black,
+                        Visibility = Visibility.Visible,
+                        StrokeThickness = 1,
+                        X1 = 12.5,
+                        X2 = 12.5,
+                        Y1 = SystemFonts.MessageFontSize,
+                        Y2 = SystemFonts.MessageFontSize * 2 + 1,
+                        Stretch = Stretch.None
+                    };
+                    if(generation.ParentsGridList[parentIndex].Children.Count <= 7)
+                    {
+                        generation.ParentsGridList[parentIndex].Children.Add(verticalLine1);
+                        Grid.SetRow(verticalLine1, 0);
+                        Grid.SetColumn(verticalLine1, parentColumnIndex + 1);
+                    }
+
+
+                    Line verticalLine2 = new Line()
+                    {
+                        Stroke = Brushes.Black,
+                        Visibility = Visibility.Visible,
+                        StrokeThickness = 1,
+                        X1 = 12.5,
+                        X2 = 12.5,
+                        Y1 = 0,
+                        Y2 = SystemFonts.MessageFontSize * 2 + 2,
+                        Stretch = Stretch.None
+                    };
+                    if (generation.ParentsGridList[parentIndex].Children.Count <= 8)
+                    {
+                        generation.ParentsGridList[parentIndex].Children.Add(verticalLine2);
+                        Grid.SetRow(verticalLine2, 1);
+                        Grid.SetColumn(verticalLine2, parentColumnIndex + 1);
+                    }
+
+                    Line verticalLine3 = new Line()
+                    {
+                        Stroke = Brushes.Black,
+                        Visibility = Visibility.Visible,
+                        StrokeThickness = 1,
+                        X1 = 12.5,
+                        X2 = 12.5,
+                        Y1 = 0,
+                        Y2 = SystemFonts.MessageFontSize * 2 + 1,
+                        Stretch = Stretch.None
+                    };
+                    if (generation.ParentsGridList[parentIndex].Children.Count <= 9)
+                    {
+                        generation.ParentsGridList[parentIndex].Children.Add(verticalLine3);
+                        Grid.SetRow(verticalLine3, 2);
+                        Grid.SetColumn(verticalLine3, parentColumnIndex + 1);
+                    }
+                }
+                else
+                {
+                    Line verticalLine1 = new Line()
+                    {
+                        Stroke = Brushes.Black,
+                        Visibility = Visibility.Visible,
+                        StrokeThickness = 1,
+                        X1 = 125,
+                        X2 = 125,
+                        Y1 = -3,
+                        Y2 = SystemFonts.MessageFontSize * 2 + 2,
+                        Stretch = Stretch.None
+                    };
+                    if (generation.ParentsGridList[parentIndex].Children.Count <= 7)
+                    {
+                        generation.ParentsGridList[parentIndex].Children.Add(verticalLine1);
+                        Grid.SetRow(verticalLine1, 1);
+                        Grid.SetColumn(verticalLine1, parentColumnIndex);
+                    }
+
+                    Line verticalLine2 = new Line()
+                    {
+                        Stroke = Brushes.Black,
+                        Visibility = Visibility.Visible,
+                        StrokeThickness = 1,
+                        X1 = 125,
+                        X2 = 125,
+                        Y1 = 0,
+                        Y2 = SystemFonts.MessageFontSize * 2 + 3,
+                        Stretch = Stretch.None
+                    };
+                    if (generation.ParentsGridList[parentIndex].Children.Count <= 8)
+                    {
+                        generation.ParentsGridList[parentIndex].Children.Add(verticalLine2);
+                        Grid.SetRow(verticalLine2, 2);
+                        Grid.SetColumn(verticalLine2, parentColumnIndex);
+                    }
+                }
+
+                int generationGridIndex = 0;
+                int textBoxColumnIndex = 0;
+                foreach(Grid grid in generation.GenerationGridList)
+                {
+                    foreach (TextBox textBox in grid.Children.OfType<TextBox>())
+                    {
+                        if(textBox.Text == person.Value.Name)
+                        {
+                            generationGridIndex = generation.GenerationGridList.IndexOf(grid);
+                            textBoxColumnIndex = Grid.GetColumn(textBox);
+                        }
+                    }
+                }
+
+                Line verticalLine4 = new Line()
+                {
+                    Stroke = Brushes.Black,
+                    Visibility = Visibility.Visible,
+                    StrokeThickness = 1,
+                    X1 = 125,
+                    X2 = 125,
+                    Y1 = 4,
+                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                    Stretch = Stretch.None,
+                    
+                };
+                generation.GenerationGridList[generationGridIndex].Children.Add(verticalLine4);
+                Grid.SetRow(verticalLine4, 0);
+                Grid.SetColumn(verticalLine4, textBoxColumnIndex);
+
+                if(person.Value.Partner != string.Empty)
+                {
+                    Line horizontalLine = new Line()
+                    {
+                        Stroke = Brushes.Black,
+                        Visibility = Visibility.Visible,
+                        StrokeThickness = 1,
+                        X1 = 0,
+                        X2 = 25,
+                        Y1 = SystemFonts.MessageFontSize,
+                        Y2 = SystemFonts.MessageFontSize,
+                        Stretch = Stretch.None,
+                    };
+                    generation.GenerationGridList[generationGridIndex].Children.Add(horizontalLine);
+                    Grid.SetRow(horizontalLine, 0);
+                    Grid.SetColumn(horizontalLine, textBoxColumnIndex + 1);
+                }
+            }
+
+            List<Node<Person>> parentsList = new List<Node<Person>>();
+
+            foreach(Node<Person> person in personList)
+            {
+                if(!parentsList.Contains(person.Parent))
+                {
+                    parentsList.Add(person.Parent);
+                }
+            }
+
+            foreach (Node<Person> parent in parentsList)
+            {
+                Node<Person> firstPerson = personList.FirstOrDefault(p => p.Parent == parent);
+                Node<Person> lastPerson = personList.LastOrDefault(p => p.Parent == parent);
+
+                Grid generationGrid = null;
+
+                foreach(Grid grid in generation.GenerationGridList)
+                {
+                    foreach(TextBox textBox in grid.Children.OfType<TextBox>())
+                    {
+                        if(textBox.Text == firstPerson.Value.Name)
+                        {
+                            generationGrid = grid;
+                        }
+                    }
+                }
+
+                int numberOfPartners = 0;
+                for(int i = personList.IndexOf(firstPerson); i < personList.IndexOf(lastPerson); i++)
+                {
+                    if(personList[i].Value.Partner != string.Empty)
+                    {
+                        numberOfPartners++;
+                    }
+                }
+
+                int generationGridIndex = 0;
+                int firstTextBoxColumnIndex = 0;
+                int lastTextBoxColumnIndex = 0;
+                foreach (Grid grid in generation.GenerationGridList)
+                {
+                    foreach (TextBox textBox in grid.Children.OfType<TextBox>())
+                    {
+                        if (textBox.Text == firstPerson.Value.Name)
+                        {
+                            generationGridIndex = generation.GenerationGridList.IndexOf(grid);
+                            firstTextBoxColumnIndex = Grid.GetColumn(textBox);
+                        }
+                        if(textBox.Text == lastPerson.Value.Name)
+                        {
+                            lastTextBoxColumnIndex = Grid.GetColumn(textBox);
+                        }
+                    }
+                }
+
+                int columnSpan = lastTextBoxColumnIndex - firstTextBoxColumnIndex + 1;
+
+                double x2 = 125;
+                if (firstPerson != lastPerson)
+                {
+                    x2 = 125 + 250 + (250 * ((columnSpan / 2) - 1)) + (25 * (columnSpan / 2));
+                }
+                else if(firstPerson.Value.Partner != string.Empty)
+                {
+                    x2 = 250 + 12.5;
+                    columnSpan = 2;
+                }
+
+                Line horizontalLine = new Line()
+                {
+                    Stroke = Brushes.Black,
+                    Visibility = Visibility.Visible,
+                    StrokeThickness = 1,
+                    X1 = 125,
+                    X2 = x2,
+                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                    Y2 = -SystemFonts.MessageFontSize * 2 - 2
+                };
+                Grid.SetColumnSpan(horizontalLine, columnSpan);
+                Grid.SetRow(horizontalLine, 0);
+                generation.GenerationGridList[generation.GenerationGridList.IndexOf(generationGrid)].Children.Add(horizontalLine);
+            }
         }
     }
 }

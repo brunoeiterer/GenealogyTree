@@ -82,6 +82,8 @@ namespace GenealogyTree
                 }
             }
 
+            //GenerationGridList[generationGridIndex].ShowGridLines = true;
+
             for (int i = 0; i < GenerationGridList[generationGridIndex].Children.Count; i++)
             {
                 if (GenerationGridList[generationGridIndex].Children[i].GetType() == typeof(Line))
@@ -137,24 +139,26 @@ namespace GenealogyTree
 
             if (person.Value.Partner != string.Empty)
             {
-                Point textboxPoint = textboxlist[textboxlist.Count - 1].TransformToAncestor(GenerationGridList[generationGridIndex]).
-                    Transform(new Point(0, 0));
-                Line horizontalLine1 = new Line()
-                {
-                    Stroke = Brushes.Black,
-                    Visibility = Visibility.Visible,
-                    StrokeThickness = 1,
-                    X1 = 0,
-                    X2 = 25,
-                    Y1 = SystemFonts.MessageFontSize,
-                    Y2 = SystemFonts.MessageFontSize,
-                    Stretch = Stretch.None
-                };
-
                 GenerationGridList[generationGridIndex].ColumnDefinitions.Add(new ColumnDefinition());
                 GenerationGridList[generationGridIndex].ColumnDefinitions[GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1].Width = new GridLength(25);
-                GenerationGridList[generationGridIndex].Children.Add(horizontalLine1);
-                Grid.SetColumn(horizontalLine1, GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+
+                if(ParentsGridList == null)
+                {
+                    Line horizontalLine1 = new Line()
+                    {
+                        Stroke = Brushes.Black,
+                        Visibility = Visibility.Visible,
+                        StrokeThickness = 1,
+                        X1 = 0,
+                        X2 = 25,
+                        Y1 = SystemFonts.MessageFontSize,
+                        Y2 = SystemFonts.MessageFontSize,
+                        Stretch = Stretch.None
+                    };
+
+                    GenerationGridList[generationGridIndex].Children.Add(horizontalLine1);
+                    Grid.SetColumn(horizontalLine1, GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+                }
 
                 AddTextBox(person.Value.Partner, "partner");
                 GenerationGridList[generationGridIndex].ColumnDefinitions.Add(new ColumnDefinition());
@@ -191,10 +195,13 @@ namespace GenealogyTree
                 GenerationGridList[generationGridIndex].Children.Add(deathDateLabelList[deathDateLabelList.Count - 1]);
             }
 
-            if (ParentsGridList != null)
-            {
-                ConnectChildrenToParents(person);
-            }
+            //if (ParentsGridList != null)
+            //{
+            //    ConnectChildrenToParents(person);
+            //}
+
+            GenerationChangedEventArgs eventArgs = new GenerationChangedEventArgs();
+            GenerationChanged?.Invoke(this, eventArgs);
         }
 
         public void AddPartner(string childName, string partnerName, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate)
@@ -228,7 +235,11 @@ namespace GenealogyTree
 
             int childColumnIndex = Grid.GetColumn(childTextBox);
             GenerationGridList[gridIndex].ColumnDefinitions.Add(new ColumnDefinition());
+            GenerationGridList[gridIndex].ColumnDefinitions[GenerationGridList[gridIndex].ColumnDefinitions.Count - 1].Width = 
+                new GridLength(25);
             GenerationGridList[gridIndex].ColumnDefinitions.Add(new ColumnDefinition());
+            GenerationGridList[gridIndex].ColumnDefinitions[GenerationGridList[gridIndex].ColumnDefinitions.Count - 1].Width =
+                new GridLength(250);
 
             foreach (TextBox textbox in textboxlist)
             {
@@ -251,6 +262,14 @@ namespace GenealogyTree
                 if (deathDateLabelList.IndexOf(label) > textboxlist.IndexOf(childTextBox))
                 {
                     Grid.SetColumn(label, Grid.GetColumn(label) + 2);
+                }
+            }
+
+            foreach(TextBlock textBlock in textBlockList)
+            {
+                if(Grid.GetColumn(textBlock) > Grid.GetColumn(childTextBox))
+                {
+                    Grid.SetColumn(textBlock, Grid.GetColumn(textBlock) + 2);
                 }
             }
 
@@ -296,8 +315,13 @@ namespace GenealogyTree
             Grid.SetColumn(deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
             Grid.SetRow(deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1], 2);
 
-            ConnectChildrenToParents(PersonTree.GetNodeByName(PersonTree.Tree, childName));
-        }
+            //ConnectChildrenToParents(PersonTree.GetNodeByName(PersonTree.Tree, childName));
+
+            GenerationChangedEventArgs eventArgs = new GenerationChangedEventArgs();
+            GenerationChanged?.Invoke(this, eventArgs);
+    }
+
+    public event GenerationChangedEventHandler GenerationChanged;
 
         private void AddTextBox(string value, string type)
         {
@@ -365,6 +389,7 @@ namespace GenealogyTree
 
         private void ConnectChildrenToParents(Node<Person> person)
         {
+            /*
             int parentIndex = 0;
             int parentColumnIndex = 0;
             bool found = false;
@@ -377,57 +402,91 @@ namespace GenealogyTree
                         if ((string)ParentsGridList[i].Children[j].GetValue(TextBox.TextProperty) == person.Parent.Value.Name)
                         {
                             parentIndex = i;
-                            parentColumnIndex = Grid.GetColumn(ParentsGridList[i].Children[j]) + 1;
+                            parentColumnIndex = Grid.GetColumn(ParentsGridList[i].Children[j]);
                             found = true;
                         }
                     }
                 }
             }
-
-            Line verticalLine1 = new Line()
+            if (person.Parent.Value.Partner != string.Empty)
             {
-                Stroke = Brushes.Black,
-                Visibility = Visibility.Visible,
-                StrokeThickness = 1,
-                X1 = 12.5,
-                X2 = 12.5,
-                Y1 = SystemFonts.MessageFontSize,
-                Y2 = SystemFonts.MessageFontSize * 2 + 1,
-                Stretch = Stretch.None
-            };
-            ParentsGridList[parentIndex].Children.Add(verticalLine1);
-            Grid.SetRow(verticalLine1, 0);
-            Grid.SetColumn(verticalLine1, parentColumnIndex);
+                Line verticalLine1 = new Line()
+                {
+                    Stroke = Brushes.Black,
+                    Visibility = Visibility.Visible,
+                    StrokeThickness = 1,
+                    X1 = 12.5,
+                    X2 = 12.5,
+                    Y1 = SystemFonts.MessageFontSize,
+                    Y2 = SystemFonts.MessageFontSize * 2 + 1,
+                    Stretch = Stretch.None
+                };
+                ParentsGridList[parentIndex].Children.Add(verticalLine1);
+                Grid.SetRow(verticalLine1, 0);
+                Grid.SetColumn(verticalLine1, parentColumnIndex + 1);
 
-            Line verticalLine2 = new Line()
-            {
-                Stroke = Brushes.Black,
-                Visibility = Visibility.Visible,
-                StrokeThickness = 1,
-                X1 = 12.5,
-                X2 = 12.5,
-                Y1 = 0,
-                Y2 = SystemFonts.MessageFontSize * 2 + 2,
-                Stretch = Stretch.None
-            };
-            ParentsGridList[parentIndex].Children.Add(verticalLine2);
-            Grid.SetRow(verticalLine2, 1);
-            Grid.SetColumn(verticalLine2, parentColumnIndex);
+                Line verticalLine2 = new Line()
+                {
+                    Stroke = Brushes.Black,
+                    Visibility = Visibility.Visible,
+                    StrokeThickness = 1,
+                    X1 = 12.5,
+                    X2 = 12.5,
+                    Y1 = 0,
+                    Y2 = SystemFonts.MessageFontSize * 2 + 2,
+                    Stretch = Stretch.None
+                };
+                ParentsGridList[parentIndex].Children.Add(verticalLine2);
+                Grid.SetRow(verticalLine2, 1);
+                Grid.SetColumn(verticalLine2, parentColumnIndex + 1);
 
-            Line verticalLine3 = new Line()
+                Line verticalLine3 = new Line()
+                {
+                    Stroke = Brushes.Black,
+                    Visibility = Visibility.Visible,
+                    StrokeThickness = 1,
+                    X1 = 12.5,
+                    X2 = 12.5,
+                    Y1 = 0,
+                    Y2 = SystemFonts.MessageFontSize * 2 + 1,
+                    Stretch = Stretch.None
+                };
+                ParentsGridList[parentIndex].Children.Add(verticalLine3);
+                Grid.SetRow(verticalLine3, 2);
+                Grid.SetColumn(verticalLine3, parentColumnIndex + 1);
+            }
+            else
             {
-                Stroke = Brushes.Black,
-                Visibility = Visibility.Visible,
-                StrokeThickness = 1,
-                X1 = 12.5,
-                X2 = 12.5,
-                Y1 = 0,
-                Y2 = SystemFonts.MessageFontSize * 2 + 1,
-                Stretch = Stretch.None
-            };
-            ParentsGridList[parentIndex].Children.Add(verticalLine3);
-            Grid.SetRow(verticalLine3, 2);
-            Grid.SetColumn(verticalLine3, parentColumnIndex);
+                //Line verticalLine1 = new Line()
+                //{
+                //    Stroke = Brushes.Black,
+                //    Visibility = Visibility.Visible,
+                //    StrokeThickness = 1,
+                //    X1 = 125,
+                //    X2 = 125,
+                //    Y1 = -3,
+                //    Y2 = SystemFonts.MessageFontSize * 2 + 2,
+                //    Stretch = Stretch.None
+                //};
+                //ParentsGridList[parentIndex].Children.Add(verticalLine1);
+                //Grid.SetRow(verticalLine1, 1);
+                //Grid.SetColumn(verticalLine1, parentColumnIndex);
+
+                //Line verticalLine2 = new Line()
+                //{
+                //    Stroke = Brushes.Black,
+                //    Visibility = Visibility.Visible,
+                //    StrokeThickness = 1,
+                //    X1 = 125,
+                //    X2 = 125,
+                //    Y1 = 0,
+                //    Y2 = SystemFonts.MessageFontSize * 2 + 3,
+                //    Stretch = Stretch.None
+                //};
+                //ParentsGridList[parentIndex].Children.Add(verticalLine2);
+                //Grid.SetRow(verticalLine2, 2);
+                //Grid.SetColumn(verticalLine2, parentColumnIndex);
+            }
 
             for (int i = 0; i < GenerationGridList.Count; i++)
             {
@@ -437,135 +496,69 @@ namespace GenealogyTree
                     {
                         int childColumnIndex = Grid.GetColumn(GenerationGridList[i].Children[j]);
                         double middleColumnIndex = ((GenerationGridList[i].ColumnDefinitions.Count - 1) *
-                                              (GenerationGridList[i].ColumnDefinitions.Count / 2.0)) /
-                                              (GenerationGridList[i].ColumnDefinitions.Count);
-                        if (((TextBox)GenerationGridList[i].Children[j]).Name.Substring(0, 5) == "child")
-                        {
-                            Line verticalLine4 = new Line()
-                            {
-                                Stroke = Brushes.Black,
-                                Visibility = Visibility.Visible,
-                                StrokeThickness = 1,
-                                X1 = 125,
-                                X2 = 125,
-                                Y1 = 3,
-                                Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                Stretch = Stretch.None
-                            };
-                            GenerationGridList[i].Children.Add(verticalLine4);
-                            Grid.SetRow(verticalLine4, 0);
-                            Grid.SetColumn(verticalLine4, childColumnIndex);
+                                                (GenerationGridList[i].ColumnDefinitions.Count / 2.0)) /
+                                                (GenerationGridList[i].ColumnDefinitions.Count);
 
-                            if (childColumnIndex < middleColumnIndex)
+                        if (person.Parent.Value.Partner != string.Empty)
+                        {
+                            if (((TextBox)GenerationGridList[i].Children[j]).Name.Substring(0, 5) == "child")
                             {
-                                Line horizontalLine1 = new Line()
+                                Line verticalLine4 = new Line()
                                 {
                                     Stroke = Brushes.Black,
                                     Visibility = Visibility.Visible,
                                     StrokeThickness = 1,
                                     X1 = 125,
-                                    X2 = 250,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Stretch = Stretch.None
-                                };
-                                GenerationGridList[i].Children.Add(horizontalLine1);
-                                Grid.SetRow(horizontalLine1, 0);
-                                Grid.SetColumn(horizontalLine1, childColumnIndex);
-
-                                Line horizontalLine2 = new Line()
-                                {
-                                    Stroke = Brushes.Black,
-                                    Visibility = Visibility.Visible,
-                                    StrokeThickness = 1,
-                                    X1 = 0,
-                                    X2 = 12.5,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Stretch = Stretch.None
-                                };
-                                GenerationGridList[i].Children.Add(horizontalLine2);
-                                Grid.SetRow(horizontalLine2, 0);
-                                Grid.SetColumn(horizontalLine2, childColumnIndex + 1);
-
-                                if(childColumnIndex > 0)
-                                {
-                                    Line horizontalLine3 = new Line()
-                                    {
-                                        Stroke = Brushes.Black,
-                                        Visibility = Visibility.Visible,
-                                        StrokeThickness = 1,
-                                        X1 = 0,
-                                        X2 = 125,
-                                        Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                        Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                        Stretch = Stretch.None
-                                    };
-                                    GenerationGridList[i].Children.Add(horizontalLine3);
-                                    Grid.SetRow(horizontalLine3, 0);
-                                    Grid.SetColumn(horizontalLine3, childColumnIndex);
-
-                                    Line horizontalLine4 = new Line()
-                                    {
-                                        Stroke = Brushes.Black,
-                                        Visibility = Visibility.Visible,
-                                        StrokeThickness = 1,
-                                        X1 = 0,
-                                        X2 = 25,
-                                        Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                        Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                        Stretch = Stretch.None
-                                    };
-                                    GenerationGridList[i].Children.Add(horizontalLine4);
-                                    Grid.SetRow(horizontalLine4, 0);
-                                    Grid.SetColumn(horizontalLine4, childColumnIndex - 1);
-                                }
-                            }
-                            else if (childColumnIndex > middleColumnIndex)
-                            {
-                                Line horizontalLine1 = new Line()
-                                {
-                                    Stroke = Brushes.Black,
-                                    Visibility = Visibility.Visible,
-                                    StrokeThickness = 1,
-                                    X1 = 0,
                                     X2 = 125,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                    Y1 = 3,
                                     Y2 = -SystemFonts.MessageFontSize * 2 - 2,
                                     Stretch = Stretch.None
                                 };
-                                GenerationGridList[i].Children.Add(horizontalLine1);
-                                Grid.SetRow(horizontalLine1, 0);
-                                Grid.SetColumn(horizontalLine1, childColumnIndex);
+                                GenerationGridList[i].Children.Add(verticalLine4);
+                                Grid.SetRow(verticalLine4, 0);
+                                Grid.SetColumn(verticalLine4, childColumnIndex);
 
-                                Line horizontalLine2 = new Line()
+                                if (childColumnIndex < middleColumnIndex)
                                 {
-                                    Stroke = Brushes.Black,
-                                    Visibility = Visibility.Visible,
-                                    StrokeThickness = 1,
-                                    X1 = 0,
-                                    X2 = 25,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Stretch = Stretch.None
-                                };
-                                GenerationGridList[i].Children.Add(horizontalLine2);
-                                Grid.SetRow(horizontalLine2, 0);
-                                Grid.SetColumn(horizontalLine2, childColumnIndex - 1);
+                                    Line horizontalLine1 = new Line()
+                                    {
+                                        Stroke = Brushes.Black,
+                                        Visibility = Visibility.Visible,
+                                        StrokeThickness = 1,
+                                        X1 = 125,
+                                        X2 = 250,
+                                        Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                        Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                        Stretch = Stretch.None
+                                    };
+                                    GenerationGridList[i].Children.Add(horizontalLine1);
+                                    Grid.SetRow(horizontalLine1, 0);
+                                    Grid.SetColumn(horizontalLine1, childColumnIndex);
 
-                                if (childColumnIndex != GenerationGridList[i].ColumnDefinitions.Count - 1)
-                                {
-                                    TextBox nextPerson = (TextBox)GenerationGridList[i].Children.OfType<TextBox>().Cast<TextBox>().First(e => Grid.GetRow(e) == 0 &&
-                                                                                                      Grid.GetColumn(e) == childColumnIndex + 2);
-                                    if(nextPerson.Name.Substring(0, 5) == "child")
+                                    Line horizontalLine2 = new Line()
+                                    {
+                                        Stroke = Brushes.Black,
+                                        Visibility = Visibility.Visible,
+                                        StrokeThickness = 1,
+                                        X1 = 0,
+                                        X2 = 12.5,
+                                        Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                        Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                        Stretch = Stretch.None
+                                    };
+                                    GenerationGridList[i].Children.Add(horizontalLine2);
+                                    Grid.SetRow(horizontalLine2, 0);
+                                    Grid.SetColumn(horizontalLine2, childColumnIndex + 1);
+
+                                    if (childColumnIndex > 0)
                                     {
                                         Line horizontalLine3 = new Line()
                                         {
                                             Stroke = Brushes.Black,
                                             Visibility = Visibility.Visible,
                                             StrokeThickness = 1,
-                                            X1 = 125,
-                                            X2 = 250,
+                                            X1 = 0,
+                                            X2 = 125,
                                             Y1 = -SystemFonts.MessageFontSize * 2 - 2,
                                             Y2 = -SystemFonts.MessageFontSize * 2 - 2,
                                             Stretch = Stretch.None
@@ -580,7 +573,7 @@ namespace GenealogyTree
                                             Visibility = Visibility.Visible,
                                             StrokeThickness = 1,
                                             X1 = 0,
-                                            X2 = 12.5,
+                                            X2 = 25,
                                             Y1 = -SystemFonts.MessageFontSize * 2 - 2,
                                             Y2 = -SystemFonts.MessageFontSize * 2 - 2,
                                             Stretch = Stretch.None
@@ -590,10 +583,7 @@ namespace GenealogyTree
                                         Grid.SetColumn(horizontalLine4, childColumnIndex - 1);
                                     }
                                 }
-                            }
-                            else
-                            {
-                                if(childColumnIndex > 0)
+                                else if (childColumnIndex > middleColumnIndex)
                                 {
                                     Line horizontalLine1 = new Line()
                                     {
@@ -601,7 +591,7 @@ namespace GenealogyTree
                                         Visibility = Visibility.Visible,
                                         StrokeThickness = 1,
                                         X1 = 0,
-                                        X2 = 250,
+                                        X2 = 125,
                                         Y1 = -SystemFonts.MessageFontSize * 2 - 2,
                                         Y2 = -SystemFonts.MessageFontSize * 2 - 2,
                                         Stretch = Stretch.None
@@ -625,90 +615,150 @@ namespace GenealogyTree
                                     Grid.SetRow(horizontalLine2, 0);
                                     Grid.SetColumn(horizontalLine2, childColumnIndex - 1);
 
-                                    Line horizontalLine3 = new Line()
+                                    if (childColumnIndex != GenerationGridList[i].ColumnDefinitions.Count - 1)
                                     {
-                                        Stroke = Brushes.Black,
-                                        Visibility = Visibility.Visible,
-                                        StrokeThickness = 1,
-                                        X1 = 0,
-                                        X2 = 25,
-                                        Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                        Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                        Stretch = Stretch.None
-                                    };
-                                    GenerationGridList[i].Children.Add(horizontalLine3);
-                                    Grid.SetRow(horizontalLine3, 0);
-                                    Grid.SetColumn(horizontalLine3, childColumnIndex + 1);
+                                        TextBox nextPerson = (TextBox)GenerationGridList[i].Children.OfType<TextBox>().Cast<TextBox>().First(e => Grid.GetRow(e) == 0 &&
+                                                                                                            Grid.GetColumn(e) == childColumnIndex + 2);
+                                        if (nextPerson.Name.Substring(0, 5) == "child")
+                                        {
+                                            Line horizontalLine3 = new Line()
+                                            {
+                                                Stroke = Brushes.Black,
+                                                Visibility = Visibility.Visible,
+                                                StrokeThickness = 1,
+                                                X1 = 125,
+                                                X2 = 250,
+                                                Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Stretch = Stretch.None
+                                            };
+                                            GenerationGridList[i].Children.Add(horizontalLine3);
+                                            Grid.SetRow(horizontalLine3, 0);
+                                            Grid.SetColumn(horizontalLine3, childColumnIndex);
+
+                                            Line horizontalLine4 = new Line()
+                                            {
+                                                Stroke = Brushes.Black,
+                                                Visibility = Visibility.Visible,
+                                                StrokeThickness = 1,
+                                                X1 = 0,
+                                                X2 = 12.5,
+                                                Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Stretch = Stretch.None
+                                            };
+                                            GenerationGridList[i].Children.Add(horizontalLine4);
+                                            Grid.SetRow(horizontalLine4, 0);
+                                            Grid.SetColumn(horizontalLine4, childColumnIndex - 1);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (childColumnIndex > 0)
+                                    {
+                                        TextBox nextPerson = (TextBox)GenerationGridList[i].Children.OfType<TextBox>().Cast<TextBox>().First(e => Grid.GetRow(e) == 0 &&
+                                                                                                            Grid.GetColumn(e) == childColumnIndex + 2);
+                                        if (nextPerson.Name.Substring(0, 5) == "child")
+                                        {
+                                            Line horizontalLine1 = new Line()
+                                            {
+                                                Stroke = Brushes.Black,
+                                                Visibility = Visibility.Visible,
+                                                StrokeThickness = 1,
+                                                X1 = 0,
+                                                X2 = 250,
+                                                Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Stretch = Stretch.None
+                                            };
+                                            GenerationGridList[i].Children.Add(horizontalLine1);
+                                            Grid.SetRow(horizontalLine1, 0);
+                                            Grid.SetColumn(horizontalLine1, childColumnIndex);
+
+                                            Line horizontalLine2 = new Line()
+                                            {
+                                                Stroke = Brushes.Black,
+                                                Visibility = Visibility.Visible,
+                                                StrokeThickness = 1,
+                                                X1 = 0,
+                                                X2 = 25,
+                                                Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Stretch = Stretch.None
+                                            };
+                                            GenerationGridList[i].Children.Add(horizontalLine2);
+                                            Grid.SetRow(horizontalLine2, 0);
+                                            Grid.SetColumn(horizontalLine2, childColumnIndex - 1);
+
+                                            Line horizontalLine3 = new Line()
+                                            {
+                                                Stroke = Brushes.Black,
+                                                Visibility = Visibility.Visible,
+                                                StrokeThickness = 1,
+                                                X1 = 0,
+                                                X2 = 25,
+                                                Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Stretch = Stretch.None
+                                            };
+                                            GenerationGridList[i].Children.Add(horizontalLine3);
+                                            Grid.SetRow(horizontalLine3, 0);
+                                            Grid.SetColumn(horizontalLine3, childColumnIndex + 1);
+                                        }
+                                        else
+                                        {
+                                            Line horizontalLine1 = new Line()
+                                            {
+                                                Stroke = Brushes.Black,
+                                                Visibility = Visibility.Visible,
+                                                StrokeThickness = 1,
+                                                X1 = 0,
+                                                X2 = 125,
+                                                Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Stretch = Stretch.None
+                                            };
+                                            GenerationGridList[i].Children.Add(horizontalLine1);
+                                            Grid.SetRow(horizontalLine1, 0);
+                                            Grid.SetColumn(horizontalLine1, childColumnIndex);
+
+                                            Line horizontalLine2 = new Line()
+                                            {
+                                                Stroke = Brushes.Black,
+                                                Visibility = Visibility.Visible,
+                                                StrokeThickness = 1,
+                                                X1 = 0,
+                                                X2 = 25,
+                                                Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                                Stretch = Stretch.None
+                                            };
+                                            GenerationGridList[i].Children.Add(horizontalLine2);
+                                            Grid.SetRow(horizontalLine2, 0);
+                                            Grid.SetColumn(horizontalLine2, childColumnIndex - 1);
+                                        }
+                                    }
                                 }
                             }
-                        }
-                        else if (((TextBox)GenerationGridList[i].Children[j]).Name.Substring(0, 7) == "partner")
-                        {
-                            Line horizontalLine1 = new Line()
+                            else if (((TextBox)GenerationGridList[i].Children[j]).Name.Substring(0, 7) == "partner")
                             {
-                                Stroke = Brushes.Black,
-                                Visibility = Visibility.Visible,
-                                StrokeThickness = 1,
-                                X1 = 0,
-                                X2 = 25,
-                                Y1 = SystemFonts.MessageFontSize,
-                                Y2 = SystemFonts.MessageFontSize,
-                                Stretch = Stretch.None
-                            };
-                            GenerationGridList[i].Children.Add(horizontalLine1);
-                            Grid.SetRow(horizontalLine1, 0);
-                            Grid.SetColumn(horizontalLine1, childColumnIndex - 1);
-
-                            if (childColumnIndex < middleColumnIndex)
-                            {
-                                Line horizontalLine2 = new Line()
+                                Line horizontalLine1 = new Line()
                                 {
                                     Stroke = Brushes.Black,
                                     Visibility = Visibility.Visible,
                                     StrokeThickness = 1,
-                                    X1 = 12.5,
+                                    X1 = 0,
                                     X2 = 25,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                    Y1 = SystemFonts.MessageFontSize,
+                                    Y2 = SystemFonts.MessageFontSize,
                                     Stretch = Stretch.None
                                 };
-                                GenerationGridList[i].Children.Add(horizontalLine2);
-                                Grid.SetRow(horizontalLine2, 0);
-                                Grid.SetColumn(horizontalLine2, childColumnIndex - 1);
+                                GenerationGridList[i].Children.Add(horizontalLine1);
+                                Grid.SetRow(horizontalLine1, 0);
+                                Grid.SetColumn(horizontalLine1, childColumnIndex - 1);
 
-                                Line horizontalLine3 = new Line()
-                                {
-                                    Stroke = Brushes.Black,
-                                    Visibility = Visibility.Visible,
-                                    StrokeThickness = 1,
-                                    X1 = 0,
-                                    X2 = 250,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Stretch = Stretch.None
-                                };
-                                GenerationGridList[i].Children.Add(horizontalLine3);
-                                Grid.SetRow(horizontalLine3, 0);
-                                Grid.SetColumn(horizontalLine3, childColumnIndex);
-
-                                Line horizontalLine4 = new Line()
-                                {
-                                    Stroke = Brushes.Black,
-                                    Visibility = Visibility.Visible,
-                                    StrokeThickness = 1,
-                                    X1 = 0,
-                                    X2 = 12.5,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Stretch = Stretch.None
-                                };
-                                GenerationGridList[i].Children.Add(horizontalLine4);
-                                Grid.SetRow(horizontalLine4, 0);
-                                Grid.SetColumn(horizontalLine4, childColumnIndex + 1);
-                            }
-                            else if (childColumnIndex > middleColumnIndex)
-                            {
-                                if(childColumnIndex == middleColumnIndex + 2)
+                                if (childColumnIndex < middleColumnIndex)
                                 {
                                     Line horizontalLine2 = new Line()
                                     {
@@ -739,26 +789,8 @@ namespace GenealogyTree
                                     GenerationGridList[i].Children.Add(horizontalLine3);
                                     Grid.SetRow(horizontalLine3, 0);
                                     Grid.SetColumn(horizontalLine3, childColumnIndex);
-                                }
-                               
-                                else if(childColumnIndex != GenerationGridList[i].ColumnDefinitions.Count - 1)
-                                {
-                                    Line horizontalLine4 = new Line()
-                                    {
-                                        Stroke = Brushes.Black,
-                                        Visibility = Visibility.Visible,
-                                        StrokeThickness = 1,
-                                        X1 = 0,
-                                        X2 = 250,
-                                        Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                        Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                        Stretch = Stretch.None
-                                    };
-                                    GenerationGridList[i].Children.Add(horizontalLine4);
-                                    Grid.SetRow(horizontalLine4, 0);
-                                    Grid.SetColumn(horizontalLine4, childColumnIndex);
 
-                                    Line horizontalLine5 = new Line()
+                                    Line horizontalLine4 = new Line()
                                     {
                                         Stroke = Brushes.Black,
                                         Visibility = Visibility.Visible,
@@ -769,26 +801,127 @@ namespace GenealogyTree
                                         Y2 = -SystemFonts.MessageFontSize * 2 - 2,
                                         Stretch = Stretch.None
                                     };
-                                    GenerationGridList[i].Children.Add(horizontalLine5);
-                                    Grid.SetRow(horizontalLine5, 0);
-                                    Grid.SetColumn(horizontalLine5, childColumnIndex + 1);
+                                    GenerationGridList[i].Children.Add(horizontalLine4);
+                                    Grid.SetRow(horizontalLine4, 0);
+                                    Grid.SetColumn(horizontalLine4, childColumnIndex + 1);
+                                }
+                                else if (childColumnIndex > middleColumnIndex)
+                                {
+                                    if (childColumnIndex == middleColumnIndex + 2 && 
+                                        childColumnIndex != GenerationGridList[i].ColumnDefinitions.Count - 1)
+                                    {
+                                        Line horizontalLine2 = new Line()
+                                        {
+                                            Stroke = Brushes.Black,
+                                            Visibility = Visibility.Visible,
+                                            StrokeThickness = 1,
+                                            X1 = 12.5,
+                                            X2 = 25,
+                                            Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Stretch = Stretch.None
+                                        };
+                                        GenerationGridList[i].Children.Add(horizontalLine2);
+                                        Grid.SetRow(horizontalLine2, 0);
+                                        Grid.SetColumn(horizontalLine2, childColumnIndex - 1);
 
-                                    Line horizontalLine6 = new Line()
+                                        Line horizontalLine3 = new Line()
+                                        {
+                                            Stroke = Brushes.Black,
+                                            Visibility = Visibility.Visible,
+                                            StrokeThickness = 1,
+                                            X1 = 0,
+                                            X2 = 250,
+                                            Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Stretch = Stretch.None
+                                        };
+                                        GenerationGridList[i].Children.Add(horizontalLine3);
+                                        Grid.SetRow(horizontalLine3, 0);
+                                        Grid.SetColumn(horizontalLine3, childColumnIndex);
+                                    }
+
+                                    else if (childColumnIndex != GenerationGridList[i].ColumnDefinitions.Count - 1)
+                                    {
+                                        Line horizontalLine4 = new Line()
+                                        {
+                                            Stroke = Brushes.Black,
+                                            Visibility = Visibility.Visible,
+                                            StrokeThickness = 1,
+                                            X1 = 0,
+                                            X2 = 250,
+                                            Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Stretch = Stretch.None
+                                        };
+                                        GenerationGridList[i].Children.Add(horizontalLine4);
+                                        Grid.SetRow(horizontalLine4, 0);
+                                        Grid.SetColumn(horizontalLine4, childColumnIndex);
+
+                                        Line horizontalLine5 = new Line()
+                                        {
+                                            Stroke = Brushes.Black,
+                                            Visibility = Visibility.Visible,
+                                            StrokeThickness = 1,
+                                            X1 = 0,
+                                            X2 = 12.5,
+                                            Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Stretch = Stretch.None
+                                        };
+                                        GenerationGridList[i].Children.Add(horizontalLine5);
+                                        Grid.SetRow(horizontalLine5, 0);
+                                        Grid.SetColumn(horizontalLine5, childColumnIndex + 1);
+
+                                        Line horizontalLine6 = new Line()
+                                        {
+                                            Stroke = Brushes.Black,
+                                            Visibility = Visibility.Visible,
+                                            StrokeThickness = 1,
+                                            X1 = 125,
+                                            X2 = 250,
+                                            Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Stretch = Stretch.None
+                                        };
+                                        GenerationGridList[i].Children.Add(horizontalLine6);
+                                        Grid.SetRow(horizontalLine6, 0);
+                                        Grid.SetColumn(horizontalLine6, childColumnIndex - 2);
+
+                                        Line horizontalLine7 = new Line()
+                                        {
+                                            Stroke = Brushes.Black,
+                                            Visibility = Visibility.Visible,
+                                            StrokeThickness = 1,
+                                            X1 = 0,
+                                            X2 = 25,
+                                            Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                            Stretch = Stretch.None
+                                        };
+                                        GenerationGridList[i].Children.Add(horizontalLine7);
+                                        Grid.SetRow(horizontalLine7, 0);
+                                        Grid.SetColumn(horizontalLine7, childColumnIndex - 1);
+                                    }
+                                }
+                                else
+                                {
+                                    Line horizontalLine2 = new Line()
                                     {
                                         Stroke = Brushes.Black,
                                         Visibility = Visibility.Visible,
                                         StrokeThickness = 1,
-                                        X1 = 125,
+                                        X1 = 0,
                                         X2 = 250,
                                         Y1 = -SystemFonts.MessageFontSize * 2 - 2,
                                         Y2 = -SystemFonts.MessageFontSize * 2 - 2,
                                         Stretch = Stretch.None
                                     };
-                                    GenerationGridList[i].Children.Add(horizontalLine6);
-                                    Grid.SetRow(horizontalLine6, 0);
-                                    Grid.SetColumn(horizontalLine6, childColumnIndex - 2);
+                                    GenerationGridList[i].Children.Add(horizontalLine2);
+                                    Grid.SetRow(horizontalLine2, 0);
+                                    Grid.SetColumn(horizontalLine2, childColumnIndex);
 
-                                    Line horizontalLine7 = new Line()
+                                    Line horizontalLine3 = new Line()
                                     {
                                         Stroke = Brushes.Black,
                                         Visibility = Visibility.Visible,
@@ -799,62 +932,47 @@ namespace GenealogyTree
                                         Y2 = -SystemFonts.MessageFontSize * 2 - 2,
                                         Stretch = Stretch.None
                                     };
-                                    GenerationGridList[i].Children.Add(horizontalLine7);
-                                    Grid.SetRow(horizontalLine7, 0);
-                                    Grid.SetColumn(horizontalLine7, childColumnIndex - 1);
+                                    GenerationGridList[i].Children.Add(horizontalLine3);
+                                    Grid.SetRow(horizontalLine3, 0);
+                                    Grid.SetColumn(horizontalLine3, childColumnIndex - 1);
+
+                                    Line horizontalLine4 = new Line()
+                                    {
+                                        Stroke = Brushes.Black,
+                                        Visibility = Visibility.Visible,
+                                        StrokeThickness = 1,
+                                        X1 = 0,
+                                        X2 = 25,
+                                        Y1 = -SystemFonts.MessageFontSize * 2 - 2,
+                                        Y2 = -SystemFonts.MessageFontSize * 2 - 2,
+                                        Stretch = Stretch.None
+                                    };
+                                    GenerationGridList[i].Children.Add(horizontalLine4);
+                                    Grid.SetRow(horizontalLine4, 0);
+                                    Grid.SetColumn(horizontalLine4, childColumnIndex + 1);
                                 }
                             }
-                            else
-                            {
-                                Line horizontalLine2 = new Line()
-                                {
-                                    Stroke = Brushes.Black,
-                                    Visibility = Visibility.Visible,
-                                    StrokeThickness = 1,
-                                    X1 = 0,
-                                    X2 = 250,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Stretch = Stretch.None
-                                };
-                                GenerationGridList[i].Children.Add(horizontalLine2);
-                                Grid.SetRow(horizontalLine2, 0);
-                                Grid.SetColumn(horizontalLine2, childColumnIndex);
-
-                                Line horizontalLine3 = new Line()
-                                {
-                                    Stroke = Brushes.Black,
-                                    Visibility = Visibility.Visible,
-                                    StrokeThickness = 1,
-                                    X1 = 0,
-                                    X2 = 25,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Stretch = Stretch.None
-                                };
-                                GenerationGridList[i].Children.Add(horizontalLine3);
-                                Grid.SetRow(horizontalLine3, 0);
-                                Grid.SetColumn(horizontalLine3, childColumnIndex - 1);
-
-                                Line horizontalLine4 = new Line()
-                                {
-                                    Stroke = Brushes.Black,
-                                    Visibility = Visibility.Visible,
-                                    StrokeThickness = 1,
-                                    X1 = 0,
-                                    X2 = 25,
-                                    Y1 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Y2 = -SystemFonts.MessageFontSize * 2 - 2,
-                                    Stretch = Stretch.None
-                                };
-                                GenerationGridList[i].Children.Add(horizontalLine4);
-                                Grid.SetRow(horizontalLine4, 0);
-                                Grid.SetColumn(horizontalLine4, childColumnIndex + 1);
-                            }
+                        }
+                        else
+                        {
+                            //Line verticalLine2 = new Line()
+                            //{
+                            //    Stroke = Brushes.Black,
+                            //    Visibility = Visibility.Visible,
+                            //    StrokeThickness = 1,
+                            //    X1 = 125,
+                            //    X2 = 125,
+                            //    Y1 = 4,
+                            //    Y2 = -SystemFonts.MessageFontSize * 2,
+                            //    Stretch = Stretch.None
+                            //};
+                            //GenerationGridList[i].Children.Add(verticalLine2);
+                            //Grid.SetRow(verticalLine2, 0);
+                            //Grid.SetColumn(verticalLine2, childColumnIndex);
                         }
                     }
                 }
-            }
+            }*/
         }
 
         private void NameChanged(object sender, TextChangedEventArgs e)

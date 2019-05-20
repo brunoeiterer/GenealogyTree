@@ -7,8 +7,9 @@
         xmlns:math="http://hexinnovation.com/math"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="GenealogyTree" Height="450" 
-        Width="{Binding ActualWidth, Source=BaseGrid}"
+        Title="GenealogyTree" 
+        Height="450" 
+        Width="800"
         WindowStartupLocation="CenterScreen"
         x:Name="MainWindowInstance">
     <Window.Resources>

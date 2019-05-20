@@ -19,6 +19,11 @@ namespace GenealogyTree
         {
             generationList.Add(generation);
 
+            if(generation.ParentsGridList != null)
+            {
+                generation.GenerationChanged += GenerationChangedHandler;
+            }
+
             NewGenerationAddedEventArgs eventArgs = new NewGenerationAddedEventArgs()
             {
                 generation = generation
@@ -58,5 +63,12 @@ namespace GenealogyTree
             Node<Person> child = PersonTree.GetNodeByName(PersonTree.Tree, childName);
             GetGenerationByID(child.Value.GenerationID).AddPartner(childName, partnerName, birthDate, deathDate);
         }
+
+        private void GenerationChangedHandler(object sender, GenerationChangedEventArgs e)
+        {
+            GenerationChanged?.Invoke(sender, e);
+        }
+
+        public event GenerationChangedEventHandler GenerationChanged;
     }
 }
