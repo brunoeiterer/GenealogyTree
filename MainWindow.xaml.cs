@@ -20,7 +20,7 @@ namespace GenealogyTree
     /// </summary>
     public partial class MainWindow : Window
     {
-        //private Canvas ConnectionsCanvas { get; set; }
+        private Grid ConnectionsGrid { get; set; }
         private DockPanel basePanel;
         private Menu menu;
         private Grid treeGrid;
@@ -68,20 +68,20 @@ namespace GenealogyTree
             DockPanel.SetDock(treeGrid, Dock.Top);
 
 
-            //ConnectionsCanvas = new Canvas();
-            //DockPanel.SetDock(ConnectionsGrid, Dock.Top);
+            ConnectionsGrid = new Grid();
+            DockPanel.SetDock(ConnectionsGrid, Dock.Top);
             //ConnectionsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             //ConnectionsGrid.RowDefinitions.Add(new RowDefinition());
             //ConnectionsGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
             //ConnectionsGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
-            //ConnectionsCanvas.Children.Add(treeGrid);
+            ConnectionsGrid.Children.Add(treeGrid);
 
             basePanel = new DockPanel();
             basePanel.SetBinding(DockPanel.WidthProperty, panelWidthBinding);
             this.BaseGrid.Children.Add(menu.BasePanel);
             Grid.SetRow(menu.BasePanel, 0);
 
-            this.MainWindowScrollViewer.Content = treeGrid;
+            this.MainWindowScrollViewer.Content = ConnectionsGrid;
         }
 
         public void AddNewGenerationToTreePanel(object sender, NewGenerationAddedEventArgs e)
@@ -124,11 +124,12 @@ namespace GenealogyTree
                 }
             }
 
-            for (int i = 0; i < treeGrid.Children.Count; i++)
+            for(int i = 0; i < ConnectionsGrid.Children.Count; i++)
             {
-                if (treeGrid.Children[i].GetType() == typeof(Line))
+                if(ConnectionsGrid.Children[i].GetType() == typeof(Line) && 
+                    ((Line)ConnectionsGrid.Children[i]).Name == "Child" + generation.GenerationID.ToString().Replace("-", string.Empty))
                 {
-                    treeGrid.Children.Remove(treeGrid.Children[i]);
+                    ConnectionsGrid.Children.Remove(ConnectionsGrid.Children[i]);
                     i--;
                 }
             }
@@ -154,8 +155,8 @@ namespace GenealogyTree
                     }
                 }
 
-                if (person.Parent.Value.Partner != string.Empty)
-                {
+                //if (person.Parent.Value.Partner != string.Empty)
+                //{
                     Line verticalLine1 = new Line()
                     {
                         Stroke = Brushes.Black,
@@ -167,12 +168,12 @@ namespace GenealogyTree
                         Y2 = SystemFonts.MessageFontSize * 2 + 1,
                         Stretch = Stretch.None
                     };
-                    if(generation.ParentsGridList[parentIndex].Children.Count <= 7)
-                    {
+                    //if(generation.ParentsGridList[parentIndex].Children.Count <= 7)
+                    //{
                         generation.ParentsGridList[parentIndex].Children.Add(verticalLine1);
                         Grid.SetRow(verticalLine1, 0);
                         Grid.SetColumn(verticalLine1, parentColumnIndex + 1);
-                    }
+                    //}
 
 
                     Line verticalLine2 = new Line()
@@ -186,12 +187,12 @@ namespace GenealogyTree
                         Y2 = SystemFonts.MessageFontSize * 2 + 2,
                         Stretch = Stretch.None
                     };
-                    if (generation.ParentsGridList[parentIndex].Children.Count <= 8)
-                    {
+                    //if (generation.ParentsGridList[parentIndex].Children.Count <= 8)
+                    //{
                         generation.ParentsGridList[parentIndex].Children.Add(verticalLine2);
                         Grid.SetRow(verticalLine2, 1);
                         Grid.SetColumn(verticalLine2, parentColumnIndex + 1);
-                    }
+                    //}
 
                     Line verticalLine3 = new Line()
                     {
@@ -204,51 +205,17 @@ namespace GenealogyTree
                         Y2 = SystemFonts.MessageFontSize * 2 + 1,
                         Stretch = Stretch.None
                     };
-                    if (generation.ParentsGridList[parentIndex].Children.Count <= 9)
-                    {
+                    //if (generation.ParentsGridList[parentIndex].Children.Count <= 9)
+                    //{
                         generation.ParentsGridList[parentIndex].Children.Add(verticalLine3);
                         Grid.SetRow(verticalLine3, 2);
                         Grid.SetColumn(verticalLine3, parentColumnIndex + 1);
-                    }
-                }
-                else
-                {
-                    Line verticalLine1 = new Line()
-                    {
-                        Stroke = Brushes.Black,
-                        Visibility = Visibility.Visible,
-                        StrokeThickness = 1,
-                        X1 = 125,
-                        X2 = 125,
-                        Y1 = -3,
-                        Y2 = SystemFonts.MessageFontSize * 2 + 2,
-                        Stretch = Stretch.None
-                    };
-                    if (generation.ParentsGridList[parentIndex].Children.Count <= 7)
-                    {
-                        generation.ParentsGridList[parentIndex].Children.Add(verticalLine1);
-                        Grid.SetRow(verticalLine1, 1);
-                        Grid.SetColumn(verticalLine1, parentColumnIndex);
-                    }
+                //}
+                verticalLine3.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                verticalLine3.Arrange(new Rect(verticalLine3.DesiredSize));
+                verticalLine3.UpdateLayout();
 
-                    Line verticalLine2 = new Line()
-                    {
-                        Stroke = Brushes.Black,
-                        Visibility = Visibility.Visible,
-                        StrokeThickness = 1,
-                        X1 = 125,
-                        X2 = 125,
-                        Y1 = 0,
-                        Y2 = SystemFonts.MessageFontSize * 2 + 3,
-                        Stretch = Stretch.None
-                    };
-                    if (generation.ParentsGridList[parentIndex].Children.Count <= 8)
-                    {
-                        generation.ParentsGridList[parentIndex].Children.Add(verticalLine2);
-                        Grid.SetRow(verticalLine2, 2);
-                        Grid.SetColumn(verticalLine2, parentColumnIndex);
-                    }
-                }
+                Point endPoint = verticalLine3.TranslatePoint(new Point(verticalLine3.X2, verticalLine3.Y2), ConnectionsGrid);
 
                 int generationGridIndex = 0;
                 int textBoxColumnIndex = 0;
@@ -280,7 +247,29 @@ namespace GenealogyTree
                 Grid.SetRow(verticalLine4, 0);
                 Grid.SetColumn(verticalLine4, textBoxColumnIndex);
 
-                if(person.Value.Partner != string.Empty)
+                verticalLine4.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                verticalLine4.Arrange(new Rect(verticalLine4.DesiredSize));
+                verticalLine4.UpdateLayout();
+
+                Point startPoint = verticalLine4.TranslatePoint(new Point(verticalLine4.X2, verticalLine4.Y2), ConnectionsGrid);
+
+                Line horizontalLine1 = new Line()
+                {
+                    Stroke = Brushes.Black,
+                    Visibility = Visibility.Visible,
+                    StrokeThickness = 1,
+                    X1 = startPoint.X,
+                    X2 = endPoint.X,
+                    Y1 = startPoint.Y,
+                    Y2 = endPoint.Y,
+                    Stretch = Stretch.None,
+                    Name = "Child" + generation.GenerationID.ToString().Replace("-", string.Empty)
+                };
+                ConnectionsGrid.Children.Add(horizontalLine1);
+                //Grid.SetRow(horizontalLine1, 0);
+                //Grid.SetColumn(horizontalLine1, textBoxColumnIndex + 1);
+
+                if (person.Value.Partner != string.Empty)
                 {
                     Line horizontalLine = new Line()
                     {
@@ -336,6 +325,7 @@ namespace GenealogyTree
                     }
                 }
 
+                /*
                 int generationGridIndex = 0;
                 int firstTextBoxColumnIndex = 0;
                 int lastTextBoxColumnIndex = 0;
@@ -380,7 +370,7 @@ namespace GenealogyTree
                 };
                 Grid.SetColumnSpan(horizontalLine, columnSpan);
                 Grid.SetRow(horizontalLine, 0);
-                generation.GenerationGridList[generation.GenerationGridList.IndexOf(generationGrid)].Children.Add(horizontalLine);
+                */
             }
         }
     }
