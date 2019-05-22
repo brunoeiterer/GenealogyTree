@@ -11,7 +11,8 @@
         Height="450" 
         Width="800"
         WindowStartupLocation="CenterScreen"
-        x:Name="MainWindowInstance">
+        x:Name="MainWindowInstance"
+        SizeChanged="MainWindowInstance_SizeChanged">
     <Window.Resources>
         <math:MathConverter x:Key="math" />
     </Window.Resources>
