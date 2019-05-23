@@ -32,6 +32,7 @@ namespace GenealogyTree
             menu.PartnerAdded += PartnerAdded;
             menu.SaveRequested += generationManager.Save;
             menu.OpenRequested += generationManager.Open;
+            menu.FirstChildAddedEvent += generationManager.FirstChildAdded;
 
             PersonTree.NewChildAddedEvent += NewChildAdded;
 

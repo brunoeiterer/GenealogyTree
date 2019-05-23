@@ -91,6 +91,7 @@ namespace GenealogyTree
         private void AddChildButton_Click(object sender, RoutedEventArgs e)
         {
             AddChildWindow addChildWindow = new AddChildWindow();
+            addChildWindow.FirstChildAddedEvent += FirstChildAdded;
             addChildWindow.Show();
         }
 
@@ -167,5 +168,14 @@ namespace GenealogyTree
         }
 
         public event PartnerAddedEventHandler PartnerAdded;
+
+        private void FirstChildAdded(object sender, NewChildAddedEventArgs<Person> e)
+        {
+            NewChildAddedEventArgs<Person> eventArgs = new NewChildAddedEventArgs<Person>();
+            eventArgs.child = e.child;
+            FirstChildAddedEvent?.Invoke(this, eventArgs);
+        }
+
+        public event NewChildAddedEventHandler<Person> FirstChildAddedEvent;
     }
 }

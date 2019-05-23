@@ -41,6 +41,12 @@ namespace GenealogyTree
             return generationList[index];
         }
 
+        public void FirstChildAdded(object sender, NewChildAddedEventArgs<Person> e)
+        {
+            AddGeneration(new Generation(null));
+            generationList[generationList.Count - 1].AddPerson(PersonTree.GetNodeByName(PersonTree.Tree, e.child.Name));
+        }
+
         public void AddChild(Node<Person> child)
         {
             Guid ParentID = child.Parent.Value.GenerationID;
