@@ -1,6 +1,8 @@
-﻿namespace GenealogyTree
+﻿using System;
+
+namespace GenealogyTree
 {
-    public class OpenRequestedEventArgs
+    public class OpenRequestedEventArgs : EventArgs
     {
         public string filename;
     }
