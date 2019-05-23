@@ -45,6 +45,7 @@ namespace GenealogyTree
         {
             AddGeneration(new Generation(null));
             generationList[generationList.Count - 1].AddPerson(PersonTree.GetNodeByName(PersonTree.Tree, e.child.Name));
+            PersonTree.Tree.Value.GenerationID = generationList[generationList.Count - 1].GenerationID;
         }
 
         public void AddChild(Node<Person> child)
@@ -99,6 +100,8 @@ namespace GenealogyTree
 
         public void Open(object sender, OpenRequestedEventArgs e)
         {
+            OpenRequestedEvent?.Invoke(this, new OpenRequestedEventArgs());
+
             BinaryFormatter formatter = new BinaryFormatter();
             Node<Person> tempTree;
             using (Stream stream = File.Open(e.filename, FileMode.Open))
@@ -106,6 +109,8 @@ namespace GenealogyTree
                 stream.Position = 0;
                 tempTree = (Node<Person>)formatter.Deserialize(stream);
             }
+
+            generationList.Clear();
 
             PersonTree.Tree.Value.Name = tempTree.Value.Name;
             PersonTree.Tree.Value.Partner = tempTree.Value.Partner;
@@ -123,6 +128,8 @@ namespace GenealogyTree
 
             tempTree.Traverse(tempTree, action);
         }
+
+        public event OpenRequestedEventHandler OpenRequestedEvent;
 
         private void LoadTree(Person person, Node<Person> node)
         {

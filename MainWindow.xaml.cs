@@ -27,6 +27,7 @@ namespace GenealogyTree
             generationManager = new GenerationManager();
             generationManager.GenerationChanged += ConnectChildrenToParents;
             generationManager.NewGenerationAdded += AddNewGenerationToTreePanel;
+            generationManager.OpenRequestedEvent += ClearGrid;
 
             menu = new Menu();
             menu.PartnerAdded += PartnerAdded;
@@ -295,6 +296,15 @@ namespace GenealogyTree
             for(int i = 1; i < generationManager.generationList.Count; i++)
             {
                 ConnectChildrenToParents((object)generationManager.generationList[i], new GenerationChangedEventArgs());
+            }
+        }
+
+        private void ClearGrid(object sender, OpenRequestedEventArgs e)
+        {
+            for(int i = 0; i < treeGrid.Children.Count; i++)
+            {
+                treeGrid.Children.Remove(treeGrid.Children[i]);
+                i--;
             }
         }
     }
