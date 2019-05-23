@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GenealogyTree
 {
@@ -207,11 +206,6 @@ namespace GenealogyTree
                 GenerationGridList[generationGridIndex].Children.Add(deathDateLabelList[deathDateLabelList.Count - 1]);
             }
 
-            //if (ParentsGridList != null)
-            //{
-            //    ConnectChildrenToParents(person);
-            //}
-
             GenerationChangedEventArgs eventArgs = new GenerationChangedEventArgs();
             GenerationChanged?.Invoke(this, eventArgs);
         }
@@ -327,8 +321,6 @@ namespace GenealogyTree
             Grid.SetColumn(deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
             Grid.SetRow(deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1], 2);
 
-            //ConnectChildrenToParents(PersonTree.GetNodeByName(PersonTree.Tree, childName));
-
             GenerationChangedEventArgs eventArgs = new GenerationChangedEventArgs();
             GenerationChanged?.Invoke(this, eventArgs);
     }
@@ -338,7 +330,6 @@ namespace GenealogyTree
         private void AddTextBox(string value, string type)
         {
             textboxlist.Add(new TextBox());
-
             textboxlist[textboxlist.Count - 1].Text = value;
             textboxlist[textboxlist.Count - 1].HorizontalAlignment = HorizontalAlignment.Center;
             textboxlist[textboxlist.Count - 1].VerticalAlignment = VerticalAlignment.Center;
@@ -369,7 +360,6 @@ namespace GenealogyTree
                 };
             }
 
-
             birthDateLabelList.Add(newLabel);
         }
 
@@ -394,8 +384,6 @@ namespace GenealogyTree
                     Margin = new Thickness(0, 0, 0, 25)
                 };
             }
-
-
             deathDateLabelList.Add(newLabel);
         }
 
