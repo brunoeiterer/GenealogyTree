@@ -121,7 +121,6 @@ namespace GenealogyTree
                     if (errorMessage == string.Empty)
                     {
                         PersonTree.Tree.Value = newPerson;
-                        PersonTree.Tree.SubscribeToNewChildAdded(PersonTree.NewChildAdded);
                         NewChildAddedEventArgs<Person> eventArgs = new NewChildAddedEventArgs<Person>();
                         eventArgs.child = PersonTree.Tree.Value;
                         FirstChildAddedEvent?.Invoke(this, eventArgs);
