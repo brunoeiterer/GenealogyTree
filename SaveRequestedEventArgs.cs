@@ -1,6 +1,8 @@
-﻿namespace GenealogyTree
+﻿using System;
+
+namespace GenealogyTree
 {
-    public class SaveRequestedEventArgs
+    public class SaveRequestedEventArgs : EventArgs
     {
         public string filename;
     }
