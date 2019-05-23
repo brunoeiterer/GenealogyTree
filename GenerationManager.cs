@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace GenealogyTree
 {
@@ -48,7 +50,16 @@ namespace GenealogyTree
             if (generationList.IndexOf(GetGenerationByID(ParentID)) == generationList.Count - 1)
             {
                 AddGeneration(new Generation(generationList[generationList.Count - 1].GenerationGridList));
-                child.Value.GenerationID = generationList[generationList.Count - 1].GenerationID;
+
+                if(child.Value.GenerationID == Guid.Empty)
+                {
+                    child.Value.GenerationID = generationList[generationList.Count - 1].GenerationID;
+                }
+                else
+                {
+                    generationList[generationList.Count - 1].GenerationID = child.Value.GenerationID;
+                }
+                
                 generationList[generationList.Count - 1].AddPerson(child);
             }
             else
@@ -70,5 +81,53 @@ namespace GenealogyTree
         }
 
         public event GenerationChangedEventHandler GenerationChanged;
+
+        public void Save(object sender, SaveRequestedEventArgs e)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            using (Stream stream = File.Create(e.filename))
+            {
+                Node<Person> tempTree = PersonTree.Tree;
+                formatter.Serialize(stream, tempTree);
+            }
+        }
+
+        public void Open(object sender, OpenRequestedEventArgs e)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            Node<Person> tempTree;
+            using (Stream stream = File.Open(e.filename, FileMode.Open))
+            {
+                stream.Position = 0;
+                tempTree = (Node<Person>)formatter.Deserialize(stream);
+            }
+
+            PersonTree.Tree.Value.Name = tempTree.Value.Name;
+            PersonTree.Tree.Value.Partner = tempTree.Value.Partner;
+            PersonTree.Tree.Value.BirthDate = tempTree.Value.BirthDate;
+            PersonTree.Tree.Value.DeathDate = tempTree.Value.DeathDate;
+            PersonTree.Tree.Value.PartnerBirthDate = tempTree.Value.PartnerBirthDate;
+            PersonTree.Tree.Value.PartnerDeathDate = tempTree.Value.PartnerDeathDate;
+
+            this.AddGeneration(new Generation(null));
+            this.generationList[generationList.Count - 1].GenerationID = tempTree.Value.GenerationID;
+            PersonTree.Tree.Value.GenerationID = this.generationList[0].GenerationID;
+            this.generationList[generationList.Count - 1].AddPerson(PersonTree.Tree);
+
+            Action<Person, Node<Person>> action = LoadTree;
+
+            tempTree.Traverse(tempTree, action);
+        }
+
+        private void LoadTree(Person person, Node<Person> node)
+        {
+            if(node.Parent != null)
+            {
+                Node<Person> parent = PersonTree.GetNodeByName(PersonTree.Tree, node.Parent.Value.Name);
+                parent.AddChild(person, node.Parent);
+                parent.Children[parent.Children.Count - 1].SubscribeToNewChildAdded(PersonTree.NewChildAdded);
+            }
+        }
     }
 }

@@ -24,7 +24,6 @@ namespace GenealogyTree
         private DockPanel basePanel;
         private Menu menu;
         private Grid treeGrid;
-        private PersonTree personTree;
         private GenerationManager generationManager;
 
         public MainWindow()
@@ -35,18 +34,19 @@ namespace GenealogyTree
             menu.PartnerAdded += PartnerAdded;
 
             generationManager = new GenerationManager();
-            generationManager.AddGeneration(new Generation(null));
+            //generationManager.AddGeneration(new Generation(null));
             generationManager.GenerationChanged += ConnectChildrenToParents;
+            menu.SaveRequested += generationManager.Save;
+            menu.OpenRequested += generationManager.Open;
 
-            personTree = new PersonTree();
-            PersonTree.Tree.Value.Name = "test";
-            PersonTree.Tree.Value.Partner = "test2";
-            PersonTree.Tree.Value.BirthDate = new Nullable<DateTime>(DateTime.Now);
-            PersonTree.Tree.Value.DeathDate = new Nullable<DateTime>(DateTime.Now);
-            PersonTree.Tree.Value.GenerationID = generationManager.generationList[0].GenerationID;
+            //PersonTree.Tree.Value.Name = "test";
+            //PersonTree.Tree.Value.Partner = "test2";
+            //PersonTree.Tree.Value.BirthDate = new Nullable<DateTime>(DateTime.Now);
+            //PersonTree.Tree.Value.DeathDate = new Nullable<DateTime>(DateTime.Now);
+            //PersonTree.Tree.Value.GenerationID = generationManager.generationList[0].GenerationID;
             PersonTree.NewChildAddedEvent += NewChildAdded;
 
-            generationManager.generationList[generationManager.generationList.Count - 1].AddPerson(PersonTree.Tree);
+            //generationManager.generationList[generationManager.generationList.Count - 1].AddPerson(PersonTree.Tree);
             generationManager.NewGenerationAdded += AddNewGenerationToTreePanel;
 
 
@@ -58,13 +58,13 @@ namespace GenealogyTree
             };
             
             treeGrid = new Grid();
-            treeGrid.Children.Add(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid);
+            //treeGrid.Children.Add(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid);
             treeGrid.ColumnDefinitions.Add(new ColumnDefinition());
             treeGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
             treeGrid.RowDefinitions.Add(new RowDefinition());
             treeGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Auto);
-            Grid.SetRow(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid, 0);
-            Grid.SetColumn(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid, 0);
+            //Grid.SetRow(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid, 0);
+            //Grid.SetColumn(generationManager.generationList[generationManager.generationList.Count - 1].BaseGrid, 0);
             DockPanel.SetDock(treeGrid, Dock.Top);
 
 

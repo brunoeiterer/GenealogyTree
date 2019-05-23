@@ -36,5 +36,7 @@
     <System:String x:Key="AddPartnerWindowDateFormatErrorMessageBoxTitle">Erro - data inválida</System:String>
     <System:String x:Key="MenuEmptyChildListError">Erro - todos os membros da família possuem companheiros</System:String>
     <System:String x:Key="MenuEmptyChildListErrorMessageBoxTile">Erro - nenhum membro da família disponível</System:String>
+    <System:String x:Key="SaveButtonToolTip">Salvar</System:String>
+    <System:String x:Key="OpenButtonToolTip">Abrir</System:String>
 
 </ResourceDictionary>

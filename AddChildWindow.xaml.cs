@@ -15,7 +15,7 @@ namespace GenealogyTree
 
             parentList = new ObservableCollection<string>();
 
-            Action<Person> AddToParentListDelegate;
+            Action<Person, Node<Person>> AddToParentListDelegate;
             AddToParentListDelegate = AddToParentList;
             PersonTree.Tree.Traverse(PersonTree.Tree, AddToParentListDelegate);
 
@@ -138,7 +138,7 @@ namespace GenealogyTree
             }
         }
 
-        private void AddToParentList(Person person)
+        private void AddToParentList(Person person, Node<Person> node)
         {
             parentList.Add(person.Name);
 

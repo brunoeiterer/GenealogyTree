@@ -36,7 +36,9 @@
     <System:String x:Key="AddPartnerWindowDateFormatErrorMessageBoxTitle">Error - invalid date format</System:String>
     <System:String x:Key="MenuEmptyChildListError">Error - all family members already have partners</System:String>
     <System:String x:Key="MenuEmptyChildListErrorMessageBoxTile">Error - no family members available</System:String>
-    
+    <System:String x:Key="SaveButtonToolTip">Save</System:String>
+    <System:String x:Key="OpenButtonToolTip">Open</System:String>
+
 
 
 </ResourceDictionary>

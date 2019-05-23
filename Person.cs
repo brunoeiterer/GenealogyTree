@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace GenealogyTree
 {
+    [Serializable]
     public class Person
     {
         public string Name { get; set; }

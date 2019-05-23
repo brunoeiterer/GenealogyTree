@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Microsoft.Win32;
 
 namespace GenealogyTree
 {
@@ -14,6 +15,8 @@ namespace GenealogyTree
         public DockPanel BasePanel { get; private set; }
         public Button AddChildButton { get; private set; }
         public Button AddPartnerButton { get; private set; }
+        public Button SaveButton { get; private set; }
+        public Button OpenButton { get; private set; }
         private readonly LanguagesAvailable languagesAvailable;
         private readonly ResourceDictionary languageResources;
         public ComboBox LanguageComboBox { get; private set; }
@@ -42,6 +45,22 @@ namespace GenealogyTree
             AddPartnerButton.Click += AddPartnerButton_Click;
             DockPanel.SetDock(AddPartnerButton, Dock.Left);
 
+            SaveButton = new Button()
+            {
+                Content = "💾"
+            };
+            SaveButton.SetResourceReference(Button.ToolTipProperty, "SaveButtonToolTip");
+            SaveButton.Click += SaveButton_Click;
+            DockPanel.SetDock(SaveButton, Dock.Left);
+
+            OpenButton = new Button()
+            {
+                Content = "📂"
+            };
+            OpenButton.SetResourceReference(Button.ToolTipProperty, "LoadButtonToolTip");
+            OpenButton.Click += OpenButton_Click;
+            DockPanel.SetDock(OpenButton, Dock.Left);
+
             languagesAvailable = new LanguagesAvailable();
 
             LanguageComboBox = new ComboBox()
@@ -66,6 +85,8 @@ namespace GenealogyTree
             BasePanel.SetBinding(StackPanel.WidthProperty, basePanelWidthBinding);
             BasePanel.Children.Add(AddChildButton);
             BasePanel.Children.Add(AddPartnerButton);
+            BasePanel.Children.Add(SaveButton);
+            BasePanel.Children.Add(OpenButton);
             BasePanel.Children.Add(LanguageComboBox);
             DockPanel.SetDock(BasePanel, Dock.Top);
         }
@@ -91,6 +112,42 @@ namespace GenealogyTree
             }
 
         }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.DefaultExt = ".bin";
+            saveFileDialog.Filter = "Genealogy tree binary files (.bin)|*.bin";
+            Nullable<bool> result = saveFileDialog.ShowDialog();
+
+            if(result == true)
+            {
+                string filename = saveFileDialog.FileName;
+                SaveRequestedEventArgs eventArgs = new SaveRequestedEventArgs();
+                eventArgs.filename = filename;
+                SaveRequested?.Invoke(this, eventArgs);
+            }
+        }
+
+        public event SaveRequestedEventHandler SaveRequested;
+
+        private void OpenButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.DefaultExt = ".bin";
+            openFileDialog.Filter = "Genealogy tree binary files (.bin)|*.bin";
+            Nullable<bool> result = openFileDialog.ShowDialog();
+
+            if(result == true)
+            {
+                string filename = openFileDialog.FileName;
+                OpenRequestedEventArgs eventArgs = new OpenRequestedEventArgs();
+                eventArgs.filename = filename;
+                OpenRequested?.Invoke(this, eventArgs);
+            }
+        }
+
+        public event OpenRequestedEventHandler OpenRequested;
 
         private void LanguageChanged(object sender, SelectionChangedEventArgs e)
         {

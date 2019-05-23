@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace GenealogyTree
 {
+    [Serializable]
     class PersonTree
     {
-        public static Node<Person> Tree {get; private set;}
+        
+        public static Node<Person> Tree {get; set;}
 
         static PersonTree()
         {

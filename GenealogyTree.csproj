@@ -87,6 +87,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="OpenRequestedEventArgs.cs" />
+    <Compile Include="SaveRequestedEventArgs.cs" />
     <Compile Include="GenerationChangedEventArgs.cs" />
     <Compile Include="PartnerAddedEventArgs.cs" />
     <Compile Include="NewChildAddEventArgs.cs" />

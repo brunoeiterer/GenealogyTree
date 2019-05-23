@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace GenealogyTree
 {
+    [Serializable]
     public class Node<T>
     {
         public T Value { get; set; }
@@ -41,9 +42,9 @@ namespace GenealogyTree
             Children.Remove(node);
         }
 
-        public void Traverse(Node<T> node, Action<T> visitor)
+        public void Traverse(Node<T> node, Action<T, Node<T>> visitor)
         {
-            visitor(node.Value);
+            visitor(node.Value, node);
             foreach(Node<T> child in node.Children)
             {
                 Traverse(child, visitor);
