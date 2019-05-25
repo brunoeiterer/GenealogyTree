@@ -6,6 +6,9 @@ Simple Windows app to create a genealogy tree.
 ## Requirements
 To run the app Windows 10 and [.NET Framework 4.7.2 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net472) are required. Other versions of Windows and .NET Framework Runtime might work but are not tested.
 
+## Download
+Download the Zip (.zip) file from the [latest release](https://github.com/brunoeiterer/GenealogyTree/releases/latest), extract it and run the executable (.exe) file.
+
 ## How to use
 The app is mostly controlled by the menu buttons on top. There are six buttons in total:
 * Add Child (👶): Adds one child to the tree. It is required to set the child parent (except when the tree is empty) and the child name. Optional fields are the child birth and death dates, the partner name, birth and death dates.
@@ -31,6 +34,9 @@ Aplicativo para gerar árvores genealógicas para Windows.
 
 ## Requisitos
 Para rodar o aplicativo o Windows 10 e [.NET Framework 4.7.2 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net472) são necessários. Outras versões do Windows e do .NET Framework Runtime podem functionar mas não foram testadas.
+
+## Download
+Baixe  a [última versão](https://github.com/brunoeiterer/GenealogyTree/releases/latest) do arquivo Zip (.zip), extraia e abra o executável (.exe).
 
 ## Como utilizar
 O aplicativo é controlado principalmente por botões no menu que fica no topo. São seis botões no total:
