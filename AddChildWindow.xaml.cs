@@ -56,7 +56,7 @@ namespace GenealogyTree
                         }
                         else
                         {
-                            errorMessage += (string)FindResource("AddChildWindowBirthDateFormatError");
+                            errorMessage += "\n" + (string)FindResource("AddChildWindowBirthDateFormatError");
                         }
                     }
 
@@ -97,7 +97,7 @@ namespace GenealogyTree
                             }
                             else
                             {
-                                errorMessage += "\n" + (string)FindResource("AddChildWindowPartnerBirthDateFormatError");
+                                errorMessage += (string)FindResource("AddChildWindowPartnerBirthDateFormatError");
                             }
                         }
                         try
@@ -144,6 +144,11 @@ namespace GenealogyTree
                         DateTime birthDate;
                         DateTime deathDate;
 
+                        if (PersonTree.GetNodeByName(PersonTree.Tree, this.NewPersonName.Text) != null)
+                        {
+                            errorMessage += Application.Current.Resources["AddChildWindowDuplicatedNameError"];
+                        }
+
                         try
                         {
                             birthDate = DateTime.ParseExact(this.NewPersonBirthDate.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None);
@@ -157,7 +162,7 @@ namespace GenealogyTree
                             }
                             else
                             {
-                                errorMessage += (string)FindResource("AddChildWindowBirthDateFormatError");
+                                errorMessage += "\n" + (string)FindResource("AddChildWindowBirthDateFormatError");
                             }
                         }
 
@@ -184,6 +189,11 @@ namespace GenealogyTree
 
                             DateTime partnerBirthDate;
                             DateTime partnerDeathDate;
+
+                            if (PersonTree.GetNodeByName(PersonTree.Tree, this.NewPersonPartnerName.Text) != null)
+                            {
+                                errorMessage += "\n" + Application.Current.Resources["AddChildWindowDuplicatedPartnerNameError"];
+                            }
 
                             try
                             {
@@ -227,7 +237,11 @@ namespace GenealogyTree
                         }
                         else
                         {
-                            MessageBox.Show(errorMessage, (string)FindResource("AddChildWindowDateFormatErrorMessageBoxTitle"));
+                            if (errorMessage.Substring(0, 1) == "\n")
+                            {
+                                errorMessage = errorMessage.Substring(1, errorMessage.Length - 1);
+                            }
+                            MessageBox.Show(errorMessage, (string)FindResource("AddChildWindowErrorMessageBoxTitle"));
                         }
                     }
                     else

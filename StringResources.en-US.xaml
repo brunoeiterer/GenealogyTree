@@ -15,11 +15,13 @@
     <System:String x:Key="AddChildWindowPartnerBirthDateLabel">Partner Birth Date</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateLabel">Partner Death Date</System:String>
     <System:String x:Key="AddChildWindowButton">Add</System:String>
+    <System:String x:Key="AddChildWindowDuplicatedNameError">The name is already being used</System:String>
+    <System:String x:Key="AddChildWindowDuplicatedPartnerNameError">The partner name is already being used</System:String>
     <System:String x:Key="AddChildWindowBirthDateFormatError">The birth date is invalid.</System:String>
     <System:String x:Key="AddChildWindowDeathDateFormatError">The death date is invalid.</System:String>
     <System:String x:Key="AddChildWindowPartnerBirthDateFormatError">The partner birth date is invalid.</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateFormatError">The partner death date is invalid.</System:String>
-    <System:String x:Key="AddChildWindowDateFormatErrorMessageBoxTitle">Error - invalid date format</System:String>
+    <System:String x:Key="AddChildWindowErrorMessageBoxTitle">Error</System:String>
     <System:String x:Key="AddChildWindowEmptyParentPartnerError">Parent must have a partner</System:String>
     <System:String x:Key="AddChildWindowEmptyParentPartnerErrorMessageBoxTitle">Error - parent has no partner</System:String>
     <System:String x:Key="AddPartnerButtonToolTip">Add partner</System:String>
