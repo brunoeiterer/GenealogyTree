@@ -674,11 +674,19 @@ namespace GenealogyTree
                     generationGrid.Children.Remove(birthDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
                     generationGrid.Children.Remove(deathDateLabelList[textboxlist.IndexOf(childTextBox)]);
                     generationGrid.Children.Remove(deathDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
+                    generationGrid.Children.Remove(birthDateTextBoxList[textboxlist.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(birthDateTextBoxList[textboxlist.IndexOf(partnerTextBox)]);
+                    generationGrid.Children.Remove(deathDateTextBoxList[textboxlist.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(deathDateTextBoxList[textboxlist.IndexOf(partnerTextBox)]);
 
                     birthDateLabelList.Remove(birthDateLabelList[textboxlist.IndexOf(childTextBox)]);
                     birthDateLabelList.Remove(birthDateLabelList[textboxlist.IndexOf(partnerTextBox) - 1]);
                     deathDateLabelList.Remove(deathDateLabelList[textboxlist.IndexOf(childTextBox)]);
                     deathDateLabelList.Remove(deathDateLabelList[textboxlist.IndexOf(partnerTextBox) - 1]);
+                    birthDateTextBoxList.Remove(birthDateTextBoxList[textboxlist.IndexOf(childTextBox)]);
+                    birthDateTextBoxList.Remove(birthDateTextBoxList[textboxlist.IndexOf(partnerTextBox) - 1]);
+                    deathDateTextBoxList.Remove(deathDateTextBoxList[textboxlist.IndexOf(childTextBox)]);
+                    deathDateTextBoxList.Remove(deathDateTextBoxList[textboxlist.IndexOf(partnerTextBox) - 1]);
 
                     generationGrid.Children.Remove(textboxlist[textboxlist.IndexOf(childTextBox)]);
                     generationGrid.Children.Remove(textboxlist[textboxlist.IndexOf(partnerTextBox)]);
@@ -726,10 +734,14 @@ namespace GenealogyTree
 
                     generationGrid.Children.Remove(birthDateLabelList[textboxlist.IndexOf(childTextBox)]);
                     generationGrid.Children.Remove(deathDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(birthDateTextBoxList[textboxlist.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(deathDateTextBoxList[textboxlist.IndexOf(childTextBox)]);
                     generationGrid.Children.Remove(textboxlist[textboxlist.IndexOf(childTextBox)]);
 
                     birthDateLabelList.Remove(birthDateLabelList[textboxlist.IndexOf(childTextBox)]);
                     deathDateLabelList.Remove(deathDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    birthDateTextBoxList.Remove(birthDateTextBoxList[textboxlist.IndexOf(childTextBox)]);
+                    deathDateTextBoxList.Remove(deathDateTextBoxList[textboxlist.IndexOf(childTextBox)]);
                     textboxlist.Remove(childTextBox);
 
                     generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
@@ -772,9 +784,13 @@ namespace GenealogyTree
 
                 generationGrid.Children.Remove(birthDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
                 generationGrid.Children.Remove(deathDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
+                generationGrid.Children.Remove(birthDateTextBoxList[textboxlist.IndexOf(partnerTextBox)]);
+                generationGrid.Children.Remove(deathDateTextBoxList[textboxlist.IndexOf(partnerTextBox)]);
 
                 birthDateLabelList.Remove(birthDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
                 deathDateLabelList.Remove(deathDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
+                birthDateTextBoxList.Remove(birthDateTextBoxList[textboxlist.IndexOf(partnerTextBox)]);
+                deathDateTextBoxList.Remove(deathDateTextBoxList[textboxlist.IndexOf(partnerTextBox)]);
 
                 generationGrid.Children.Remove(textboxlist[textboxlist.IndexOf(partnerTextBox)]);
                 textboxlist.Remove(partnerTextBox);
