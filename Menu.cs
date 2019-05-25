@@ -55,7 +55,7 @@ namespace GenealogyTree
             {
                 Content = "📂"
             };
-            OpenButton.SetResourceReference(Button.ToolTipProperty, "LoadButtonToolTip");
+            OpenButton.SetResourceReference(Button.ToolTipProperty, "OpenButtonToolTip");
             OpenButton.Click += OpenButton_Click;
             DockPanel.SetDock(OpenButton, Dock.Left);
 
