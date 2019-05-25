@@ -38,5 +38,10 @@
     <System:String x:Key="MenuEmptyChildListErrorMessageBoxTile">Erro - nenhum membro da família disponível</System:String>
     <System:String x:Key="SaveButtonToolTip">Salvar</System:String>
     <System:String x:Key="OpenButtonToolTip">Abrir</System:String>
+    <System:String x:Key="RemoveChildButtonToolTip">Remover pessoa</System:String>
+    <System:String x:Key="RemoveChildWindowChildLabel">Pessoa</System:String>
+    <System:String x:Key="RemoveChildWindowButton">Remover</System:String>
+    <System:String x:Key="MenuEmptyRemoveChildListError">Erro - não há ninguém na árvore</System:String>
+    <System:String x:Key="MenuEmptyRemoveChildListErrorMessageBoxTitle">Erro - árvore vazia</System:String>
 
 </ResourceDictionary>

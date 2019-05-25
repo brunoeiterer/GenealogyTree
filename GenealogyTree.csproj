@@ -61,12 +61,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RemoveChildWindow.xaml.cs">
+      <DependentUpon>RemoveChildWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddPartnerWindow.xaml.cs">
       <DependentUpon>AddPartnerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="AddChildWindow.xaml.cs">
       <DependentUpon>AddChildWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="RemoveChildWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="AddPartnerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -87,6 +94,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ChildRemovedEventArgs.cs" />
     <Compile Include="OpenRequestedEventArgs.cs" />
     <Compile Include="SaveRequestedEventArgs.cs" />
     <Compile Include="GenerationChangedEventArgs.cs" />

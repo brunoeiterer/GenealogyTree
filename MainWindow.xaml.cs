@@ -34,6 +34,7 @@ namespace GenealogyTree
             menu.SaveRequested += generationManager.Save;
             menu.OpenRequested += generationManager.Open;
             menu.FirstChildAddedEvent += generationManager.FirstChildAdded;
+            menu.ChildRemovedEvent += ChildRemoved;
 
             PersonTree.NewChildAddedEvent += NewChildAdded;
 
@@ -92,11 +93,14 @@ namespace GenealogyTree
                 foreach (TextBox textBox in grid.Children.OfType<TextBox>())
                 {
                     Node<Person> nextPerson = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text);
-                    if (nextPerson.Value.GenerationID == generation.GenerationID)
+                    if(nextPerson != null)
                     {
-                        if(!personList.Any(item => item.Value.Name == nextPerson.Value.Name))
+                        if (nextPerson.Value.GenerationID == generation.GenerationID)
                         {
-                            personList.Add(nextPerson);
+                            if (!personList.Any(item => item.Value.Name == nextPerson.Value.Name))
+                            {
+                                personList.Add(nextPerson);
+                            }
                         }
                     }
                 }
@@ -133,6 +137,17 @@ namespace GenealogyTree
                     }
                 }
 
+                for (int i = 0; i < generation.ParentsGridList[parentIndex].Children.Count - 1; i++)
+                {
+                    if (generation.ParentsGridList[parentIndex].Children[i].GetType() == typeof(Line) &&
+                        ((Line)generation.ParentsGridList[parentIndex].Children[i]).Name == 
+                        "Child" + generation.GenerationID.ToString().Replace("-", string.Empty))
+                    {
+                        generation.ParentsGridList[parentIndex].Children.Remove(generation.ParentsGridList[parentIndex].Children[i]);
+                        i--;
+                    }
+                }
+
                 Line verticalLine1 = new Line()
                 {
                     Stroke = Brushes.Black,
@@ -142,7 +157,8 @@ namespace GenealogyTree
                     X2 = 12.5,
                     Y1 = SystemFonts.MessageFontSize,
                     Y2 = SystemFonts.MessageFontSize * 2 + 1,
-                    Stretch = Stretch.None
+                    Stretch = Stretch.None,
+                    Name = "Child" + generation.GenerationID.ToString().Replace("-", string.Empty)
                 };
                 generation.ParentsGridList[parentIndex].Children.Add(verticalLine1);
                 Grid.SetRow(verticalLine1, 0);
@@ -157,7 +173,8 @@ namespace GenealogyTree
                     X2 = 12.5,
                     Y1 = 0,
                     Y2 = SystemFonts.MessageFontSize * 2 + 2,
-                    Stretch = Stretch.None
+                    Stretch = Stretch.None,
+                    Name = "Child" + generation.GenerationID.ToString().Replace("-", string.Empty)
                 };
                 generation.ParentsGridList[parentIndex].Children.Add(verticalLine2);
                 Grid.SetRow(verticalLine2, 1);
@@ -172,7 +189,8 @@ namespace GenealogyTree
                     X2 = 12.5,
                     Y1 = 0,
                     Y2 = SystemFonts.MessageFontSize * 2 + 1,
-                    Stretch = Stretch.None
+                    Stretch = Stretch.None,
+                    Name = "Child" + generation.GenerationID.ToString().Replace("-", string.Empty)
                 };
                 generation.ParentsGridList[parentIndex].Children.Add(verticalLine3);
                 Grid.SetRow(verticalLine3, 2);
@@ -196,7 +214,7 @@ namespace GenealogyTree
                         }
                     }
                 }
-
+                
                 Line verticalLine4 = new Line()
                 {
                     Stroke = Brushes.Black,
@@ -207,7 +225,7 @@ namespace GenealogyTree
                     Y1 = 4,
                     Y2 = -SystemFonts.MessageFontSize * 2 - 2,
                     Stretch = Stretch.None,
-                    
+                    Name = "Child" + generation.GenerationID.ToString().Replace("-", string.Empty)
                 };
                 generation.GenerationGridList[generationGridIndex].Children.Add(verticalLine4);
                 Grid.SetRow(verticalLine4, 0);
@@ -245,6 +263,7 @@ namespace GenealogyTree
                         Y1 = SystemFonts.MessageFontSize,
                         Y2 = SystemFonts.MessageFontSize,
                         Stretch = Stretch.None,
+                        Name = "Child" + generation.GenerationID.ToString().Replace("-", string.Empty)
                     };
                     generation.GenerationGridList[generationGridIndex].Children.Add(horizontalLine);
                     Grid.SetRow(horizontalLine, 0);
@@ -304,6 +323,54 @@ namespace GenealogyTree
             for(int i = 0; i < treeGrid.Children.Count; i++)
             {
                 treeGrid.Children.Remove(treeGrid.Children[i]);
+                i--;
+            }
+        }
+
+        private void ChildRemoved(object sender, ChildRemovedEventArgs e)
+        {
+            RemoveChildren(e.person);
+            generationManager.RemoveChild(e.person, e.name);
+
+            for (int i = 1; i < generationManager.generationList.Count; i++)
+            {
+                ConnectChildrenToParents((object)generationManager.generationList[i], new GenerationChangedEventArgs());
+            }
+
+            if (generationManager.GetGenerationByID(e.person.Value.GenerationID).GenerationGridList.Count == 0)
+            {
+                generationManager.generationList.Remove(generationManager.GetGenerationByID(e.person.Value.GenerationID));
+                treeGrid.RowDefinitions.Remove(treeGrid.RowDefinitions[treeGrid.RowDefinitions.Count - 1]);
+            }
+
+            if(e.person != PersonTree.Tree)
+            {
+                PersonTree.GetNodeByName(PersonTree.Tree, e.person.Parent.Value.Name).Remove(e.person);
+            }
+            else
+            {
+                PersonTree.Tree = new Node<Person>(new Person(), null);
+                PersonTree.Tree.Parent = null;
+            }
+        }
+
+        private void RemoveChildren(Node<Person> person)
+        {
+            for(int i = 0; i < person.Children.Count; i++)
+            {
+                Node<Person> child = person.Children[i];
+                RemoveChildren(person.Children[i]);
+                generationManager.RemoveChild(person.Children[i], person.Children[i].Value.Name);
+                person.Children.Remove(person.Children[i]);
+
+                ConnectChildrenToParents(generationManager.GetGenerationByID(child.Value.GenerationID), new GenerationChangedEventArgs());
+
+                if(generationManager.GetGenerationByID(child.Value.GenerationID).GenerationGridList.Count == 0)
+                {
+                    generationManager.generationList.Remove(generationManager.GetGenerationByID(child.Value.GenerationID));
+                    treeGrid.RowDefinitions.Remove(treeGrid.RowDefinitions[treeGrid.RowDefinitions.Count - 1]);
+                }
+
                 i--;
             }
         }

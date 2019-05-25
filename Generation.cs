@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GenealogyTree
 {
@@ -164,7 +165,8 @@ namespace GenealogyTree
                         X2 = 25,
                         Y1 = SystemFonts.MessageFontSize,
                         Y2 = SystemFonts.MessageFontSize,
-                        Stretch = Stretch.None
+                        Stretch = Stretch.None,
+                        Name = "Child" + GenerationID.ToString().Replace("-", string.Empty)
                     };
 
                     GenerationGridList[generationGridIndex].Children.Add(horizontalLine1);
@@ -402,6 +404,213 @@ namespace GenealogyTree
                 person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(7, textBox.Name.Length - 7));
                 textBox.Name = "partner" + textBox.Text;
                 person.Value.Name = textBox.Text;
+            }
+        }
+
+        public void RemovePerson(Node<Person> person, string name)
+        {
+            TextBox childTextBox = textboxlist.Find(i => i.Text == person.Value.Name);
+            TextBox partnerTextBox = textboxlist.Find(i => i.Text == person.Value.Partner);
+
+            Grid generationGrid = GenerationGridList.Find(i => i.Children.Contains(childTextBox));
+
+            if(person.Value.Name == name)
+            {
+                if (partnerTextBox != null)
+                {
+                    foreach (TextBox textbox in textboxlist)
+                    {
+                        if (textboxlist.IndexOf(textbox) > textboxlist.IndexOf(partnerTextBox))
+                        {
+                            Grid.SetColumn(textbox, Grid.GetColumn(textbox) - 4);
+                        }
+                    }
+
+                    foreach (Label label in birthDateLabelList)
+                    {
+                        if (birthDateLabelList.IndexOf(label) > textboxlist.IndexOf(partnerTextBox))
+                        {
+                            Grid.SetColumn(label, Grid.GetColumn(label) - 4);
+                        }
+                    }
+
+                    foreach (Label label in deathDateLabelList)
+                    {
+                        if (deathDateLabelList.IndexOf(label) > textboxlist.IndexOf(partnerTextBox))
+                        {
+                            Grid.SetColumn(label, Grid.GetColumn(label) - 4);
+                        }
+                    }
+
+                    foreach (TextBlock textBlock in textBlockList)
+                    {
+                        if (Grid.GetColumn(textBlock) > Grid.GetColumn(partnerTextBox) && Grid.GetColumn(textBlock) > 3)
+                        {
+                            Grid.SetColumn(textBlock, Grid.GetColumn(textBlock) - 4);
+                        }
+                    }
+
+                    generationGrid.Children.Remove(birthDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(birthDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
+                    generationGrid.Children.Remove(deathDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(deathDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
+
+                    birthDateLabelList.Remove(birthDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    birthDateLabelList.Remove(birthDateLabelList[textboxlist.IndexOf(partnerTextBox) - 1]);
+                    deathDateLabelList.Remove(deathDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    deathDateLabelList.Remove(deathDateLabelList[textboxlist.IndexOf(partnerTextBox) - 1]);
+
+                    generationGrid.Children.Remove(textboxlist[textboxlist.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(textboxlist[textboxlist.IndexOf(partnerTextBox)]);
+                    
+                    textboxlist.Remove(childTextBox);
+                    textboxlist.Remove(partnerTextBox);
+
+                    generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+                    generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+                    generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+                }
+                else
+                {
+                    foreach (TextBox textbox in textboxlist)
+                    {
+                        if (textboxlist.IndexOf(textbox) > textboxlist.IndexOf(childTextBox))
+                        {
+                            Grid.SetColumn(textbox, Grid.GetColumn(textbox) - 2);
+                        }
+                    }
+
+                    foreach (Label label in birthDateLabelList)
+                    {
+                        if (birthDateLabelList.IndexOf(label) > textboxlist.IndexOf(childTextBox))
+                        {
+                            Grid.SetColumn(label, Grid.GetColumn(label) - 2);
+                        }
+                    }
+
+                    foreach (Label label in deathDateLabelList)
+                    {
+                        if (deathDateLabelList.IndexOf(label) > textboxlist.IndexOf(childTextBox))
+                        {
+                            Grid.SetColumn(label, Grid.GetColumn(label) - 2);
+                        }
+                    }
+
+                    foreach (TextBlock textBlock in textBlockList)
+                    {
+                        if (Grid.GetColumn(textBlock) > Grid.GetColumn(childTextBox))
+                        {
+                            Grid.SetColumn(textBlock, Grid.GetColumn(textBlock) - 2);
+                        }
+                    }
+
+                    generationGrid.Children.Remove(birthDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(deathDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(textboxlist[textboxlist.IndexOf(childTextBox)]);
+
+                    birthDateLabelList.Remove(birthDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    deathDateLabelList.Remove(deathDateLabelList[textboxlist.IndexOf(childTextBox)]);
+                    textboxlist.Remove(childTextBox);
+
+                    generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+                    generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+                }
+            }
+            else
+            {
+                foreach (TextBox textbox in textboxlist)
+                {
+                    if (textboxlist.IndexOf(textbox) > textboxlist.IndexOf(partnerTextBox))
+                    {
+                        Grid.SetColumn(textbox, Grid.GetColumn(textbox) - 2);
+                    }
+                }
+
+                foreach (Label label in birthDateLabelList)
+                {
+                    if (birthDateLabelList.IndexOf(label) > textboxlist.IndexOf(partnerTextBox))
+                    {
+                        Grid.SetColumn(label, Grid.GetColumn(label) - 2);
+                    }
+                }
+
+                foreach (Label label in deathDateLabelList)
+                {
+                    if (deathDateLabelList.IndexOf(label) > textboxlist.IndexOf(partnerTextBox))
+                    {
+                        Grid.SetColumn(label, Grid.GetColumn(label) - 2);
+                    }
+                }
+
+                foreach (TextBlock textBlock in textBlockList)
+                {
+                    if (Grid.GetColumn(textBlock) > Grid.GetColumn(partnerTextBox))
+                    {
+                        Grid.SetColumn(textBlock, Grid.GetColumn(textBlock) - 2);
+                    }
+                }
+
+                generationGrid.Children.Remove(birthDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
+                generationGrid.Children.Remove(deathDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
+
+                birthDateLabelList.Remove(birthDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
+                deathDateLabelList.Remove(deathDateLabelList[textboxlist.IndexOf(partnerTextBox)]);
+
+                generationGrid.Children.Remove(textboxlist[textboxlist.IndexOf(partnerTextBox)]);
+                textboxlist.Remove(partnerTextBox);
+
+                person.Value.Partner = string.Empty;
+                person.Value.PartnerBirthDate = null;
+                person.Value.PartnerDeathDate = null;
+
+                generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+                generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+            }
+
+            for (int i = 0; i < generationGrid.Children.Count; i++)
+            {
+                if (generationGrid.Children[i].GetType() == typeof(Line) && ((Line)generationGrid.Children[i]).Name ==
+                    "Child" + GenerationID.ToString().Replace("-", string.Empty))
+                {
+                    generationGrid.Children.Remove(generationGrid.Children[i]);
+                    i--;
+                }
+            }
+
+            if(ParentsGridList != null)
+            {
+                int parentIndex = 0;
+                bool found = false;
+                for (int i = 0; i < ParentsGridList.Count && !found; i++)
+                {
+                    for (int j = 0; j < ParentsGridList[i].Children.Count && !found; j++)
+                    {
+                        if (ParentsGridList[i].Children[j].GetType() == typeof(TextBox))
+                        {
+                            if ((string)ParentsGridList[i].Children[j].GetValue(TextBox.TextProperty) == person.Parent.Value.Name)
+                            {
+                                parentIndex = i;
+                                found = true;
+                            }
+                        }
+                    }
+                }
+
+                for (int i = 0; i < ParentsGridList[parentIndex].Children.Count; i++)
+                {
+                    if (ParentsGridList[parentIndex].Children[i].GetType() == typeof(Line) &&
+                        ((Line)ParentsGridList[parentIndex].Children[i]).Name ==
+                        "Child" + GenerationID.ToString().Replace("-", string.Empty))
+                    {
+                        ParentsGridList[parentIndex].Children.Remove(ParentsGridList[parentIndex].Children[i]);
+                        i--;
+                    }
+                }
+            }
+
+            if (!generationGrid.Children.OfType<TextBox>().Any())
+            {
+                GenerationGridList.Remove(generationGrid);
             }
         }
     }

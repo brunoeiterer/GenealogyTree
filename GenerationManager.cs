@@ -74,6 +74,12 @@ namespace GenealogyTree
             }
         }
 
+        public void RemoveChild(Node<Person> child, string name)
+        {
+            Generation generation = GetGenerationByID(child.Value.GenerationID);
+            generation.RemovePerson(child, name);
+        }
+
         public void AddPartner(string childName, string partnerName, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate)
         {
             Node<Person> child = PersonTree.GetNodeByName(PersonTree.Tree, childName);

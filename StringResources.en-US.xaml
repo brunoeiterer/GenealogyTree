@@ -38,6 +38,11 @@
     <System:String x:Key="MenuEmptyChildListErrorMessageBoxTile">Error - no family members available</System:String>
     <System:String x:Key="SaveButtonToolTip">Save</System:String>
     <System:String x:Key="OpenButtonToolTip">Open</System:String>
+    <System:String x:Key="RemoveChildButtonToolTip">Remove Person</System:String>
+    <System:String x:Key="RemoveChildWindowChildLabel">Child</System:String>
+    <System:String x:Key="RemoveChildWindowButton">Remove</System:String>
+    <System:String x:Key="MenuEmptyRemoveChildListError">Error - there are no children in the tree</System:String>
+    <System:String x:Key="MenuEmptyRemoveChildListErrorMessageBoxTitle">Error - no children in the tree</System:String>
 
 
 

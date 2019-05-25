@@ -14,6 +14,7 @@ namespace GenealogyTree
         public Button AddPartnerButton { get; private set; }
         public Button SaveButton { get; private set; }
         public Button OpenButton { get; private set; }
+        public Button RemoveChildButton { get; private set; }
         private readonly LanguagesAvailable languagesAvailable;
         private readonly ResourceDictionary languageResources;
         public ComboBox LanguageComboBox { get; private set; }
@@ -58,6 +59,14 @@ namespace GenealogyTree
             OpenButton.Click += OpenButton_Click;
             DockPanel.SetDock(OpenButton, Dock.Left);
 
+            RemoveChildButton = new Button()
+            {
+                Content = "🗑"
+            };
+            RemoveChildButton.SetResourceReference(Button.ToolTipProperty, "RemoveChildButtonToolTip");
+            RemoveChildButton.Click += RemoveChildButton_Click;
+            DockPanel.SetDock(RemoveChildButton, Dock.Left);
+
             languagesAvailable = new LanguagesAvailable();
 
             LanguageComboBox = new ComboBox()
@@ -82,6 +91,7 @@ namespace GenealogyTree
             BasePanel.SetBinding(StackPanel.WidthProperty, basePanelWidthBinding);
             BasePanel.Children.Add(AddChildButton);
             BasePanel.Children.Add(AddPartnerButton);
+            BasePanel.Children.Add(RemoveChildButton);
             BasePanel.Children.Add(SaveButton);
             BasePanel.Children.Add(OpenButton);
             BasePanel.Children.Add(LanguageComboBox);
@@ -177,5 +187,28 @@ namespace GenealogyTree
         }
 
         public event NewChildAddedEventHandler<Person> FirstChildAddedEvent;
+
+        private void RemoveChildButton_Click(object sender, RoutedEventArgs e)
+        {
+            RemoveChildWindow removeChildWindow = new RemoveChildWindow();
+            removeChildWindow.ChildRemoved += ChildRemoved;
+
+            if(removeChildWindow.ChildCombobox.Items.Count > 0)
+            {
+                removeChildWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show((string)Application.Current.Resources["MenuEmptyRemoveChildListError"],
+                    (string)Application.Current.Resources["MenuEmptyRemoveChildListErrorMessageBoxTitle"]);
+            }
+        }
+
+        private void ChildRemoved(object sender, ChildRemovedEventArgs e)
+        {
+            ChildRemovedEvent?.Invoke(sender, e);
+        }
+
+        public event ChildRemovedEventHandler ChildRemovedEvent;
     }
 }

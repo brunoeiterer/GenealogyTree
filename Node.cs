@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace GenealogyTree
 {
     [Serializable]
-    public class Node<T>
+    public class Node<T> where T : class
     {
         public T Value { get; set; }
-        public List<Node<T>> Children { get; private set; }
+        public List<Node<T>> Children { get; set; }
         public Node<T> Parent { get; set; }
 
         public Node(T value, Node<T> parent)
@@ -36,7 +36,13 @@ namespace GenealogyTree
 
         public void Remove(Node<T> node)
         {
-            Children.Remove(node);
+            for(int i = 0; i < Children.Count; i++)
+            {
+                if(Children[i].Value == node.Value)
+                {
+                    Children.Remove(Children[i]);
+                }
+            }
         }
 
         public void Traverse(Node<T> node, Action<T, Node<T>> visitor)
