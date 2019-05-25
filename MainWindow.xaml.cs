@@ -188,7 +188,7 @@ namespace GenealogyTree
                     X1 = 12.5,
                     X2 = 12.5,
                     Y1 = 0,
-                    Y2 = SystemFonts.MessageFontSize * 2 + 1,
+                    Y2 = SystemFonts.MessageFontSize * 3 + 8,
                     Stretch = Stretch.None,
                     Name = "Child" + generation.GenerationID.ToString().Replace("-", string.Empty)
                 };

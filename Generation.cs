@@ -508,7 +508,7 @@ namespace GenealogyTree
             deathDateTextBoxList[deathDateTextBoxList.Count - 1].Width = 200;
             deathDateTextBoxList[deathDateTextBoxList.Count - 1].Height = 20;
             deathDateTextBoxList[deathDateTextBoxList.Count - 1].LostFocus += ChangeDeathDate;
-            deathDateTextBoxList[deathDateTextBoxList.Count - 1].Margin = new Thickness(0, 0, 0, 25);
+            deathDateTextBoxList[deathDateTextBoxList.Count - 1].Margin = new Thickness(0, 0, 0, 50);
             if (date != null)
             {
                 deathDateTextBoxList[deathDateTextBoxList.Count - 1].Text = date.Value.ToShortDateString();
