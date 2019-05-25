@@ -237,7 +237,7 @@ namespace GenealogyTree
             TextBox childTextBox = null;
             foreach (TextBox textBox in textboxlist)
             {
-                if (textBox.Name == "child" + childName)
+                if (textBox.Name == "child" + childName.Replace(" ", string.Empty))
                 {
                     childTextBox = textBox;
                 }
@@ -323,7 +323,7 @@ namespace GenealogyTree
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].VerticalAlignment = VerticalAlignment.Center;
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].HorizontalContentAlignment = HorizontalAlignment.Center;
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Width = 250;
-            textboxlist[textboxlist.IndexOf(childTextBox) + 1].Name = "partner" + partnerName;
+            textboxlist[textboxlist.IndexOf(childTextBox) + 1].Name = "partner" + partnerName.Replace(" ", string.Empty);
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Margin = new Thickness(0, 0, 0, 0);
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].LostFocus += NameChanged;
             GenerationGridList[gridIndex].Children.Add(textboxlist[textboxlist.IndexOf(childTextBox) + 1]);
@@ -401,7 +401,7 @@ namespace GenealogyTree
             textboxlist[textboxlist.Count - 1].VerticalAlignment = VerticalAlignment.Center;
             textboxlist[textboxlist.Count - 1].HorizontalContentAlignment = HorizontalAlignment.Center;
             textboxlist[textboxlist.Count - 1].Width = 250;
-            textboxlist[textboxlist.Count - 1].Name = type + value;
+            textboxlist[textboxlist.Count - 1].Name = type + value.Replace(" ", string.Empty);
             textboxlist[textboxlist.Count - 1].Margin = new Thickness(0, 0, 0, 0);
             textboxlist[textboxlist.Count - 1].LostFocus += NameChanged;
         }
@@ -601,7 +601,7 @@ namespace GenealogyTree
                     else
                     {
                         person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(5, textBox.Name.Length - 5));
-                        textBox.Name = "child" + textBox.Text;
+                        textBox.Name = "child" + textBox.Text.Replace(" ", string.Empty);
                         person.Value.Name = textBox.Text;
                     }
                 }
@@ -620,7 +620,7 @@ namespace GenealogyTree
                     else
                     {
                         person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(7, textBox.Name.Length - 7));
-                        textBox.Name = "partner" + textBox.Text;
+                        textBox.Name = "partner" + textBox.Text.Replace(" ", string.Empty);
                         person.Value.Partner = textBox.Text;
                     }
                 }
