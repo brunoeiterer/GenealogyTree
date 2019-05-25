@@ -42,14 +42,17 @@ namespace GenealogyTree
                     {
                         if (parentsGridList[i].Children[j].GetType() == typeof(TextBox))
                         {
-                            if (((string)parentsGridList[i].Children[j].GetValue(TextBox.NameProperty)).Substring(0, 5) == "child")
+                            if(((TextBox)parentsGridList[i].Children[j]).Name != string.Empty)
                             {
-                                BaseGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                                BaseGrid.ColumnDefinitions[BaseGrid.ColumnDefinitions.Count - 1].Width = GridLength.Auto;
-                                GenerationParentsList.Add(((string)parentsGridList[i].Children[j].GetValue(TextBox.NameProperty)).Substring(5));
-                                GenerationGridList.Add(new Grid());
-                                BaseGrid.Children.Add(GenerationGridList[GenerationGridList.Count - 1]);
-                                Grid.SetColumn(GenerationGridList[GenerationGridList.Count - 1], BaseGrid.ColumnDefinitions.Count - 1);
+                                if (((string)parentsGridList[i].Children[j].GetValue(TextBox.NameProperty)).Substring(0, 5) == "child")
+                                {
+                                    BaseGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                                    BaseGrid.ColumnDefinitions[BaseGrid.ColumnDefinitions.Count - 1].Width = GridLength.Auto;
+                                    GenerationParentsList.Add(((string)parentsGridList[i].Children[j].GetValue(TextBox.NameProperty)).Substring(5));
+                                    GenerationGridList.Add(new Grid());
+                                    BaseGrid.Children.Add(GenerationGridList[GenerationGridList.Count - 1]);
+                                    Grid.SetColumn(GenerationGridList[GenerationGridList.Count - 1], BaseGrid.ColumnDefinitions.Count - 1);
+                                }
                             }
                         }
                     }
@@ -322,7 +325,7 @@ namespace GenealogyTree
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Width = 250;
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Name = "partner" + partnerName;
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Margin = new Thickness(0, 0, 0, 0);
-            textboxlist[textboxlist.IndexOf(childTextBox) + 1].TextChanged += NameChanged;
+            textboxlist[textboxlist.IndexOf(childTextBox) + 1].LostFocus += NameChanged;
             GenerationGridList[gridIndex].Children.Add(textboxlist[textboxlist.IndexOf(childTextBox) + 1]);
             Grid.SetColumn(textboxlist[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
 
@@ -400,7 +403,7 @@ namespace GenealogyTree
             textboxlist[textboxlist.Count - 1].Width = 250;
             textboxlist[textboxlist.Count - 1].Name = type + value;
             textboxlist[textboxlist.Count - 1].Margin = new Thickness(0, 0, 0, 0);
-            textboxlist[textboxlist.Count - 1].TextChanged += NameChanged;
+            textboxlist[textboxlist.Count - 1].LostFocus += NameChanged;
         }
 
         private void AddBirthDateLabel(Nullable<DateTime> date)
@@ -579,21 +582,48 @@ namespace GenealogyTree
             }
         }
 
-        private void NameChanged(object sender, TextChangedEventArgs e)
+        private void NameChanged(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             Node<Person> person = null;
+
             if(textBox.Name.Substring(0, 5) == "child")
             {
-                person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(5, textBox.Name.Length - 5));
-                textBox.Name = "child" + textBox.Text;
-                person.Value.Name = textBox.Text;
+                if (!(textBox.Text == textBox.Name.Substring(5, textBox.Name.Length - 5)))
+                {
+                    if (PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text) != null)
+                    {
+                        MessageBox.Show(Application.Current.Resources["NameChangeDuplicatedNameError"].ToString(),
+                            Application.Current.Resources["NameChangeDuplicatedNameErrorMessageBoxTitle"].ToString());
+
+                        textBox.Text = textBox.Name.Substring(5, textBox.Name.Length - 5);
+                    }
+                    else
+                    {
+                        person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(5, textBox.Name.Length - 5));
+                        textBox.Name = "child" + textBox.Text;
+                        person.Value.Name = textBox.Text;
+                    }
+                }
             }
             else if(textBox.Name.Substring(0, 7) == "partner")
             {
-                person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(7, textBox.Name.Length - 7));
-                textBox.Name = "partner" + textBox.Text;
-                person.Value.Name = textBox.Text;
+                if (!(textBox.Text == textBox.Name.Substring(7, textBox.Name.Length - 7)))
+                {
+                    if (PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text) != null)
+                    {
+                        MessageBox.Show(Application.Current.Resources["NameChangeDuplicatedNameError"].ToString(),
+                            Application.Current.Resources["NameChangeDuplicatedNameErrorMessageBoxTitle"].ToString());
+
+                        textBox.Text = textBox.Name.Substring(7, textBox.Name.Length - 7);
+                    }
+                    else
+                    {
+                        person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(7, textBox.Name.Length - 7));
+                        textBox.Name = "partner" + textBox.Text;
+                        person.Value.Partner = textBox.Text;
+                    }
+                }
             }
         }
 

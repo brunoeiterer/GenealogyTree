@@ -45,5 +45,7 @@
     <System:String x:Key="MenuEmptyRemoveChildListErrorMessageBoxTitle">Erro - árvore vazia</System:String>
     <System:String x:Key="DateChangeInvalidDateError">Erro - data inválida</System:String>
     <System:String x:Key="DateChangeInvalidDateErrorMessageBoxTitle">Erro - a nova data não é válida</System:String>
+    <System:String x:Key="NameChangeDuplicatedNameError">Erro - nome já existe</System:String>
+    <System:String x:Key="NameChangeDuplicatedNameErrorMessageBoxTitle">Erro - outra pessa já possui este nome</System:String>
 
 </ResourceDictionary>

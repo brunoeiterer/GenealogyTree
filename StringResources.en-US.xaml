@@ -45,6 +45,8 @@
     <System:String x:Key="MenuEmptyRemoveChildListErrorMessageBoxTitle">Error - no children in the tree</System:String>
     <System:String x:Key="DateChangeInvalidDateError">Error - invalid date</System:String>
     <System:String x:Key="DateChangeInvalidDateErrorMessageBoxTitle">Error - the new date is invalid</System:String>
+    <System:String x:Key="NameChangeDuplicatedNameError">Error - name already exists</System:String>
+    <System:String x:Key="NameChangeDuplicatedNameErrorMessageBoxTitle">Error - another person already has this name</System:String>
 
 
 
