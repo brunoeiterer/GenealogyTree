@@ -43,5 +43,7 @@
     <System:String x:Key="RemoveChildWindowButton">Remover</System:String>
     <System:String x:Key="MenuEmptyRemoveChildListError">Erro - não há ninguém na árvore</System:String>
     <System:String x:Key="MenuEmptyRemoveChildListErrorMessageBoxTitle">Erro - árvore vazia</System:String>
+    <System:String x:Key="DateChangeInvalidDateError">Erro - data inválida</System:String>
+    <System:String x:Key="DateChangeInvalidDateErrorMessageBoxTitle">Erro - a nova data não é válida</System:String>
 
 </ResourceDictionary>

@@ -5,6 +5,7 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 namespace GenealogyTree
 {
@@ -17,6 +18,8 @@ namespace GenealogyTree
         private List<TextBox> textboxlist;
         private List<Label> birthDateLabelList;
         private List<Label> deathDateLabelList;
+        private List<TextBox> birthDateTextBoxList;
+        private List<TextBox> deathDateTextBoxList;
         private List<TextBlock> textBlockList;
         public Guid GenerationID { get; set; }
 
@@ -73,6 +76,8 @@ namespace GenealogyTree
             birthDateLabelList = new List<Label>();
             deathDateLabelList = new List<Label>();
             textBlockList = new List<TextBlock>();
+            birthDateTextBoxList = new List<TextBox>();
+            deathDateTextBoxList = new List<TextBox>();
 
             GenerationID = Guid.NewGuid();
             ParentsGridList = parentsGridList;
@@ -135,8 +140,11 @@ namespace GenealogyTree
             }
             Grid.SetRow(birthDateLabelList[birthDateLabelList.Count - 1], 1);
             Grid.SetColumn(birthDateLabelList[birthDateLabelList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+            Grid.SetRow(birthDateTextBoxList[birthDateTextBoxList.Count - 1], 1);
+            Grid.SetColumn(birthDateTextBoxList[birthDateTextBoxList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
 
             GenerationGridList[generationGridIndex].Children.Add(birthDateLabelList[birthDateLabelList.Count - 1]);
+            GenerationGridList[generationGridIndex].Children.Add(birthDateTextBoxList[birthDateTextBoxList.Count - 1]);
 
             AddDeathDateLabel(person.Value.DeathDate);
 
@@ -146,8 +154,11 @@ namespace GenealogyTree
             }
             Grid.SetRow(deathDateLabelList[deathDateLabelList.Count - 1], 3);
             Grid.SetColumn(deathDateLabelList[deathDateLabelList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+            Grid.SetRow(deathDateTextBoxList[deathDateTextBoxList.Count - 1], 3);
+            Grid.SetColumn(deathDateTextBoxList[deathDateTextBoxList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
 
             GenerationGridList[generationGridIndex].Children.Add(deathDateLabelList[deathDateLabelList.Count - 1]);
+            GenerationGridList[generationGridIndex].Children.Add(deathDateTextBoxList[deathDateTextBoxList.Count - 1]);
 
             if (person.Value.Partner != string.Empty)
             {
@@ -193,8 +204,11 @@ namespace GenealogyTree
                 }
                 Grid.SetRow(birthDateLabelList[birthDateLabelList.Count - 1], 1);
                 Grid.SetColumn(birthDateLabelList[birthDateLabelList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+                Grid.SetRow(birthDateTextBoxList[birthDateTextBoxList.Count - 1], 1);
+                Grid.SetColumn(birthDateTextBoxList[birthDateTextBoxList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
 
                 GenerationGridList[generationGridIndex].Children.Add(birthDateLabelList[birthDateLabelList.Count - 1]);
+                GenerationGridList[generationGridIndex].Children.Add(birthDateTextBoxList[birthDateTextBoxList.Count - 1]);
 
                 AddDeathDateLabel(person.Value.PartnerDeathDate);
 
@@ -204,8 +218,11 @@ namespace GenealogyTree
                 }
                 Grid.SetRow(deathDateLabelList[deathDateLabelList.Count - 1], 3);
                 Grid.SetColumn(deathDateLabelList[deathDateLabelList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+                Grid.SetRow(deathDateTextBoxList[deathDateTextBoxList.Count - 1], 3);
+                Grid.SetColumn(deathDateTextBoxList[deathDateTextBoxList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
 
                 GenerationGridList[generationGridIndex].Children.Add(deathDateLabelList[deathDateLabelList.Count - 1]);
+                GenerationGridList[generationGridIndex].Children.Add(deathDateTextBoxList[deathDateTextBoxList.Count - 1]);
             }
 
             GenerationChangedEventArgs eventArgs = new GenerationChangedEventArgs();
@@ -281,6 +298,22 @@ namespace GenealogyTree
                 }
             }
 
+            foreach(TextBox textBox in birthDateTextBoxList)
+            {
+                if (Grid.GetColumn(textBox) > Grid.GetColumn(childTextBox))
+                {
+                    Grid.SetColumn(textBox, Grid.GetColumn(textBox) + 2);
+                }
+            }
+
+            foreach (TextBox textBox in deathDateTextBoxList)
+            {
+                if (Grid.GetColumn(textBox) > Grid.GetColumn(childTextBox))
+                {
+                    Grid.SetColumn(textBox, Grid.GetColumn(textBox) + 2);
+                }
+            }
+
             textboxlist.Insert(textboxlist.IndexOf(childTextBox) + 1, new TextBox());
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Text = partnerName;
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].HorizontalAlignment = HorizontalAlignment.Center;
@@ -294,6 +327,7 @@ namespace GenealogyTree
             Grid.SetColumn(textboxlist[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
 
             birthDateLabelList.Insert(textboxlist.IndexOf(childTextBox) + 1, new Label());
+            birthDateLabelList[birthDateLabelList.Count - 1].Margin = new Thickness(0, 0, 25, 0);
             if (birthDate != null)
             {
                 birthDateLabelList[textboxlist.IndexOf(childTextBox) + 1].Content = "☆" + birthDate.Value.ToShortDateString();
@@ -309,6 +343,7 @@ namespace GenealogyTree
             Grid.SetRow(birthDateLabelList[textboxlist.IndexOf(childTextBox) + 1], 1);
 
             deathDateLabelList.Insert(textboxlist.IndexOf(childTextBox) + 1, new Label());
+            deathDateLabelList[deathDateLabelList.Count - 1].Margin = new Thickness(0, 0, 25, 0);
             if (birthDate != null)
             {
                 deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1].Content = "☆" + birthDate.Value.ToShortDateString();
@@ -322,6 +357,32 @@ namespace GenealogyTree
             GenerationGridList[gridIndex].Children.Add(deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1]);
             Grid.SetColumn(deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
             Grid.SetRow(deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1], 2);
+
+            birthDateTextBoxList.Insert(textboxlist.IndexOf(childTextBox) + 1, new TextBox());
+            if (birthDate != null)
+            {
+                birthDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1].Text = birthDate.Value.ToShortDateString();
+            }
+            else
+            {
+                birthDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1].Text = string.Empty;
+            }
+            GenerationGridList[gridIndex].Children.Add(birthDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1]);
+            Grid.SetColumn(birthDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
+            Grid.SetRow(birthDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1], 1);
+
+            deathDateTextBoxList.Insert(textboxlist.IndexOf(childTextBox) + 1, new TextBox());
+            if (birthDate != null)
+            {
+                deathDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1].Text = birthDate.Value.ToShortDateString();
+            }
+            else
+            {
+                deathDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1].Text = string.Empty;
+            }
+            GenerationGridList[gridIndex].Children.Add(deathDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1]);
+            Grid.SetColumn(deathDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
+            Grid.SetRow(deathDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1], 1);
 
             GenerationChangedEventArgs eventArgs = new GenerationChangedEventArgs();
             GenerationChanged?.Invoke(this, eventArgs);
@@ -344,49 +405,178 @@ namespace GenealogyTree
 
         private void AddBirthDateLabel(Nullable<DateTime> date)
         {
-            Label newLabel;
-            if(date != null)
+            Label newLabel = new Label()
             {
-                newLabel = new Label()
-                {
-                    Content = "☆" + date.Value.ToShortDateString(),
-                    BorderBrush = Brushes.Transparent
-                };
-            }
-            else
-            {
-                newLabel = new Label()
-                {
-                    Content = "☆",
-                    BorderBrush = Brushes.Transparent
-                };
-            }
-
+                Content = "☆",
+                BorderBrush = Brushes.Transparent,
+                Margin = new Thickness(0, 0, 25, 0)
+            };
             birthDateLabelList.Add(newLabel);
+
+            birthDateTextBoxList.Add(new TextBox());
+            birthDateTextBoxList[birthDateTextBoxList.Count - 1].Width = 200;
+            birthDateTextBoxList[birthDateTextBoxList.Count - 1].Height = 20;
+            birthDateTextBoxList[birthDateTextBoxList.Count - 1].LostFocus += ChangeBirthDate;
+            if (date != null)
+            {
+                birthDateTextBoxList[birthDateTextBoxList.Count - 1].Text = date.Value.ToShortDateString();
+            }
+        }
+
+        private void ChangeBirthDate(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            Node<Person> person = null;
+            string name = string.Empty;
+
+            person = PersonTree.GetNodeByName(PersonTree.Tree, textboxlist[birthDateTextBoxList.IndexOf(textBox)].Text);
+            name = textboxlist[birthDateTextBoxList.IndexOf(textBox)].Text;
+
+            DateTime newDate;
+
+            try
+            {
+                newDate = DateTime.ParseExact(textBox.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None);
+
+                if(name == person.Value.Name)
+                {
+                    person.Value.BirthDate = (Nullable<DateTime>)newDate;
+                }
+                else if (name == person.Value.Partner)
+                {
+                    person.Value.PartnerBirthDate = (Nullable<DateTime>)newDate;
+                }
+            }
+            catch (FormatException)
+            {
+                if (textBox.Text.ToString() == string.Empty)
+                {
+                    if (name == person.Value.Name)
+                    {
+                        person.Value.BirthDate = null;
+                    }
+                    else if (name == person.Value.Partner)
+                    {
+                        person.Value.PartnerBirthDate = null;
+                    }
+                }
+                else
+                {
+                    if (name == person.Value.Name)
+                    {
+                        if (person.Value.BirthDate == null)
+                        {
+                            textBox.Text = string.Empty;
+                        }
+                        else
+                        {
+                            textBox.Text = person.Value.BirthDate.Value.ToShortDateString();
+                        }
+                    }
+                    else if (name == person.Value.Partner)
+                    {
+                        if (person.Value.PartnerBirthDate == null)
+                        {
+                            textBox.Text = string.Empty;
+                        }
+                        else
+                        {
+                            textBox.Text = person.Value.PartnerBirthDate.Value.ToShortDateString();
+                        }
+                    }
+
+                    MessageBox.Show(Application.Current.Resources["DateChangeInvalidDateError"].ToString(),
+                        Application.Current.Resources["DateChangeInvalidDateErrorMessageBoxTitle"].ToString());
+                }
+            }
         }
 
         private void AddDeathDateLabel(Nullable<DateTime> date)
         {
-            Label newLabel;
-            if(date != null)
+            Label newLabel = new Label()
             {
-                newLabel = new Label()
-                {
-                    Content = "✞" + date.Value.ToShortDateString(),
-                    BorderBrush = Brushes.Transparent,
-                    Margin = new Thickness(0, 0, 0, 25)
-                };
-            }
-            else
-            {
-                newLabel = new Label()
-                {
-                    Content = "✞",
-                    BorderBrush = Brushes.Transparent,
-                    Margin = new Thickness(0, 0, 0, 25)
-                };
-            }
+                Content = "✞",
+                BorderBrush = Brushes.Transparent,
+                Margin = new Thickness(0, 0, 25, 25)
+            };
             deathDateLabelList.Add(newLabel);
+
+            deathDateTextBoxList.Add(new TextBox());
+            deathDateTextBoxList[deathDateTextBoxList.Count - 1].Width = 200;
+            deathDateTextBoxList[deathDateTextBoxList.Count - 1].Height = 20;
+            deathDateTextBoxList[deathDateTextBoxList.Count - 1].LostFocus += ChangeDeathDate;
+            deathDateTextBoxList[deathDateTextBoxList.Count - 1].Margin = new Thickness(0, 0, 0, 25);
+            if (date != null)
+            {
+                deathDateTextBoxList[deathDateTextBoxList.Count - 1].Text = date.Value.ToShortDateString();
+            }
+        }
+
+        private void ChangeDeathDate(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            Node<Person> person = null;
+            string name = string.Empty;
+
+            person = PersonTree.GetNodeByName(PersonTree.Tree, textboxlist[deathDateTextBoxList.IndexOf(textBox)].Text);
+            name = textboxlist[deathDateTextBoxList.IndexOf(textBox)].Text;
+
+            DateTime newDate;
+
+            try
+            {
+                newDate = DateTime.ParseExact(textBox.Text.ToString(), "dd/MM/yyyy", null, DateTimeStyles.None);
+
+                if (name == person.Value.Name)
+                {
+                    person.Value.DeathDate = (Nullable<DateTime>)newDate;
+                }
+                else if (name == person.Value.Partner)
+                {
+                    person.Value.PartnerDeathDate = (Nullable<DateTime>)newDate;
+                }
+            }
+            catch (FormatException)
+            {
+                if (textBox.Text.ToString() == string.Empty)
+                {
+                    if (name == person.Value.Name)
+                    {
+                        person.Value.DeathDate = null;
+                    }
+                    else if (name == person.Value.Partner)
+                    {
+                        person.Value.PartnerDeathDate = null;
+                    }
+                }
+                else
+                {
+                    if (name == person.Value.Name)
+                    {
+                        if(person.Value.DeathDate == null)
+                        {
+                            textBox.Text = string.Empty;
+                        }
+                        else
+                        {
+                            textBox.Text = person.Value.DeathDate.Value.ToShortDateString();
+                        }
+                    }
+                    else if (name == person.Value.Partner)
+                    {
+                        if(person.Value.PartnerDeathDate == null)
+                        {
+                            textBox.Text = string.Empty;
+                        }
+                        else
+                        {
+                            textBox.Text = person.Value.PartnerDeathDate.Value.ToShortDateString();
+                        }
+                    }
+                    MessageBox.Show(Application.Current.Resources["DateChangeInvalidDateError"].ToString(),
+                        Application.Current.Resources["DateChangeInvalidDateErrorMessageBoxTitle"].ToString());
+                }
+            }
         }
 
         private void NameChanged(object sender, TextChangedEventArgs e)

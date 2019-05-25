@@ -43,6 +43,8 @@
     <System:String x:Key="RemoveChildWindowButton">Remove</System:String>
     <System:String x:Key="MenuEmptyRemoveChildListError">Error - there are no children in the tree</System:String>
     <System:String x:Key="MenuEmptyRemoveChildListErrorMessageBoxTitle">Error - no children in the tree</System:String>
+    <System:String x:Key="DateChangeInvalidDateError">Error - invalid date</System:String>
+    <System:String x:Key="DateChangeInvalidDateErrorMessageBoxTitle">Error - the new date is invalid</System:String>
 
 
 
