@@ -16,6 +16,7 @@ namespace GenealogyTree
         private List<string> GenerationParentsList { get; set; }
         public List<Grid> ParentsGridList { get; set; }
         private List<TextBox> textboxlist;
+        private List<string> textBoxTextList;
         private List<Label> birthDateLabelList;
         private List<Label> deathDateLabelList;
         private List<TextBox> birthDateTextBoxList;
@@ -76,6 +77,7 @@ namespace GenealogyTree
             }
 
             textboxlist = new List<TextBox>();
+            textBoxTextList = new List<string>();
             birthDateLabelList = new List<Label>();
             deathDateLabelList = new List<Label>();
             textBlockList = new List<TextBlock>();
@@ -318,6 +320,7 @@ namespace GenealogyTree
             }
 
             textboxlist.Insert(textboxlist.IndexOf(childTextBox) + 1, new TextBox());
+            textBoxTextList.Insert(textboxlist.IndexOf(childTextBox) + 1, new String(partnerName.ToArray()));
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Text = partnerName;
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].HorizontalAlignment = HorizontalAlignment.Center;
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].VerticalAlignment = VerticalAlignment.Center;
@@ -404,6 +407,8 @@ namespace GenealogyTree
             textboxlist[textboxlist.Count - 1].Name = type + new String(value.Where(ch => Char.IsLetterOrDigit(ch)).ToArray());
             textboxlist[textboxlist.Count - 1].Margin = new Thickness(0, 0, 0, 0);
             textboxlist[textboxlist.Count - 1].LostFocus += NameChanged;
+
+            textBoxTextList.Add(new string(value.ToArray()));
         }
 
         private void AddBirthDateLabel(Nullable<DateTime> date)
@@ -589,39 +594,41 @@ namespace GenealogyTree
 
             if(textBox.Name.Substring(0, 5) == "child")
             {
-                if (!(textBox.Text == textBox.Name.Substring(5, textBox.Name.Length - 5)))
+                if (textBox.Text != textBoxTextList[textboxlist.IndexOf(textBox)])
                 {
                     if (PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text) != null)
                     {
                         MessageBox.Show(Application.Current.Resources["NameChangeDuplicatedNameError"].ToString(),
                             Application.Current.Resources["NameChangeDuplicatedNameErrorMessageBoxTitle"].ToString());
 
-                        textBox.Text = textBox.Name.Substring(5, textBox.Name.Length - 5);
+                        textBox.Text = textBoxTextList[textboxlist.IndexOf(textBox)];
                     }
                     else
                     {
-                        person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(5, textBox.Name.Length - 5));
+                        person = PersonTree.GetNodeByName(PersonTree.Tree, textBoxTextList[textboxlist.IndexOf(textBox)]);
                         textBox.Name = "child" + new String(textBox.Text.Where(ch => Char.IsLetterOrDigit(ch)).ToArray());
                         person.Value.Name = textBox.Text;
+                        textBoxTextList[textboxlist.IndexOf(textBox)] = textBox.Text;
                     }
                 }
             }
             else if(textBox.Name.Substring(0, 7) == "partner")
             {
-                if (!(textBox.Text == textBox.Name.Substring(7, textBox.Name.Length - 7)))
+                if (textBox.Text != textBoxTextList[textboxlist.IndexOf(textBox)])
                 {
                     if (PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text) != null)
                     {
                         MessageBox.Show(Application.Current.Resources["NameChangeDuplicatedNameError"].ToString(),
                             Application.Current.Resources["NameChangeDuplicatedNameErrorMessageBoxTitle"].ToString());
 
-                        textBox.Text = textBox.Name.Substring(7, textBox.Name.Length - 7);
+                        textBox.Text = textBoxTextList[textboxlist.IndexOf(textBox)];
                     }
                     else
                     {
-                        person = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Name.Substring(7, textBox.Name.Length - 7));
+                        person = PersonTree.GetNodeByName(PersonTree.Tree, textBoxTextList[textboxlist.IndexOf(textBox)]);
                         textBox.Name = "partner" + new String(textBox.Text.Where(ch => Char.IsLetterOrDigit(ch)).ToArray());
                         person.Value.Partner = textBox.Text;
+                        textBoxTextList[textboxlist.IndexOf(textBox)] = textBox.Text;
                     }
                 }
             }
