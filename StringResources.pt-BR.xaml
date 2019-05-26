@@ -39,6 +39,7 @@
     <System:String x:Key="MenuEmptyChildListError">Erro - todos os membros da família possuem companheiros</System:String>
     <System:String x:Key="MenuEmptyChildListErrorMessageBoxTile">Erro - nenhum membro da família disponível</System:String>
     <System:String x:Key="SaveButtonToolTip">Salvar</System:String>
+    <System:String x:Key="SaveAsButtonToolTip">Salvar como</System:String>
     <System:String x:Key="OpenButtonToolTip">Abrir</System:String>
     <System:String x:Key="RemoveChildButtonToolTip">Remover pessoa</System:String>
     <System:String x:Key="RemoveChildWindowChildLabel">Pessoa</System:String>

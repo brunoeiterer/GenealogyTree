@@ -13,6 +13,8 @@ namespace GenealogyTree
         public Button AddChildButton { get; private set; }
         public Button AddPartnerButton { get; private set; }
         public Button SaveButton { get; private set; }
+        public Button SaveAsButton { get; private set; }
+        private string FileName { get; set; }
         public Button OpenButton { get; private set; }
         public Button RemoveChildButton { get; private set; }
         private readonly LanguagesAvailable languagesAvailable;
@@ -51,6 +53,14 @@ namespace GenealogyTree
             SaveButton.Click += SaveButton_Click;
             DockPanel.SetDock(SaveButton, Dock.Left);
 
+            SaveAsButton = new Button()
+            {
+                Content = "✐💾"
+            };
+            SaveAsButton.SetResourceReference(Button.ToolTipProperty, "SaveAsButtonToolTip");
+            SaveAsButton.Click += SaveAsButton_Click;
+            DockPanel.SetDock(SaveAsButton, Dock.Left);
+
             OpenButton = new Button()
             {
                 Content = "📂"
@@ -77,6 +87,8 @@ namespace GenealogyTree
             LanguageComboBox.SelectionChanged += LanguageChanged;
             DockPanel.SetDock(LanguageComboBox, Dock.Left);
 
+            FileName = string.Empty;
+
 
             Binding basePanelWidthBinding = new Binding()
             {
@@ -93,6 +105,7 @@ namespace GenealogyTree
             BasePanel.Children.Add(AddPartnerButton);
             BasePanel.Children.Add(RemoveChildButton);
             BasePanel.Children.Add(SaveButton);
+            BasePanel.Children.Add(SaveAsButton);
             BasePanel.Children.Add(OpenButton);
             BasePanel.Children.Add(LanguageComboBox);
             DockPanel.SetDock(BasePanel, Dock.Top);
@@ -123,16 +136,44 @@ namespace GenealogyTree
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+
+            if(FileName != string.Empty)
+            {
+                SaveRequestedEventArgs eventArgs = new SaveRequestedEventArgs()
+                {
+                    filename = FileName
+                };
+                SaveRequested?.Invoke(this, eventArgs);
+            }
+            else
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.DefaultExt = ".bin";
+                saveFileDialog.Filter = "Genealogy tree binary files (.bin)|*.bin";
+                Nullable<bool> result = saveFileDialog.ShowDialog();
+
+                if (result == true)
+                {
+                    FileName = saveFileDialog.FileName;
+                    SaveRequestedEventArgs eventArgs = new SaveRequestedEventArgs();
+                    eventArgs.filename = FileName;
+                    SaveRequested?.Invoke(this, eventArgs);
+                }
+            }
+        }
+
+        private void SaveAsButton_Click(object sender, RoutedEventArgs e)
+        {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.DefaultExt = ".bin";
             saveFileDialog.Filter = "Genealogy tree binary files (.bin)|*.bin";
             Nullable<bool> result = saveFileDialog.ShowDialog();
 
-            if(result == true)
+            if (result == true)
             {
-                string filename = saveFileDialog.FileName;
+                FileName = saveFileDialog.FileName;
                 SaveRequestedEventArgs eventArgs = new SaveRequestedEventArgs();
-                eventArgs.filename = filename;
+                eventArgs.filename = FileName;
                 SaveRequested?.Invoke(this, eventArgs);
             }
         }
@@ -148,9 +189,9 @@ namespace GenealogyTree
 
             if(result == true)
             {
-                string filename = openFileDialog.FileName;
+                FileName = openFileDialog.FileName;
                 OpenRequestedEventArgs eventArgs = new OpenRequestedEventArgs();
-                eventArgs.filename = filename;
+                eventArgs.filename = FileName;
                 OpenRequested?.Invoke(this, eventArgs);
             }
         }

@@ -39,6 +39,7 @@
     <System:String x:Key="MenuEmptyChildListError">Error - all family members already have partners</System:String>
     <System:String x:Key="MenuEmptyChildListErrorMessageBoxTile">Error - no family members available</System:String>
     <System:String x:Key="SaveButtonToolTip">Save</System:String>
+    <System:String x:Key="SaveAsButtonToolTip">Save as</System:String>
     <System:String x:Key="OpenButtonToolTip">Open</System:String>
     <System:String x:Key="RemoveChildButtonToolTip">Remove Person</System:String>
     <System:String x:Key="RemoveChildWindowChildLabel">Child</System:String>
