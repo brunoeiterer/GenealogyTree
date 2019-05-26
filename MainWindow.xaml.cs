@@ -83,7 +83,7 @@ namespace GenealogyTree
 
         private void PartnerAdded(object sender, PartnerAddedEventArgs e)
         {
-            generationManager.AddPartner(e.childName, e.partnerName, e.birthDate, e.deathDate);
+            generationManager.AddPartner(e.childName, e.partnerName, e.birthDate, e.deathDate, e.birthPlace);
         }
 
         private void ConnectChildrenToParents(object sender, GenerationChangedEventArgs e)
@@ -198,11 +198,28 @@ namespace GenealogyTree
                 generation.ParentsGridList[parentIndex].Children.Add(verticalLine3);
                 Grid.SetRow(verticalLine3, 2);
                 Grid.SetColumn(verticalLine3, parentColumnIndex + 1);
-                verticalLine3.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
-                verticalLine3.Arrange(new Rect(verticalLine3.DesiredSize));
-                verticalLine3.UpdateLayout();
 
-                Point endPoint = verticalLine3.TranslatePoint(new Point(verticalLine3.X2, verticalLine3.Y2), ConnectionsGrid);
+                Line verticalLine4 = new Line()
+                {
+                    Stroke = Brushes.Black,
+                    Visibility = Visibility.Visible,
+                    StrokeThickness = 1,
+                    X1 = 12.5,
+                    X2 = 12.5,
+                    Y1 = 0,
+                    Y2 = SystemFonts.MessageFontSize * 3 + 8,
+                    Stretch = Stretch.None,
+                    Name = "Child" + generation.GenerationID.ToString().Replace("-", string.Empty)
+                };
+                generation.ParentsGridList[parentIndex].Children.Add(verticalLine4);
+                Grid.SetRow(verticalLine4, 4);
+                Grid.SetColumn(verticalLine4, parentColumnIndex + 1);
+
+                verticalLine4.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                verticalLine4.Arrange(new Rect(verticalLine3.DesiredSize));
+                verticalLine4.UpdateLayout();
+
+                Point endPoint = verticalLine4.TranslatePoint(new Point(verticalLine4.X2, verticalLine4.Y2), ConnectionsGrid);
 
                 int generationGridIndex = 0;
                 int textBoxColumnIndex = 0;
@@ -218,7 +235,7 @@ namespace GenealogyTree
                     }
                 }
                 
-                Line verticalLine4 = new Line()
+                Line verticalLine5 = new Line()
                 {
                     Stroke = Brushes.Black,
                     Visibility = Visibility.Visible,
@@ -230,15 +247,15 @@ namespace GenealogyTree
                     Stretch = Stretch.None,
                     Name = "Child" + generation.GenerationID.ToString().Replace("-", string.Empty)
                 };
-                generation.GenerationGridList[generationGridIndex].Children.Add(verticalLine4);
-                Grid.SetRow(verticalLine4, 0);
-                Grid.SetColumn(verticalLine4, textBoxColumnIndex);
+                generation.GenerationGridList[generationGridIndex].Children.Add(verticalLine5);
+                Grid.SetRow(verticalLine5, 0);
+                Grid.SetColumn(verticalLine5, textBoxColumnIndex);
 
-                verticalLine4.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
-                verticalLine4.Arrange(new Rect(verticalLine4.DesiredSize));
-                verticalLine4.UpdateLayout();
+                verticalLine5.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                verticalLine5.Arrange(new Rect(verticalLine5.DesiredSize));
+                verticalLine5.UpdateLayout();
 
-                Point startPoint = verticalLine4.TranslatePoint(new Point(verticalLine4.X2, verticalLine4.Y2), ConnectionsGrid);
+                Point startPoint = verticalLine5.TranslatePoint(new Point(verticalLine5.X2, verticalLine5.Y2), ConnectionsGrid);
 
                 Line horizontalLine1 = new Line()
                 {

@@ -15,7 +15,9 @@
         <Label Content="{DynamicResource AddPartnerWindowPartnerBirthDateLabel}" Width="250"/>
         <TextBox x:Name="PartnerBirthDate" Width="250"/>
         <Label Content="{DynamicResource AddPartnerWindowPartnerDeathDateLabel}" Width="250"></Label>
-        <TextBox x:Name="PartnerDeathDate" Width="250" Margin="0,0,0,25"/>
+        <TextBox x:Name="PartnerDeathDate" Width="250"/>
+        <Label Content="{DynamicResource AddPartnerWindowPartnerBirthPlaceLabel}" Width="250"></Label>
+        <TextBox x:Name="PartnerBirthPlace" Width="250" Margin="0,0,0,25"></TextBox>
         <Button Content="{DynamicResource AddPartnerWindowButton}" Click="AddButton_Click" Width="250"/>
     </StackPanel>
 </Window>

@@ -38,6 +38,7 @@ namespace GenealogyTree
                 if (parentList.Count == 0)
                 {
                     Person newPerson = new Person(this.NewPersonName.Text);
+                    newPerson.BirthPlace = this.NewPersonBirthPlace.Text;
                     string errorMessage = string.Empty;
 
                     DateTime birthDate;
@@ -80,6 +81,7 @@ namespace GenealogyTree
                     if (this.NewPersonPartnerName.Text.ToString() != string.Empty)
                     {
                         newPerson.Partner = this.NewPersonPartnerName.Text;
+                        newPerson.PartnerBirthPlace = this.NewPersonPartnerBirthPlace.Text;
 
                         DateTime partnerBirthDate;
                         DateTime partnerDeathDate;
@@ -139,6 +141,7 @@ namespace GenealogyTree
                     if (parent.Value.Partner != string.Empty)
                     {
                         Person newPerson = new Person(this.NewPersonName.Text);
+                        newPerson.BirthPlace = this.NewPersonBirthPlace.Text;
                         string errorMessage = string.Empty;
 
                         DateTime birthDate;
@@ -186,6 +189,7 @@ namespace GenealogyTree
                         if (this.NewPersonPartnerName.Text.ToString() != string.Empty)
                         {
                             newPerson.Partner = this.NewPersonPartnerName.Text;
+                            newPerson.PartnerBirthPlace = this.NewPersonPartnerBirthPlace.Text;
 
                             DateTime partnerBirthDate;
                             DateTime partnerDeathDate;

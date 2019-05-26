@@ -21,6 +21,8 @@ namespace GenealogyTree
         private List<Label> deathDateLabelList;
         private List<TextBox> birthDateTextBoxList;
         private List<TextBox> deathDateTextBoxList;
+        private List<Label> birthPlaceLabelList;
+        private List<TextBox> birthPlaceTextBoxList;
         private List<TextBlock> textBlockList;
         public Guid GenerationID { get; set; }
 
@@ -83,6 +85,8 @@ namespace GenealogyTree
             textBlockList = new List<TextBlock>();
             birthDateTextBoxList = new List<TextBox>();
             deathDateTextBoxList = new List<TextBox>();
+            birthPlaceLabelList = new List<Label>();
+            birthPlaceTextBoxList = new List<TextBox>();
 
             GenerationID = Guid.NewGuid();
             ParentsGridList = parentsGridList;
@@ -131,7 +135,7 @@ namespace GenealogyTree
             GenerationGridList[generationGridIndex].Children.Add(textboxlist[textboxlist.Count - 1]);
             Grid.SetColumn(textboxlist[textboxlist.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
 
-            if(GenerationGridList[generationGridIndex].RowDefinitions.Count < 3)
+            if(GenerationGridList[generationGridIndex].RowDefinitions.Count < 4)
             {
                 GenerationGridList[generationGridIndex].RowDefinitions.Add(new RowDefinition());
                 GenerationGridList[generationGridIndex].RowDefinitions[GenerationGridList[generationGridIndex].RowDefinitions.Count - 1].Height = new GridLength(25);
@@ -139,7 +143,7 @@ namespace GenealogyTree
 
             AddBirthDateLabel(person.Value.BirthDate);
 
-            if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 3)
+            if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 4)
             {
                 GenerationGridList[generationGridIndex].RowDefinitions.Add(new RowDefinition());
             }
@@ -153,17 +157,31 @@ namespace GenealogyTree
 
             AddDeathDateLabel(person.Value.DeathDate);
 
-            if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 3)
+            if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 4)
             {
                 GenerationGridList[generationGridIndex].RowDefinitions.Add(new RowDefinition());
             }
-            Grid.SetRow(deathDateLabelList[deathDateLabelList.Count - 1], 3);
+            Grid.SetRow(deathDateLabelList[deathDateLabelList.Count - 1], 2);
             Grid.SetColumn(deathDateLabelList[deathDateLabelList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
-            Grid.SetRow(deathDateTextBoxList[deathDateTextBoxList.Count - 1], 3);
+            Grid.SetRow(deathDateTextBoxList[deathDateTextBoxList.Count - 1], 2);
             Grid.SetColumn(deathDateTextBoxList[deathDateTextBoxList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
 
             GenerationGridList[generationGridIndex].Children.Add(deathDateLabelList[deathDateLabelList.Count - 1]);
             GenerationGridList[generationGridIndex].Children.Add(deathDateTextBoxList[deathDateTextBoxList.Count - 1]);
+
+            AddBirthPlaceLabel(person.Value.BirthPlace);
+
+            if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 4)
+            {
+                GenerationGridList[generationGridIndex].RowDefinitions.Add(new RowDefinition());
+            }
+            Grid.SetRow(birthPlaceLabelList[birthPlaceLabelList.Count - 1], 3);
+            Grid.SetColumn(birthPlaceLabelList[birthPlaceLabelList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+            Grid.SetRow(birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1], 3);
+            Grid.SetColumn(birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+
+            GenerationGridList[generationGridIndex].Children.Add(birthPlaceLabelList[birthPlaceLabelList.Count - 1]);
+            GenerationGridList[generationGridIndex].Children.Add(birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1]);
 
             if (person.Value.Partner != string.Empty)
             {
@@ -195,7 +213,7 @@ namespace GenealogyTree
                 GenerationGridList[generationGridIndex].Children.Add(textboxlist[textboxlist.Count - 1]);
                 Grid.SetColumn(textboxlist[textboxlist.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
 
-                if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 3)
+                if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 4)
                 {
                     GenerationGridList[generationGridIndex].RowDefinitions.Add(new RowDefinition());
                     GenerationGridList[generationGridIndex].RowDefinitions[GenerationGridList[generationGridIndex].RowDefinitions.Count - 1].Height = new GridLength(25);
@@ -203,7 +221,7 @@ namespace GenealogyTree
 
                 AddBirthDateLabel(person.Value.PartnerBirthDate);
 
-                if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 3)
+                if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 4)
                 {
                     GenerationGridList[generationGridIndex].RowDefinitions.Add(new RowDefinition());
                 }
@@ -217,24 +235,38 @@ namespace GenealogyTree
 
                 AddDeathDateLabel(person.Value.PartnerDeathDate);
 
-                if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 3)
+                if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 4)
                 {
                     GenerationGridList[generationGridIndex].RowDefinitions.Add(new RowDefinition());
                 }
-                Grid.SetRow(deathDateLabelList[deathDateLabelList.Count - 1], 3);
+                Grid.SetRow(deathDateLabelList[deathDateLabelList.Count - 1], 2);
                 Grid.SetColumn(deathDateLabelList[deathDateLabelList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
-                Grid.SetRow(deathDateTextBoxList[deathDateTextBoxList.Count - 1], 3);
+                Grid.SetRow(deathDateTextBoxList[deathDateTextBoxList.Count - 1], 2);
                 Grid.SetColumn(deathDateTextBoxList[deathDateTextBoxList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
 
                 GenerationGridList[generationGridIndex].Children.Add(deathDateLabelList[deathDateLabelList.Count - 1]);
                 GenerationGridList[generationGridIndex].Children.Add(deathDateTextBoxList[deathDateTextBoxList.Count - 1]);
+
+                AddBirthPlaceLabel(person.Value.BirthPlace);
+
+                if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 4)
+                {
+                    GenerationGridList[generationGridIndex].RowDefinitions.Add(new RowDefinition());
+                }
+                Grid.SetRow(birthPlaceLabelList[birthPlaceLabelList.Count - 1], 3);
+                Grid.SetColumn(birthPlaceLabelList[birthPlaceLabelList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+                Grid.SetRow(birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1], 3);
+                Grid.SetColumn(birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1], GenerationGridList[generationGridIndex].ColumnDefinitions.Count - 1);
+
+                GenerationGridList[generationGridIndex].Children.Add(birthPlaceLabelList[birthPlaceLabelList.Count - 1]);
+                GenerationGridList[generationGridIndex].Children.Add(birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1]);
             }
 
             GenerationChangedEventArgs eventArgs = new GenerationChangedEventArgs();
             GenerationChanged?.Invoke(this, eventArgs);
         }
 
-        public void AddPartner(string childName, string partnerName, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate)
+        public void AddPartner(string childName, string partnerName, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate, string birthPlace)
         {
             TextBox childTextBox = null;
             foreach (TextBox textBox in textboxlist)
@@ -319,6 +351,22 @@ namespace GenealogyTree
                 }
             }
 
+            foreach(Label label in birthPlaceLabelList)
+            {
+                if(Grid.GetColumn(label) > Grid.GetColumn(childTextBox))
+                {
+                    Grid.SetColumn(label, Grid.GetColumn(label) + 2);
+                }
+            }
+
+            foreach (TextBox textBox in birthPlaceTextBoxList)
+            {
+                if (Grid.GetColumn(textBox) > Grid.GetColumn(childTextBox))
+                {
+                    Grid.SetColumn(textBox, Grid.GetColumn(textBox) + 2);
+                }
+            }
+
             textboxlist.Insert(textboxlist.IndexOf(childTextBox) + 1, new TextBox());
             textBoxTextList.Insert(textboxlist.IndexOf(childTextBox) + 1, new String(partnerName.ToArray()));
             textboxlist[textboxlist.IndexOf(childTextBox) + 1].Text = partnerName;
@@ -364,6 +412,14 @@ namespace GenealogyTree
             Grid.SetColumn(deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
             Grid.SetRow(deathDateLabelList[textboxlist.IndexOf(childTextBox) + 1], 2);
 
+            birthPlaceLabelList.Insert(textboxlist.IndexOf(childTextBox) + 1, new Label());
+            birthPlaceLabelList[birthPlaceLabelList.Count - 1].Margin = new Thickness(0, 0, 25, 25);
+            birthPlaceLabelList[birthPlaceLabelList.Count - 1].Content = "📌";
+            birthPlaceLabelList[birthPlaceLabelList.Count - 1].BorderBrush = Brushes.Transparent;
+            GenerationGridList[gridIndex].Children.Add(birthDateLabelList[textboxlist.IndexOf(childTextBox) + 1]);
+            Grid.SetColumn(birthDateLabelList[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
+            Grid.SetRow(birthDateLabelList[textboxlist.IndexOf(childTextBox) + 1], 3);
+
             birthDateTextBoxList.Insert(textboxlist.IndexOf(childTextBox) + 1, new TextBox());
             if (birthDate != null)
             {
@@ -390,11 +446,34 @@ namespace GenealogyTree
             Grid.SetColumn(deathDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
             Grid.SetRow(deathDateTextBoxList[textboxlist.IndexOf(childTextBox) + 1], 1);
 
+            birthPlaceTextBoxList.Insert(textboxlist.IndexOf(childTextBox) + 1, new TextBox());
+            birthPlaceTextBoxList[textboxlist.IndexOf(childTextBox) + 1].Text = birthPlace;
+            birthPlaceTextBoxList[textboxlist.IndexOf(childTextBox) + 1].Margin = new Thickness(0, 0, 0, 50);
+            birthPlaceTextBoxList[textboxlist.IndexOf(childTextBox) + 1].LostFocus += BirthPlaceChanged;
+            GenerationGridList[gridIndex].Children.Add(birthPlaceTextBoxList[textboxlist.IndexOf(childTextBox) + 1]);
+            Grid.SetColumn(birthPlaceTextBoxList[textboxlist.IndexOf(childTextBox) + 1], childColumnIndex + 2);
+            Grid.SetRow(birthPlaceTextBoxList[textboxlist.IndexOf(childTextBox) + 1], 3);
+
             GenerationChangedEventArgs eventArgs = new GenerationChangedEventArgs();
             GenerationChanged?.Invoke(this, eventArgs);
-    }
+        }
 
-    public event GenerationChangedEventHandler GenerationChanged;
+        private void BirthPlaceChanged(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            Node<Person> person = PersonTree.GetNodeByName(PersonTree.Tree, textboxlist[birthDateTextBoxList.IndexOf(textBox)].Text);
+
+            if(person.Value.Name == textboxlist[birthDateTextBoxList.IndexOf(textBox)].Text)
+            {
+                person.Value.BirthPlace = textBox.Text;
+            }
+            else if(person.Value.Partner == textboxlist[birthDateTextBoxList.IndexOf(textBox)].Text)
+            {
+                person.Value.PartnerBirthPlace = textBox.Text;
+            }
+        }
+
+        public event GenerationChangedEventHandler GenerationChanged;
 
         private void AddTextBox(string value, string type)
         {
@@ -428,6 +507,41 @@ namespace GenealogyTree
             if (date != null)
             {
                 birthDateTextBoxList[birthDateTextBoxList.Count - 1].Text = date.Value.ToShortDateString();
+            }
+        }
+
+        private void AddBirthPlaceLabel(string birthPlace)
+        {
+            Label newLabel = new Label()
+            {
+                Content = "📌",
+                BorderBrush = Brushes.Transparent,
+                Margin = new Thickness(0, 0, 25, 0)
+            };
+            birthPlaceLabelList.Add(newLabel);
+
+            birthPlaceTextBoxList.Add(new TextBox());
+            birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1].Width = 200;
+            birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1].Height = 20;
+            birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1].LostFocus += ChangeBirthPlace;
+            birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1].Text = birthPlace;
+            birthPlaceTextBoxList[birthPlaceTextBoxList.Count - 1].Margin = new Thickness(0, 0, 0, 50);
+        }
+
+        private void ChangeBirthPlace(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            Node<Person> person = null;
+
+            person = PersonTree.GetNodeByName(PersonTree.Tree, textboxlist[birthPlaceTextBoxList.IndexOf(textBox)].Text);
+            
+            if(person.Value.Name == textboxlist[birthPlaceTextBoxList.IndexOf(textBox)].Text)
+            {
+                person.Value.BirthPlace = textBox.Text;
+            }
+            else if(person.Value.Partner == textboxlist[birthPlaceTextBoxList.IndexOf(textBox)].Text)
+            {
+                person.Value.PartnerBirthPlace = textBox.Text;
             }
         }
 
@@ -505,7 +619,7 @@ namespace GenealogyTree
             {
                 Content = "✞",
                 BorderBrush = Brushes.Transparent,
-                Margin = new Thickness(0, 0, 25, 25)
+                Margin = new Thickness(0, 0, 25, 0)
             };
             deathDateLabelList.Add(newLabel);
 
@@ -513,7 +627,6 @@ namespace GenealogyTree
             deathDateTextBoxList[deathDateTextBoxList.Count - 1].Width = 200;
             deathDateTextBoxList[deathDateTextBoxList.Count - 1].Height = 20;
             deathDateTextBoxList[deathDateTextBoxList.Count - 1].LostFocus += ChangeDeathDate;
-            deathDateTextBoxList[deathDateTextBoxList.Count - 1].Margin = new Thickness(0, 0, 0, 50);
             if (date != null)
             {
                 deathDateTextBoxList[deathDateTextBoxList.Count - 1].Text = date.Value.ToShortDateString();

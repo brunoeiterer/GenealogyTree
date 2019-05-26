@@ -12,6 +12,7 @@
     <System:String x:Key="AddChildWindowPartnerLabel">Partner</System:String>
     <System:String x:Key="AddChildWindowBirthDateLabel">Birth Date</System:String>
     <System:String x:Key="AddChildWindowDeathDateLabel">Death Date</System:String>
+    <System:String x:Key="AddChildWindowBirthPlaceLabel">Birth Place</System:String>
     <System:String x:Key="AddChildWindowPartnerBirthDateLabel">Partner Birth Date</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateLabel">Partner Death Date</System:String>
     <System:String x:Key="AddChildWindowButton">Add</System:String>
@@ -21,6 +22,7 @@
     <System:String x:Key="AddChildWindowDeathDateFormatError">The death date is invalid.</System:String>
     <System:String x:Key="AddChildWindowPartnerBirthDateFormatError">The partner birth date is invalid.</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateFormatError">The partner death date is invalid.</System:String>
+    <System:String x:Key="AddChildWindowDateFormatErrorMessageBoxTitle">Error - invalid date</System:String>
     <System:String x:Key="AddChildWindowErrorMessageBoxTitle">Error</System:String>
     <System:String x:Key="AddChildWindowEmptyParentPartnerError">Parent must have a partner</System:String>
     <System:String x:Key="AddChildWindowEmptyParentPartnerErrorMessageBoxTitle">Error - parent has no partner</System:String>
@@ -31,7 +33,8 @@
     <System:String x:Key="AddPartnerWindowChildName">Family Member Name</System:String>
     <System:String x:Key="AddPartnerWindowPartnerNameLabel">Partner Name</System:String>
     <System:String x:Key="AddPartnerWindowPartnerBirthDateLabel">Partner Birth Date</System:String>
-    <System:String x:Key="AddPartnerWindowPartnerDeathDateLabel">Partner Death Datet</System:String>
+    <System:String x:Key="AddPartnerWindowPartnerDeathDateLabel">Partner Death Date</System:String>
+    <System:String x:Key="AddPartnerWindowPartnerBirthPlaceLabel">Partner Birth Place</System:String>
     <System:String x:Key="AddPartnerWindowButton">Add</System:String>
     <System:String x:Key="AddPartnerWindowPartnerBirthDateFormatError">The partner birth date is invalid.</System:String>
     <System:String x:Key="AddPartnerdWindowPartnerDeathDateFormatError">The partner death date is invalid.</System:String>

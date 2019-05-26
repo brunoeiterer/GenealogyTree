@@ -15,42 +15,52 @@ namespace GenealogyTree
         public Nullable<DateTime> DeathDate { get; set; }
         public Nullable<DateTime> PartnerBirthDate { get; set; }
         public Nullable<DateTime> PartnerDeathDate { get; set; }
+        public string BirthPlace { get; set; }
+        public string PartnerBirthPlace { get; set; }
         public Guid GenerationID {get; set;}
 
-        public Person() : this(string.Empty, string.Empty, null, null, null, null)
+        public Person() : this(string.Empty, string.Empty, null, null, null, null, string.Empty, string.Empty)
         {
 
         }
 
-        public Person(string name) : this(name, string.Empty, null, null, null, null)
+        public Person(string name) : this(name, string.Empty, null, null, null, null, string.Empty, string.Empty)
         {
 
         }
 
-        public Person(string name, string partner) : this(name, partner, null, null, null, null)
+        public Person(string name, string partner) : this(name, partner, null, null, null, null, string.Empty, string.Empty)
         {
 
         }
 
-        public Person(string name, string partner, Nullable<DateTime> birthDate) : this(name, partner, birthDate, null, null, null)
+        public Person(string name, string partner, Nullable<DateTime> birthDate) : this(name, partner, birthDate, null, null, null, 
+            string.Empty, string.Empty)
         {
 
         }
 
         public Person(string name, string partner, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate): 
-            this(name, partner, birthDate, deathDate, null, null)
+            this(name, partner, birthDate, deathDate, null, null, string.Empty, string.Empty)
         {
 
         }
 
         public Person(string name, string partner, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate,
-            Nullable<DateTime> partnerBirthDate) : this(name, partner, birthDate, deathDate, partnerBirthDate, null)
+            Nullable<DateTime> partnerBirthDate) : this(name, partner, birthDate, deathDate, partnerBirthDate, null, string.Empty, string.Empty)
+        {
+
+        }
+
+        public Person(string name, string partner, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate, 
+            Nullable<DateTime> partnerBirthDate, Nullable<DateTime> partnerDeathDate, string birthPlace) : 
+            this(name, partner, birthDate, deathDate, partnerBirthDate, null, birthPlace, string.Empty)
         {
 
         }
 
         public Person(string name, string partner, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate,
-            Nullable<DateTime> partnerBirthDate, Nullable<DateTime> partnerDeathDate)
+            Nullable<DateTime> partnerBirthDate, Nullable<DateTime> partnerDeathDate, string birthPlace, string PartnerBirthPlace)
         {
             this.Name = name;
             this.Partner = partner;
@@ -58,6 +68,8 @@ namespace GenealogyTree
             this.DeathDate = deathDate;
             this.PartnerBirthDate = PartnerBirthDate;
             this.PartnerDeathDate = PartnerDeathDate;
+            this.BirthPlace = birthPlace;
+            this.PartnerBirthPlace = PartnerBirthPlace;
         }
     }
 }

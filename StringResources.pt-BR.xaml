@@ -12,8 +12,10 @@
     <System:String x:Key="AddChildWindowPartnerLabel">Companheiro</System:String>
     <System:String x:Key="AddChildWindowBirthDateLabel">Data de Nascimento</System:String>
     <System:String x:Key="AddChildWindowDeathDateLabel">Data de Óbito</System:String>
+    <System:String x:Key="AddChildWindowBirthPlaceLabel">Local de Nascimento</System:String>
     <System:String x:Key="AddChildWindowPartnerBirthDateLabel">Data de Nascimento do Companheiro</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateLabel">Data de Óbito do Companheiro</System:String>
+    <System:String x:Key="AddChildWindowPartnerBirthPlaceLabel">Local de Nascimento do Companheiro</System:String>
     <System:String x:Key="AddChildWindowButton">Adicionar</System:String>
     <System:String x:Key="AddChildWindowDuplicatedNameError">O nome já está sendo utilizado</System:String>
     <System:String x:Key="AddChildWindowDuplicatedPartnerNameError">O nome do companheiro já está sendo utilizado</System:String>
@@ -21,6 +23,7 @@
     <System:String x:Key="AddChildWindowDeathDateFormatError">A data de óbito não é válida.</System:String>
     <System:String x:Key="AddChildWindowPartnerBirthDateFormatError">A data de nascimento do companheiro não é válida.</System:String>
     <System:String x:Key="AddChildWindowPartnerDeathDateFormatError">A data de óbito do companheiro não é válida.</System:String>
+    <System:String x:Key="AddChildWindowDateFormatErrorMessageBoxTitle">Erro - data inválida</System:String>
     <System:String x:Key="AddChildWindowErrorMessageBoxTitle">Erro</System:String>
     <System:String x:Key="AddChildWindowEmptyParentPartnerError">Pai ou mãe deve ter um companheiro</System:String>
     <System:String x:Key="AddChildWindowEmptyParentPartnerErrorMessageBoxTitle">Erro - Pai ou mãe não tem companheiro</System:String>
@@ -32,6 +35,7 @@
     <System:String x:Key="AddPartnerWindowPartnerNameLabel">Nome do companheiro</System:String>
     <System:String x:Key="AddPartnerWindowPartnerBirthDateLabel">Data de Nascimento do Companheiro</System:String>
     <System:String x:Key="AddPartnerWindowPartnerDeathDateLabel">Data de Óbito do Companheiro</System:String>
+    <System:String x:Key="AddPartnerWindowPartnerBirthPlaceLabel">Local de Nascimento do Companheiro</System:String>
     <System:String x:Key="AddPartnerWindowButton">Adicionar</System:String>
     <System:String x:Key="AddPartnerWindowPartnerBirthDateFormatError">A data de nascimento do companheiro não é válida.</System:String>
     <System:String x:Key="AddPartnerWindowPartnerDeathDateFormatError">A data de óbito do companheiro não é válida.</System:String>

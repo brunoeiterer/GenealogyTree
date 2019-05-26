@@ -80,10 +80,10 @@ namespace GenealogyTree
             generation.RemovePerson(child, name);
         }
 
-        public void AddPartner(string childName, string partnerName, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate)
+        public void AddPartner(string childName, string partnerName, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate, string birthPlace)
         {
             Node<Person> child = PersonTree.GetNodeByName(PersonTree.Tree, childName);
-            GetGenerationByID(child.Value.GenerationID).AddPartner(childName, partnerName, birthDate, deathDate);
+            GetGenerationByID(child.Value.GenerationID).AddPartner(childName, partnerName, birthDate, deathDate, birthPlace);
         }
 
         private void GenerationChangedHandler(object sender, GenerationChangedEventArgs e)

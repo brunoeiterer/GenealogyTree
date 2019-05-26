@@ -8,6 +8,7 @@ namespace GenealogyTree
         public string partnerName;
         public Nullable<DateTime> birthDate;
         public Nullable<DateTime> deathDate;
+        public string birthPlace;
     }
 
     public delegate void PartnerAddedEventHandler(object sender, PartnerAddedEventArgs e);

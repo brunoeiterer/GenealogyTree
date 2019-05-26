@@ -82,12 +82,14 @@ namespace GenealogyTree
                     child.Value.Partner = this.PartnerName.Text;
                     child.Value.PartnerBirthDate = partnerBirthDate;
                     child.Value.PartnerDeathDate = partnerDeathDate;
+                    child.Value.PartnerBirthPlace = this.PartnerBirthPlace.Text;
 
                     PartnerAddedEventArgs eventArgs = new PartnerAddedEventArgs();
                     eventArgs.childName = child.Value.Name;
                     eventArgs.partnerName = child.Value.Partner;
                     eventArgs.birthDate = child.Value.PartnerBirthDate;
                     eventArgs.deathDate = child.Value.PartnerDeathDate;
+                    eventArgs.birthPlace = child.Value.PartnerBirthPlace;
 
                     PartnerAdded?.Invoke(this, eventArgs);
                     this.Close();
