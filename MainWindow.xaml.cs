@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace GenealogyTree
 {
@@ -61,6 +62,8 @@ namespace GenealogyTree
             Grid.SetRow(menu.BasePanel, 0);
 
             this.MainWindowScrollViewer.Content = ConnectionsGrid;
+
+            AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
         }
 
         public void AddNewGenerationToTreePanel(object sender, NewGenerationAddedEventArgs e)
@@ -325,6 +328,11 @@ namespace GenealogyTree
                 treeGrid.Children.Remove(treeGrid.Children[i]);
                 i--;
             }
+
+            for(int i = 1; i < ConnectionsGrid.Children.Count; i++)
+            {
+                ConnectionsGrid.Children.Remove(ConnectionsGrid.Children[i]);
+            }
         }
 
         private void ChildRemoved(object sender, ChildRemovedEventArgs e)
@@ -373,6 +381,13 @@ namespace GenealogyTree
 
                 i--;
             }
+        }
+
+        private void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception exception = (Exception)e.ExceptionObject;
+            File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + @"\ErrorLog.txt", exception.Source + "\n" + exception.Message + "\n" +
+                exception.StackTrace);
         }
     }
 }
