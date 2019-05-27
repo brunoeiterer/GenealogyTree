@@ -97,6 +97,14 @@ namespace GenealogyTree
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
+            //if(File.Exists(e.filename))
+            //{
+            //    using (FileStream fileStream = File.Open(e.filename, FileMode.Open))
+            //    {
+            //        fileStream.SetLength(0);
+            //    }
+            //}
+
             using (Stream stream = File.Create(e.filename))
             {
                 Node<Person> tempTree = PersonTree.Tree;
@@ -118,12 +126,15 @@ namespace GenealogyTree
 
             generationList.Clear();
 
+            PersonTree.Tree = new Node<Person>(new Person(), null);
+
             PersonTree.Tree.Value.Name = tempTree.Value.Name;
             PersonTree.Tree.Value.Partner = tempTree.Value.Partner;
             PersonTree.Tree.Value.BirthDate = tempTree.Value.BirthDate;
             PersonTree.Tree.Value.DeathDate = tempTree.Value.DeathDate;
             PersonTree.Tree.Value.PartnerBirthDate = tempTree.Value.PartnerBirthDate;
             PersonTree.Tree.Value.PartnerDeathDate = tempTree.Value.PartnerDeathDate;
+            PersonTree.Tree.SubscribeToNewChildAdded(PersonTree.NewChildAdded);
 
             this.AddGeneration(new Generation(null));
             this.generationList[generationList.Count - 1].GenerationID = tempTree.Value.GenerationID;
