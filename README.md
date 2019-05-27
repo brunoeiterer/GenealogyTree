@@ -43,7 +43,8 @@ Baixe  a [última versão](https://github.com/brunoeiterer/GenealogyTree/release
 O aplicativo é controlado principalmente por botões no menu que fica no topo. São seis botões no total:
 * Novo filho (👶): Adiciona um filho na árvore. É necessário selecionar o pai ou a mãe (exceto quando a árvore estiver vazia) e o nome do filho. Campos opcionais são o local de nascimento, a data de nascimento e óbito do filho, o nome, o local de nascimento e as datas de nascimento e óbito do companheiro.
 * Adicionar companheiro (⚭): Adiciona um companheiro para alguém na árvore. Somente pessoas sem companheiros podem ter um adicionado. É necessário fornecer o nome do companheiro e, opcionalmente, seu local de nascimento e as suas datas de nascimento e óbito.
-* Salvar (💾): Salva a árvore em um arquivo binário (.bin) que pode posteriormente ser aberto pelo aplicativo.
+* Salvar (💾): Salva a árvore em um arquivo binário (.bin) selectionado com Salvar Como ou Abrir. Se nenhum arquivo foi selecionado ainda o comportamento é o mesmo de Salvar Como.
+* Salvar Como (✐💾): Salva a árvore como um arquivo binário(.bin) que posteriormente pode ser aberto no aplicativo.
 * Abrir (📂): Abre um árquivo binário (.bin) gerado pela opção Salvar do aplicativo. Arquivos binários que não foram gerados pelo aplicativo e abertos com esta opção causam comportamento indefinido.
 * Remover Pessoa (🗑): Remove uma pessoa da árvore. Se a pessoa for um filho da família todos os seus filhos assim como seu companheiro serão removidos. Se a pessoa for um companheiro de algum filho, todos seus filhos serão removidos mas o filho da família será mantido.
 * Língua: Seleciona qual a linguagem do aplicativo. Atualmente Inglês Americano e Português Brasileiro estão disponíveis.
