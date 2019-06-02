@@ -29,6 +29,7 @@ To change names, birth places, birth and death dates simply click on the field a
 * Single parents are not allowed.
 * Adding parents is not possible.
 * Multiple marriages are not allowed.
+* Marriage between family members is not allowed.
 
 # Árvore Genealógica
 Aplicativo para gerar árvores genealógicas para Windows.
@@ -59,3 +60,4 @@ O [Visual Studio Community 2019 Preview](https://visualstudio.microsoft.com/pt-b
 * Pais solteiros não são permitidos.
 * Adicionar pais não é possível.
 * Vários casamentos não são permitidos.
+* Casementos entre familiares não são permitidos.
