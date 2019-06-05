@@ -33,6 +33,24 @@ namespace GenealogyTree
 
         public event NewGenerationAddedEventHandler NewGenerationAdded;
 
+        public void InsertGeneration(Generation generation, int index)
+        {
+            generationList.Insert(index, generation);
+
+            if (generation.ParentsGridList != null)
+            {
+                generation.GenerationChanged += GenerationChangedHandler;
+            }
+
+            NewGenerationAddedEventArgs eventArgs = new NewGenerationAddedEventArgs()
+            {
+                generation = generation
+            };
+            NewGenerationInserted?.Invoke(this, eventArgs);
+        }
+
+        public event NewGenerationAddedEventHandler NewGenerationInserted;
+
         public Generation GetGenerationByID(Guid ID)
         {
             int index;
@@ -96,14 +114,6 @@ namespace GenealogyTree
         public void Save(object sender, SaveRequestedEventArgs e)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-
-            //if(File.Exists(e.filename))
-            //{
-            //    using (FileStream fileStream = File.Open(e.filename, FileMode.Open))
-            //    {
-            //        fileStream.SetLength(0);
-            //    }
-            //}
 
             using (Stream stream = File.Create(e.filename))
             {

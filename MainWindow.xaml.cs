@@ -29,6 +29,7 @@ namespace GenealogyTree
             generationManager.GenerationChanged += ConnectChildrenToParents;
             generationManager.NewGenerationAdded += AddNewGenerationToTreePanel;
             generationManager.OpenRequestedEvent += ClearGrid;
+            generationManager.NewGenerationInserted += InsertNewGenerationIntoTreePanel;
 
             menu = new Menu();
             menu.PartnerAdded += PartnerAdded;
@@ -36,6 +37,7 @@ namespace GenealogyTree
             menu.OpenRequested += generationManager.Open;
             menu.FirstChildAddedEvent += generationManager.FirstChildAdded;
             menu.ChildRemovedEvent += ChildRemoved;
+            menu.ParentsAddedEvent += ParentsAdded;
 
             PersonTree.NewChildAddedEvent += NewChildAdded;
 
@@ -73,6 +75,16 @@ namespace GenealogyTree
             treeGrid.RowDefinitions[treeGrid.RowDefinitions.Count - 1].Height = new GridLength(1, GridUnitType.Auto);
             Grid.SetRow(e.generation.BaseGrid, treeGrid.RowDefinitions.Count - 1);
 
+            Grid.SetColumn(e.generation.BaseGrid, 0);
+        }
+
+        public void InsertNewGenerationIntoTreePanel(object sender, NewGenerationAddedEventArgs e)
+        {
+            treeGrid.Children.Add(e.generation.BaseGrid);
+            treeGrid.RowDefinitions.Add(new RowDefinition());
+            treeGrid.RowDefinitions[treeGrid.RowDefinitions.Count - 1].Height = new GridLength(1, GridUnitType.Auto);
+
+            Grid.SetRow(e.generation.BaseGrid, generationManager.generationList.IndexOf(e.generation));
             Grid.SetColumn(e.generation.BaseGrid, 0);
         }
 
@@ -405,6 +417,15 @@ namespace GenealogyTree
             Exception exception = (Exception)e.ExceptionObject;
             File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + @"\ErrorLog.txt", exception.Source + "\n" + exception.Message + "\n" +
                 exception.StackTrace);
+        }
+
+        private void ParentsAdded(object sender, ParentsAddedEventArgs e)
+        {
+            Generation childGeneration = generationManager.GetGenerationByID(e.parent.Children[0].Value.GenerationID);
+            generationManager.InsertGeneration(new Generation(null), 0);
+            e.parent.Value.GenerationID = generationManager.generationList[0].GenerationID;
+            generationManager.generationList[0].AddPerson(e.parent);
+            childGeneration.ParentsGridList = generationManager.generationList[0].GenerationGridList;
         }
     }
 }

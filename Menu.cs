@@ -12,6 +12,7 @@ namespace GenealogyTree
         public DockPanel BasePanel { get; private set; }
         public Button AddChildButton { get; private set; }
         public Button AddPartnerButton { get; private set; }
+        public Button AddParentsButton { get; private set; }
         public Button SaveButton { get; private set; }
         public Button SaveAsButton { get; private set; }
         private string FileName { get; set; }
@@ -44,6 +45,14 @@ namespace GenealogyTree
             AddPartnerButton.SetResourceReference(Button.ToolTipProperty, "AddPartnerButtonToolTip");
             AddPartnerButton.Click += AddPartnerButton_Click;
             DockPanel.SetDock(AddPartnerButton, Dock.Left);
+
+            AddParentsButton = new Button()
+            {
+                Content = "👫"
+            };
+            AddParentsButton.SetResourceReference(Button.ToolTipProperty, "AddParentsButtonToolTip");
+            AddParentsButton.Click += AddParentsButton_Click;
+            DockPanel.SetDock(AddParentsButton, Dock.Left);
 
             SaveButton = new Button()
             {
@@ -104,6 +113,7 @@ namespace GenealogyTree
             BasePanel.Children.Add(AddChildButton);
             BasePanel.Children.Add(AddPartnerButton);
             BasePanel.Children.Add(RemoveChildButton);
+            BasePanel.Children.Add(AddParentsButton);
             BasePanel.Children.Add(SaveButton);
             BasePanel.Children.Add(SaveAsButton);
             BasePanel.Children.Add(OpenButton);
@@ -132,6 +142,21 @@ namespace GenealogyTree
                     (string)Application.Current.Resources["MenuEmptyChildListErrorMessageBoxTile"]);
             }
 
+        }
+
+        private void AddParentsButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddParentsWindow addParentsWindow = new AddParentsWindow();
+            addParentsWindow.ParentsAdded += ParentsAdded;
+            if (addParentsWindow.ChildList.Count > 0)
+            {
+                addParentsWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show((string)Application.Current.Resources["MenuEmptyAddParentsChildListError"],
+                    (string)Application.Current.Resources["MenuEmptyAddParentsChildListErrorMessageBoxTile"]);
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -251,5 +276,12 @@ namespace GenealogyTree
         }
 
         public event ChildRemovedEventHandler ChildRemovedEvent;
+
+        private void ParentsAdded(object sender, ParentsAddedEventArgs e)
+        {
+            ParentsAddedEvent?.Invoke(sender, e);
+        }
+
+        public event ParentsAddedEventHandler ParentsAddedEvent;
     }
 }
