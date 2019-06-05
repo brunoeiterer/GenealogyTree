@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenealogyTree"
         mc:Ignorable="d"
-        Title="{DynamicResource AddPartnerWindowTitle}" Height="550" Width="800">
+        Title="{DynamicResource AddChildWindowTitle}" Height="550" Width="800">
 
     <StackPanel>
         <Label Content="{DynamicResource AddChildWindowParentLabel}" Width="250" />
