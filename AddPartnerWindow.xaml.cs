@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace GenealogyTree
 {
@@ -35,7 +36,17 @@ namespace GenealogyTree
             }
             else
             {
-                Node<Person> child = PersonTree.GetNodeByName(PersonTree.Tree , this.ChildCombobox.SelectedValue.ToString());
+                Node<Person> child = null;
+                if(Regex.Split(this.ChildCombobox.SelectedValue.ToString(), " & ").Length == 1)
+                {
+                    child = PersonTree.GetNodeByName(PersonTree.Tree, this.ChildCombobox.SelectedValue.ToString(), string.Empty);
+                }
+                else if(Regex.Split(this.ChildCombobox.SelectedValue.ToString(), " & ").Length == 2)
+                {
+                    child = PersonTree.GetNodeByName(PersonTree.Tree, Regex.Split(this.ChildCombobox.SelectedValue.ToString(), " & ")[0],
+                        Regex.Split(this.ChildCombobox.SelectedValue.ToString(), " & ")[1]);
+                }
+                
                 string errorMessage = string.Empty;
 
                 DateTime birthDate;

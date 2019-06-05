@@ -18,6 +18,7 @@ namespace GenealogyTree
         public string BirthPlace { get; set; }
         public string PartnerBirthPlace { get; set; }
         public Guid GenerationID {get; set;}
+        public bool IsPartnerInFamily { get; set; }
 
         public Person() : this(string.Empty, string.Empty, null, null, null, null, string.Empty, string.Empty)
         {

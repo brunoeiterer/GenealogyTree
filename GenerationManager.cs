@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GenealogyTree
 {
@@ -62,7 +64,7 @@ namespace GenealogyTree
         public void FirstChildAdded(object sender, NewChildAddedEventArgs<Person> e)
         {
             AddGeneration(new Generation(null));
-            generationList[generationList.Count - 1].AddPerson(PersonTree.GetNodeByName(PersonTree.Tree, e.child.Name));
+            generationList[generationList.Count - 1].AddPerson(PersonTree.GetNodeByName(PersonTree.Tree, e.child.Name, e.child.Partner));
             PersonTree.Tree.Value.GenerationID = generationList[generationList.Count - 1].GenerationID;
         }
 
@@ -100,12 +102,31 @@ namespace GenealogyTree
 
         public void AddPartner(string childName, string partnerName, Nullable<DateTime> birthDate, Nullable<DateTime> deathDate, string birthPlace)
         {
-            Node<Person> child = PersonTree.GetNodeByName(PersonTree.Tree, childName);
+            Node<Person> child = PersonTree.GetNodeByName(PersonTree.Tree, childName, partnerName);
             GetGenerationByID(child.Value.GenerationID).AddPartner(childName, partnerName, birthDate, deathDate, birthPlace);
         }
 
         private void GenerationChangedHandler(object sender, GenerationChangedEventArgs e)
         {
+            if(e.duplicatedName != string.Empty)
+            {
+                foreach(Generation generation in generationList)
+                {
+                    foreach(Grid grid in generation.GenerationGridList)
+                    {
+                        IEnumerable<TextBox> textBoxList = grid.Children.OfType<TextBox>().Where(t => t.Text == e.duplicatedName);
+                        foreach(TextBox textBox in textBoxList)
+                        {
+                            textBox.Foreground = Brushes.Red;
+                            foreach(Label label in grid.Children.OfType<Label>().Where(l => Grid.GetColumn(l) == Grid.GetColumn(textBox)))
+                            {
+                                label.Foreground = Brushes.Red;
+                            }
+                        }
+                    }
+                }
+            }
+
             GenerationChanged?.Invoke(sender, e);
         }
 
@@ -162,7 +183,7 @@ namespace GenealogyTree
         {
             if(node.Parent != null)
             {
-                Node<Person> parent = PersonTree.GetNodeByName(PersonTree.Tree, node.Parent.Value.Name);
+                Node<Person> parent = PersonTree.GetNodeByName(PersonTree.Tree, node.Parent.Value.Name, node.Parent.Value.Partner);
                 parent.AddChild(person, node.Parent);
                 parent.Children[parent.Children.Count - 1].SubscribeToNewChildAdded(PersonTree.NewChildAdded);
             }

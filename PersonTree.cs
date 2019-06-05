@@ -14,10 +14,14 @@ namespace GenealogyTree
             Tree.NewChildAdded += NewChildAdded;
         }
 
-        public static Node<Person> GetNodeByName(Node<Person> node, string name)
+        public static Node<Person> GetNodeByName(Node<Person> node, string name, string partnerName)
         {
             Node<Person> nodeFound = null;
-            if(node.Value.Name == name || node.Value.Partner == name)
+            if(node.Value.Name == name && node.Value.Partner == partnerName)
+            {
+                nodeFound = node;
+            }
+            else if(node.Value.Name == partnerName && node.Value.Partner == name)
             {
                 nodeFound = node;
             }
@@ -25,7 +29,7 @@ namespace GenealogyTree
             {
                 foreach(Node<Person> child in node.Children)
                 {
-                    nodeFound = GetNodeByName(child, name);
+                    nodeFound = GetNodeByName(child, name, partnerName);
                     if(nodeFound != null)
                     {
                         break;

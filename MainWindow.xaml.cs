@@ -90,7 +90,7 @@ namespace GenealogyTree
 
         private void NewChildAdded(object sender, NewChildAddedEventArgs<Person> e)
         {
-            generationManager.AddChild(PersonTree.GetNodeByName(PersonTree.Tree, e.child.Name));
+            generationManager.AddChild(PersonTree.GetNodeByName(PersonTree.Tree, e.child.Name, e.child.Partner));
         }
 
         private void PartnerAdded(object sender, PartnerAddedEventArgs e)
@@ -107,7 +107,21 @@ namespace GenealogyTree
             {
                 foreach (TextBox textBox in grid.Children.OfType<TextBox>())
                 {
-                    Node<Person> nextPerson = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text);
+                    Node<Person> nextPerson = null;
+                    if(generation.TextBoxList.IndexOf(textBox) != generation.TextBoxList.Count - 1)
+                    {
+                        if (PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text,
+                            generation.TextBoxList[generation.TextBoxList.IndexOf(textBox) + 1].Text) != null)
+                        {
+                            nextPerson = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text,
+                                                generation.TextBoxList[generation.TextBoxList.IndexOf(textBox) + 1].Text);
+                        }
+                    }
+
+                    else
+                    {
+                        nextPerson = PersonTree.GetNodeByName(PersonTree.Tree, textBox.Text, string.Empty);
+                    }
                     if(nextPerson != null)
                     {
                         if (nextPerson.Value.GenerationID == generation.GenerationID)
@@ -382,7 +396,7 @@ namespace GenealogyTree
 
             if(e.person != PersonTree.Tree)
             {
-                PersonTree.GetNodeByName(PersonTree.Tree, e.person.Parent.Value.Name).Remove(e.person);
+                PersonTree.GetNodeByName(PersonTree.Tree, e.person.Parent.Value.Name, e.person.Parent.Value.Partner).Remove(e.person);
             }
             else
             {

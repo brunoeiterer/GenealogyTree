@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace GenealogyTree
 {
@@ -136,7 +137,9 @@ namespace GenealogyTree
                 else
                 {
                     Node<Person> parent;
-                    parent = PersonTree.GetNodeByName(PersonTree.Tree, this.ParentCombobox.SelectedItem.ToString());
+                    string parent1 = Regex.Split(this.ParentCombobox.SelectedItem.ToString(), " & ")[0];
+                    string parent2 = Regex.Split(this.ParentCombobox.SelectedItem.ToString(), " & ")[1];
+                    parent = PersonTree.GetNodeByName(PersonTree.Tree, parent1, parent2);
 
                     if (parent.Value.Partner != string.Empty)
                     {
@@ -147,7 +150,7 @@ namespace GenealogyTree
                         DateTime birthDate;
                         DateTime deathDate;
 
-                        if (PersonTree.GetNodeByName(PersonTree.Tree, this.NewPersonName.Text) != null)
+                        if (PersonTree.GetNodeByName(PersonTree.Tree, this.NewPersonName.Text, this.NewPersonPartnerName.Text) != null)
                         {
                             errorMessage += Application.Current.Resources["AddChildWindowDuplicatedNameError"];
                         }
@@ -194,9 +197,9 @@ namespace GenealogyTree
                             DateTime partnerBirthDate;
                             DateTime partnerDeathDate;
 
-                            if (PersonTree.GetNodeByName(PersonTree.Tree, this.NewPersonPartnerName.Text) != null)
+                            if (PersonTree.GetNodeByName(PersonTree.Tree, this.NewPersonPartnerName.Text, string.Empty) != null)
                             {
-                                errorMessage += "\n" + Application.Current.Resources["AddChildWindowDuplicatedPartnerNameError"];
+                                newPerson.IsPartnerInFamily = true;
                             }
 
                             try
@@ -259,14 +262,9 @@ namespace GenealogyTree
 
         private void AddToParentList(Person person, Node<Person> node)
         {
-            if(person.Name != string.Empty)
+            if(person.Name != string.Empty && person.Partner != string.Empty)
             {
-                parentList.Add(person.Name);
-            }
-
-            if(person.Partner != string.Empty)
-            {
-                parentList.Add(person.Partner);
+                parentList.Add(person.Name + " & " + person.Partner);
             }
         }
 

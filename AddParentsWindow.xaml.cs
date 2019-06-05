@@ -4,6 +4,7 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace GenealogyTree
 {
@@ -154,7 +155,17 @@ namespace GenealogyTree
 
                         Node<Person> parentNode = new Node<Person>(parent, null);
                         parentNode.SubscribeToNewChildAdded(PersonTree.NewChildAdded);
-                        Node<Person> child = PersonTree.GetNodeByName(PersonTree.Tree, this.ChildCombobox.SelectedItem.ToString());
+                        Node<Person> child = null;
+
+                        if(Regex.Split(this.ChildCombobox.SelectedItem.ToString(), " & ").Length == 1)
+                        {
+                            child = PersonTree.GetNodeByName(PersonTree.Tree, this.ChildCombobox.SelectedItem.ToString(), string.Empty);
+                        }
+                        else if(Regex.Split(this.ChildCombobox.SelectedItem.ToString(), " & ").Length == 2)
+                        {
+                            child = PersonTree.GetNodeByName(PersonTree.Tree, Regex.Split(this.ChildCombobox.SelectedItem.ToString(), " & ")[0],
+                                Regex.Split(this.ChildCombobox.SelectedItem.ToString(), " & ")[1]);
+                        }
 
                         child.Parent = parentNode;
                         parentNode.Children.Add(child);
@@ -252,7 +263,7 @@ namespace GenealogyTree
         {
             if(node.Parent == null && node.Value.Name != string.Empty)
             {
-                ChildList.Add(person.Name);
+                ChildList.Add(person.Name + " & " + person.Partner);
             }
         }
 
