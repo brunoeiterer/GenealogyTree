@@ -29,6 +29,7 @@ namespace GenealogyTree
             generationManager.GenerationChanged += ConnectChildrenToParents;
             generationManager.NewGenerationAdded += AddNewGenerationToTreePanel;
             generationManager.OpenRequestedEvent += ClearGrid;
+            generationManager.OpenCompletedEvent += OpenCompletedHandler;
             generationManager.NewGenerationInserted += InsertNewGenerationIntoTreePanel;
 
             menu = new Menu();
@@ -359,6 +360,14 @@ namespace GenealogyTree
         private void MainWindowInstance_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             for(int i = 1; i < generationManager.generationList.Count; i++)
+            {
+                ConnectChildrenToParents((object)generationManager.generationList[i], new GenerationChangedEventArgs());
+            }
+        }
+
+        private void OpenCompletedHandler(object sender, OpenRequestedEventArgs e)
+        {
+            for (int i = 1; i < generationManager.generationList.Count; i++)
             {
                 ConnectChildrenToParents((object)generationManager.generationList[i], new GenerationChangedEventArgs());
             }

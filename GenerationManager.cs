@@ -175,9 +175,12 @@ namespace GenealogyTree
             Action<Person, Node<Person>> action = LoadTree;
 
             tempTree.Traverse(tempTree, action);
+
+            OpenCompletedEvent?.Invoke(this, new OpenRequestedEventArgs());
         }
 
         public event OpenRequestedEventHandler OpenRequestedEvent;
+        public event OpenRequestedEventHandler OpenCompletedEvent;
 
         private void LoadTree(Person person, Node<Person> node)
         {
