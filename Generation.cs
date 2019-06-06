@@ -1013,6 +1013,7 @@ namespace GenealogyTree
                     generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
                     generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
                     generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+                    generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
                 }
                 else
                 {
