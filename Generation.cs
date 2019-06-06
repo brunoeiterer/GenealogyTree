@@ -90,7 +90,7 @@ namespace GenealogyTree
             birthPlaceTextBoxList = new List<TextBox>();
             nameList = new List<string>();
 
-        GenerationID = Guid.NewGuid();
+            GenerationID = Guid.NewGuid();
             ParentsGridList = parentsGridList;
 
         }
@@ -1013,7 +1013,11 @@ namespace GenealogyTree
                     generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
                     generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
                     generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
-                    generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+                    if(generationGrid.ColumnDefinitions.Count > 0)
+                    {
+                        generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);
+                    }
+
                 }
                 else
                 {
@@ -1075,9 +1079,12 @@ namespace GenealogyTree
 
                     foreach (TextBlock textBlock in textBlockList)
                     {
-                        if (Grid.GetColumn(textBlock) > Grid.GetColumn(childTextBox))
+                        if(Grid.GetColumn(textBlock) > 1)
                         {
-                            Grid.SetColumn(textBlock, Grid.GetColumn(textBlock) - 2);
+                            if (Grid.GetColumn(textBlock) > Grid.GetColumn(childTextBox))
+                            {
+                                Grid.SetColumn(textBlock, Grid.GetColumn(textBlock) - 2);
+                            }
                         }
                     }
 
@@ -1088,12 +1095,15 @@ namespace GenealogyTree
                     generationGrid.Children.Remove(TextBoxList[TextBoxList.IndexOf(childTextBox)]);
                     generationGrid.Children.Remove(birthPlaceLabelList[TextBoxList.IndexOf(childTextBox)]);
                     generationGrid.Children.Remove(birthPlaceTextBoxList[TextBoxList.IndexOf(childTextBox)]);
+                    generationGrid.Children.Remove(textBlockList[TextBoxList.IndexOf(childTextBox)]);
 
                     birthDateLabelList.Remove(birthDateLabelList[TextBoxList.IndexOf(childTextBox)]);
                     deathDateLabelList.Remove(deathDateLabelList[TextBoxList.IndexOf(childTextBox)]);
                     birthDateTextBoxList.Remove(birthDateTextBoxList[TextBoxList.IndexOf(childTextBox)]);
                     deathDateTextBoxList.Remove(deathDateTextBoxList[TextBoxList.IndexOf(childTextBox)]);
+                    birthPlaceLabelList.Remove(birthPlaceLabelList[TextBoxList.IndexOf(childTextBox)]);
                     birthPlaceTextBoxList.Remove(birthPlaceTextBoxList[TextBoxList.IndexOf(childTextBox)]);
+                    textBlockList.Remove(textBlockList[TextBoxList.IndexOf(childTextBox)]);
                     TextBoxList.Remove(childTextBox);
 
                     generationGrid.ColumnDefinitions.Remove(generationGrid.ColumnDefinitions[generationGrid.ColumnDefinitions.Count - 1]);

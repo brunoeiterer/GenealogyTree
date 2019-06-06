@@ -145,6 +145,17 @@ namespace GenealogyTree
                 }
             }
 
+            //for (int i = 0; i < generation.ParentsGridList[parentIndex].Children.Count - 1; i++)
+            //{
+            //    if (generation.ParentsGridList[parentIndex].Children[i].GetType() == typeof(Line) &&
+            //        ((Line)generation.ParentsGridList[parentIndex].Children[i]).Name ==
+            //        "Child" + generation.GenerationID.ToString().Replace("-", string.Empty))
+            //    {
+            //        generation.ParentsGridList[parentIndex].Children.Remove(generation.ParentsGridList[parentIndex].Children[i]);
+            //        i--;
+            //    }
+            //}
+
             foreach (Node<Person> person in personList)
             {
                 int parentIndex = 0;
@@ -163,17 +174,6 @@ namespace GenealogyTree
                                 found = true;
                             }
                         }
-                    }
-                }
-
-                for (int i = 0; i < generation.ParentsGridList[parentIndex].Children.Count - 1; i++)
-                {
-                    if (generation.ParentsGridList[parentIndex].Children[i].GetType() == typeof(Line) &&
-                        ((Line)generation.ParentsGridList[parentIndex].Children[i]).Name == 
-                        "Child" + generation.GenerationID.ToString().Replace("-", string.Empty))
-                    {
-                        generation.ParentsGridList[parentIndex].Children.Remove(generation.ParentsGridList[parentIndex].Children[i]);
-                        i--;
                     }
                 }
 
