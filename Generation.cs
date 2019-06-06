@@ -272,7 +272,7 @@ namespace GenealogyTree
                 GenerationGridList[generationGridIndex].Children.Add(deathDateLabelList[deathDateLabelList.Count - 1]);
                 GenerationGridList[generationGridIndex].Children.Add(deathDateTextBoxList[deathDateTextBoxList.Count - 1]);
 
-                AddBirthPlaceLabel(person.Value.BirthPlace);
+                AddBirthPlaceLabel(person.Value.PartnerBirthPlace);
 
                 if (GenerationGridList[generationGridIndex].RowDefinitions.Count < 4)
                 {
