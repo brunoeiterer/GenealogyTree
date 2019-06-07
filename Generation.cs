@@ -419,7 +419,7 @@ namespace GenealogyTree
             Grid.SetColumn(TextBoxList[TextBoxList.IndexOf(childTextBox) + 1], childColumnIndex + 2);
 
             birthDateLabelList.Insert(TextBoxList.IndexOf(childTextBox) + 1, new Label());
-            birthDateLabelList[birthDateLabelList.Count - 1].Margin = new Thickness(0, 0, 25, 0);
+            birthDateLabelList[TextBoxList.IndexOf(childTextBox) + 1].Margin = new Thickness(0, 0, 25, 0);
             birthDateLabelList[TextBoxList.IndexOf(childTextBox) + 1].Content = "☆";
             birthDateLabelList[TextBoxList.IndexOf(childTextBox) + 1].BorderBrush = Brushes.Transparent;
             GenerationGridList[gridIndex].Children.Add(birthDateLabelList[TextBoxList.IndexOf(childTextBox) + 1]);
@@ -427,7 +427,7 @@ namespace GenealogyTree
             Grid.SetRow(birthDateLabelList[TextBoxList.IndexOf(childTextBox) + 1], 1);
 
             deathDateLabelList.Insert(TextBoxList.IndexOf(childTextBox) + 1, new Label());
-            deathDateLabelList[deathDateLabelList.Count - 1].Margin = new Thickness(0, 0, 25, 0);
+            deathDateLabelList[TextBoxList.IndexOf(childTextBox) + 1].Margin = new Thickness(0, 0, 25, 0);
             deathDateLabelList[TextBoxList.IndexOf(childTextBox) + 1].Content = "✞";
             deathDateLabelList[TextBoxList.IndexOf(childTextBox) + 1].BorderBrush = Brushes.Transparent;
 
@@ -436,9 +436,9 @@ namespace GenealogyTree
             Grid.SetRow(deathDateLabelList[TextBoxList.IndexOf(childTextBox) + 1], 2);
 
             birthPlaceLabelList.Insert(TextBoxList.IndexOf(childTextBox) + 1, new Label());
-            birthPlaceLabelList[birthPlaceLabelList.Count - 1].Margin = new Thickness(0, 0, 25, 25);
-            birthPlaceLabelList[birthPlaceLabelList.Count - 1].Content = "📌";
-            birthPlaceLabelList[birthPlaceLabelList.Count - 1].BorderBrush = Brushes.Transparent;
+            birthPlaceLabelList[TextBoxList.IndexOf(childTextBox) + 1].Margin = new Thickness(0, 0, 25, 0);
+            birthPlaceLabelList[TextBoxList.IndexOf(childTextBox) + 1].Content = "📌";
+            birthPlaceLabelList[TextBoxList.IndexOf(childTextBox) + 1].BorderBrush = Brushes.Transparent;
             GenerationGridList[gridIndex].Children.Add(birthPlaceLabelList[TextBoxList.IndexOf(childTextBox) + 1]);
             Grid.SetColumn(birthPlaceLabelList[TextBoxList.IndexOf(childTextBox) + 1], childColumnIndex + 2);
             Grid.SetRow(birthPlaceLabelList[TextBoxList.IndexOf(childTextBox) + 1], 3);
@@ -454,6 +454,7 @@ namespace GenealogyTree
             }
             birthDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1].Width = 200;
             birthDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1].Height = 20;
+            birthDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1].LostFocus += ChangeBirthDate;
             GenerationGridList[gridIndex].Children.Add(birthDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1]);
             Grid.SetColumn(birthDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1], childColumnIndex + 2);
             Grid.SetRow(birthDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1], 1);
@@ -469,6 +470,7 @@ namespace GenealogyTree
             }
             deathDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1].Width = 200;
             deathDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1].Height = 20;
+            deathDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1].LostFocus += ChangeDeathDate;
             GenerationGridList[gridIndex].Children.Add(deathDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1]);
             Grid.SetColumn(deathDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1], childColumnIndex + 2);
             Grid.SetRow(deathDateTextBoxList[TextBoxList.IndexOf(childTextBox) + 1], 2);
@@ -484,6 +486,10 @@ namespace GenealogyTree
             Grid.SetRow(birthPlaceTextBoxList[TextBoxList.IndexOf(childTextBox) + 1], 3);
 
             GenerationChangedEventArgs eventArgs = new GenerationChangedEventArgs();
+            if(PersonTree.GetNodeByName(PersonTree.Tree, childName, partnerName).Value.IsPartnerInFamily)
+            {
+                eventArgs.duplicatedName = partnerName;
+            }
             GenerationChanged?.Invoke(this, eventArgs);
         }
 

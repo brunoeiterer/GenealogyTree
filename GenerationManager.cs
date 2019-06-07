@@ -122,6 +122,10 @@ namespace GenealogyTree
                             {
                                 label.Foreground = Brushes.Red;
                             }
+                            foreach(TextBox textbox in grid.Children.OfType<TextBox>().Where(t => Grid.GetColumn(t) == Grid.GetColumn(textBox)))
+                            {
+                                textbox.Foreground = Brushes.Red;
+                            }
                         }
                     }
                 }

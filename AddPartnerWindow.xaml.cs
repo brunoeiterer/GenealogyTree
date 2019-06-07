@@ -90,6 +90,11 @@ namespace GenealogyTree
 
                 if (errorMessage == string.Empty)
                 {
+                    if (PersonTree.GetNodeByName(PersonTree.Tree, this.PartnerName.Text, string.Empty) != null)
+                    {
+                        child.Value.IsPartnerInFamily = true;
+                    }
+
                     child.Value.Partner = this.PartnerName.Text;
                     child.Value.PartnerBirthDate = partnerBirthDate;
                     child.Value.PartnerDeathDate = partnerDeathDate;
