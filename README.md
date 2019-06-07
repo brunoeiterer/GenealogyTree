@@ -27,9 +27,9 @@ To change names, birth places, birth and death dates simply click on the field a
 ## Limitations
 * People with the same name are not allowed.
 * Single parents are not allowed.
-* Adding parents is not possible.
+* ~~Adding parents is not possible.~~  Since v1.4 adding parents on the top of the tree is possible.
 * Multiple marriages are not allowed.
-* Marriage between family members is not allowed.
+* ~~Marriage between family members is not allowed.~~  Since v1.4 marriage between family members is allowed. The name, date of birth, date of death and place of birth are repeated in red beside the partner.
 
 # Árvore Genealógica
 Aplicativo para gerar árvores genealógicas para Windows.
@@ -58,6 +58,6 @@ O [Visual Studio Community 2019 Preview](https://visualstudio.microsoft.com/pt-b
 ## Limitações
 * Pessoas com mesmo nome não são permitidas.
 * Pais solteiros não são permitidos.
-* Adicionar pais não é possível.
+* ~~Adicionar pais não é possível.~~  A partir da v1.4 é possível adicionar pais.
 * Vários casamentos não são permitidos.
-* Casementos entre familiares não são permitidos.
+* ~~Casementos entre familiares não são permitidos.~~  A partir da v1.4 casamentos entre familiares são permitidos. O nome, a data de nascimento, a data de óbito e o local de nascimento do familiar é repetido em vermelho ao lado de seu companheiro.
